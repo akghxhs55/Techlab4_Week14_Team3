@@ -476,8 +476,9 @@ Tools/SnowMountain/build_snow_mountain.py
 !/Source/ThirdParty/PhysX/lib/x64/debug/
 !/Source/ThirdParty/PhysX/lib/x64/release/
 
-# FBX 원본은 커밋하지 않는다. 런타임은 Import 결과(.fbx.bin)만 로드한다.
-*.[Ff][Bb][Xx]
+# 저장소에 포함한 FBX SDK 바이너리 (위의 [Dd]ebug/·[Rr]elease/ 규칙 예외)
+!/Source/ThirdParty/FBX/lib/x64/debug/
+!/Source/ThirdParty/FBX/lib/x64/release/
 
 # 머티리얼 그래프 컴파일 때마다 RenderResourceManager가 다시 만드는 셰이더
 /EngineResources/Shaders/GeneratedMaterial/
