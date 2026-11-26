@@ -1,0 +1,319 @@
+# Blender 5.2.1 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl Light_glass
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 0.440559
+illum 6
+
+newmtl caliper_color
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.500000 0.334421 0.192500
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+
+newmtl d_glass
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 0.370629
+illum 6
+
+newmtl gemera:Koenigsegg_Gemera_2025BadgeA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd BadgeA_DiffuseAOSO.png
+map_d BadgeA_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_BadgeA_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025Base_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+
+newmtl gemera:Koenigsegg_Gemera_2025Carbon1_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd common_carbon05_black_diff.png
+map_bump common_carbon05_norm.png
+
+newmtl gemera:Koenigsegg_Gemera_2025Coloured_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd Global_Texture_Coloured_Diffuse_P.png
+
+newmtl gemera:Koenigsegg_Gemera_2025EngineA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd EngineA_DiffuseAOSO.png
+map_d EngineA_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_EngineA_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleAlpha2A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille2A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille2A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille2A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleAlpha6A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Grille6A_DiffuseAOSO.png
+map_d Grille6A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille6A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha1A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille1A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille1A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille1A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha3A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille3A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille3A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille3A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha4A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille4A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille4A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille4A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha5A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille5A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille5A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille5A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha7A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille7A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille7A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille7A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha8A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille8A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille8A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille8A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025GrilleNoAlpha9A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_Grille9A_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_Grille9A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Grille9A_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025InteriorA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd InteriorA_DiffuseAOSO.png
+map_d InteriorA_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_InteriorA_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025InteriorColourZoneA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_bump Koenigsegg_Gemera_2025_InteriorColourZoneA_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025InteriorTillingA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_InteriorTillingA_DiffuseAOSO.png
+map_d Koenigsegg_Gemera_2025_InteriorTillingA_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_InteriorTillingA_Normal.png
+
+newmtl gemera:Koenigsegg_Gemera_2025LightA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_LightA_Diffuse.png
+map_d Koenigsegg_Gemera_2025_LightA_Diffuse.png
+
+newmtl gemera:Koenigsegg_Gemera_2025ManufacturerPlateA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_ManufacturerPlateA_Diffuse.png
+map_d Koenigsegg_Gemera_2025_ManufacturerPlateA_Diffuse.png
+
+newmtl gemera:Koenigsegg_Gemera_2025Paint_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.266000 0.202527 0.115976
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+
+newmtl gemera:Koenigsegg_Gemera_2025Window_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 0.000000
+illum 6
+
+newmtl gemera:Koenigsegg_Gemera_2025_CallipersCalliperA_Zone_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Koenigsegg_Gemera_2025_CalliperA_Zone_Diffuse.png
+map_d Koenigsegg_Gemera_2025_CalliperA_Zone_Diffuse.png
+
+newmtl gemera:Koenigsegg_Gemera_2025_CallipersCalliperBadgeA_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd CalliperBadgeA_Diffuse.png
+map_d CalliperBadgeA_Diffuse.png
+
+newmtl int_color_1
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.136000 0.083420 0.038352
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_d InteriorA_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_InteriorA_Normal.png
+
+newmtl int_color_2
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.055944 0.055944 0.055944
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_d InteriorA_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_InteriorA_Normal.png
+
+newmtl interior_glass
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 0.398601
+illum 6
+
+newmtl red_glass
+Ns 200.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.500000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 0.517483
+illum 6

@@ -1,0 +1,32 @@
+{
+  "Version": 1,
+  "Bodies": [
+    {"Bone":"pelvis", "Mass":8, "Shapes":[{"Type":"Box", "Size":[0.32,0.24,0.20]}]},
+    {"Bone":"spine_03", "Mass":9, "Shapes":[{"Type":"Box", "Center":[0,-0.20,0], "Size":[0.35,0.44,0.24]}]},
+    {"Bone":"head", "Mass":4, "Shapes":[{"Type":"Sphere", "Center":[0,-0.10,0], "Radius":0.15}]},
+    {"Bone":"upperarm_l", "Mass":2, "Shapes":[{"Type":"Capsule", "Center":[0,-0.135,0], "Rotation":[0,0,90], "Radius":0.075, "Length":0.12}]},
+    {"Bone":"lowerarm_l", "Mass":1.5, "Shapes":[{"Type":"Capsule", "Center":[0,-0.13,0], "Rotation":[0,0,90], "Radius":0.06, "Length":0.14}]},
+    {"Bone":"upperarm_r", "Mass":2, "Shapes":[{"Type":"Capsule", "Center":[0,0.135,0], "Rotation":[0,0,90], "Radius":0.075, "Length":0.12}]},
+    {"Bone":"lowerarm_r", "Mass":1.5, "Shapes":[{"Type":"Capsule", "Center":[0,0.13,0], "Rotation":[0,0,90], "Radius":0.06, "Length":0.14}]},
+    {"Bone":"thigh_l", "Mass":5, "Shapes":[{"Type":"Capsule", "Center":[0,0.23,0], "Rotation":[0,0,90], "Radius":0.10, "Length":0.25}]},
+    {"Bone":"calf_l", "Mass":3, "Shapes":[{"Type":"Capsule", "Center":[0,0.21,0], "Rotation":[0,0,90], "Radius":0.08, "Length":0.26}]},
+    {"Bone":"foot_l", "Mass":1, "Shapes":[{"Type":"Box", "Center":[0.075,0.03,0], "Size":[0.24,0.14,0.10]}]},
+    {"Bone":"thigh_r", "Mass":5, "Shapes":[{"Type":"Capsule", "Center":[0,-0.23,0], "Rotation":[0,0,90], "Radius":0.10, "Length":0.25}]},
+    {"Bone":"calf_r", "Mass":3, "Shapes":[{"Type":"Capsule", "Center":[0,-0.21,0], "Rotation":[0,0,90], "Radius":0.08, "Length":0.26}]},
+    {"Bone":"foot_r", "Mass":1, "Shapes":[{"Type":"Box", "Center":[-0.075,-0.03,0], "Size":[0.24,0.14,0.10]}]}
+  ],
+  "Constraints": [
+    {"Child":"spine_03", "Parent":"pelvis", "TwistDegrees":25, "Swing1Degrees":25, "Swing2Degrees":25},
+    {"Child":"head", "Parent":"spine_03", "TwistDegrees":25, "Swing1Degrees":25, "Swing2Degrees":25},
+    {"Child":"upperarm_l", "Parent":"spine_03", "TwistDegrees":45, "Swing1Degrees":65, "Swing2Degrees":65},
+    {"Child":"lowerarm_l", "Parent":"upperarm_l", "TwistDegrees":35, "Swing1Degrees":70, "Swing2Degrees":70},
+    {"Child":"upperarm_r", "Parent":"spine_03", "TwistDegrees":45, "Swing1Degrees":65, "Swing2Degrees":65},
+    {"Child":"lowerarm_r", "Parent":"upperarm_r", "TwistDegrees":35, "Swing1Degrees":70, "Swing2Degrees":70},
+    {"Child":"thigh_l", "Parent":"pelvis", "TwistDegrees":35, "Swing1Degrees":55, "Swing2Degrees":55},
+    {"Child":"calf_l", "Parent":"thigh_l", "TwistDegrees":2, "Swing1Degrees":2, "Swing2Degrees":90},
+    {"Child":"foot_l", "Parent":"calf_l", "TwistDegrees":20, "Swing1Degrees":20, "Swing2Degrees":30},
+    {"Child":"thigh_r", "Parent":"pelvis", "TwistDegrees":35, "Swing1Degrees":55, "Swing2Degrees":55},
+    {"Child":"calf_r", "Parent":"thigh_r", "TwistDegrees":2, "Swing1Degrees":2, "Swing2Degrees":90},
+    {"Child":"foot_r", "Parent":"calf_r", "TwistDegrees":20, "Swing1Degrees":20, "Swing2Degrees":30}
+  ]
+}

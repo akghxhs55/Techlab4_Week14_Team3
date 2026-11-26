@@ -1,0 +1,23 @@
+{
+  "Properties": {},
+  "Version": 1,
+  "PreviewMesh": "Models/Zombie/SK_Zombie Idle_mixamorig_Hips.fbx.bin",
+  "Samples": [
+    {
+      "Animation": "Models/Zombie/AS_Zombie Idle.anim.bin",
+      "SampleValue": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/Zombie/AS_Zombie Running.anim.bin",
+      "SampleValue": {
+        "X": 400.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  ]
+}

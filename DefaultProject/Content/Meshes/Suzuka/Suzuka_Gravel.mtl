@@ -1,0 +1,30 @@
+# Suzuka Faceted Bumpy Gravel & Rocks
+newmtl GRVL01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 0.5800 0.5100 0.4000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rf_sand01.png
+
+newmtl GRASS_RK_GREEN03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 0.5800 0.5100 0.4000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rf_sand02.png
+
+newmtl GRVL_ROCK
+Ns 18.0
+Ka 0.62 0.56 0.48
+Kd 0.6200 0.5600 0.4800
+Ks 0.15 0.15 0.15
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rf_sand01.png

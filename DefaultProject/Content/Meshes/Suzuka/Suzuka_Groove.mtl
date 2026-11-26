@@ -1,0 +1,32 @@
+# Kurisu Engine Suzuka 2001 Material Library
+
+newmtl skidmark2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 0.85
+illum 2
+map_Kd tyres_add2.png
+
+newmtl skidmark
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 0.85
+illum 2
+map_Kd tyres_add1.png
+
+newmtl groove
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 0.85
+illum 2
+map_Kd groove00.png
+

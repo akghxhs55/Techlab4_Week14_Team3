@@ -1,0 +1,35 @@
+# Kurisu Engine Suzuka 2001 Material Library
+
+newmtl ZHUANPAN06
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd zhuanpan06.png
+map_d zhuanpan06.png
+
+newmtl ZHUANPAN03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd zhuanpan03.png
+map_d zhuanpan03.png
+
+newmtl ZHUANPAN00
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd zhuanpan00.png
+map_d zhuanpan00.png
+

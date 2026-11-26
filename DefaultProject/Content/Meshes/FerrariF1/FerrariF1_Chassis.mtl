@@ -1,0 +1,297 @@
+# Kurisu Engine F1 SF26 Material Library
+
+newmtl CLARED
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0005_clearled.dds_19.png
+
+newmtl CLEARLED
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0005_clearled.dds_19.png
+map_d 0005_clearled.dds_19.png
+
+newmtl black_s.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0000_ac_black.dds_13.png
+
+newmtl chrome.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0001_ac_silver.dds_11.png
+
+newmtl chrome_ao.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0004_chrome_ao.dds_22.png
+
+newmtl driver_color
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0008_driver_color.dds_8.png
+
+newmtl glass
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 0.5
+illum 2
+map_Kd 0022_glass_da.dds_31.png
+
+newmtl gp21_cinture.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0023_gp21_cinture.dds_10.png
+
+newmtl kers_blue
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0025_kers_blue.dds_16.png
+
+newmtl kers_green.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0026_kers_green.dds_17.png
+
+newmtl kers_red.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0027_kers_red.dds_15.png
+
+newmtl mirrorlight
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0031_mirror_light_d.dds_32.png
+
+newmtl numbers
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0015_ferrari_driver.dds_23.png
+map_d 0015_ferrari_driver.dds_23.png
+
+newmtl plastic_interior.002
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0000_ac_black.dds_13.png
+
+newmtl rear_light.001
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0034_rear_light_d.dds_12.png
+
+newmtl sf25_carbon1
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0011_ext_carbon_fiber_d.dds_4.png
+
+newmtl sf25_carbon1_white
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0010_ext_carbon_fiber_d_white.dds_24.png
+
+newmtl sf25_carbon2
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0029_mat_carbon_ferrari3.dds_1.png
+
+newmtl sf25_carbon3
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0024_int_carbon_fibre2.dds_30.png
+
+newmtl sf25_decals
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0006_decals26.dds_2.png
+map_d 0006_decals26.dds_2.png
+
+newmtl sf25_decals2
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0013_ferrari_decal_da.dds_6.png
+map_d 0013_ferrari_decal_da.dds_6.png
+
+newmtl sf25_details
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0014_ferrari_details_d.dds_5.png
+
+newmtl sf25_generics
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0021_generic_main_d.dds_9.png
+
+newmtl sf25_lcd
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0028_lcd_f175.dds_18.png
+
+newmtl sf25_mirrorl
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0030_mirror.png_29.png
+
+newmtl sf25_paints
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0016_ferrari_paint_d26.dds_7.png
+
+newmtl sf25_sw
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0017_ferrari_steering_wheel_d.dds_21.png
+
+newmtl sf25_sw_carbon
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0009_ext_carbon_fiber.dds_20.png
+
+newmtl sf25_sw_decals
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0018_ferrari_steering_wheel_decals_da.png_14.png
+map_d 0018_ferrari_steering_wheel_decals_da.png_14.png
+

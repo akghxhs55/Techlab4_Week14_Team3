@@ -1,0 +1,224 @@
+{
+  "Properties": {},
+  "Version": 1,
+  "Dimension": 2,
+  "PreviewMesh": "Models/UnrealModel/SK_SKM_Quinn_Simple_root.fbx.bin",
+  "Samples": [
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": -180.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Bwd.anim.bin",
+      "SampleValue": {
+        "X": -180.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Bwd.anim.bin",
+      "SampleValue": {
+        "X": -180.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": -135.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Bwd_Left.anim.bin",
+      "SampleValue": {
+        "X": -135.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Bwd_Left.anim.bin",
+      "SampleValue": {
+        "X": -135.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": -90.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Left.anim.bin",
+      "SampleValue": {
+        "X": -90.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Left.anim.bin",
+      "SampleValue": {
+        "X": -90.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": -45.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Fwd_Left.anim.bin",
+      "SampleValue": {
+        "X": -45.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Fwd_Left.anim.bin",
+      "SampleValue": {
+        "X": -45.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Fwd.anim.bin",
+      "SampleValue": {
+        "X": 0.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Fwd.anim.bin",
+      "SampleValue": {
+        "X": 0.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": 45.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Fwd_Right.anim.bin",
+      "SampleValue": {
+        "X": 45.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Fwd_Right.anim.bin",
+      "SampleValue": {
+        "X": 45.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": 90.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Right.anim.bin",
+      "SampleValue": {
+        "X": 90.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Right.anim.bin",
+      "SampleValue": {
+        "X": 90.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": 135.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Bwd_Right.anim.bin",
+      "SampleValue": {
+        "X": 135.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Bwd_Right.anim.bin",
+      "SampleValue": {
+        "X": 135.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_Idle.anim.bin",
+      "SampleValue": {
+        "X": 180.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Walk_Bwd.anim.bin",
+      "SampleValue": {
+        "X": 180.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/UnrealModel/AS_MF_Unarmed_Jog_Bwd.anim.bin",
+      "SampleValue": {
+        "X": 180.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    }
+  ]
+}

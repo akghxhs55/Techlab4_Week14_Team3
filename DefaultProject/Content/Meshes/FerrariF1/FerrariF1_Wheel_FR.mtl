@@ -1,0 +1,42 @@
+# Kurisu Engine F1 SF26 Material Library
+
+newmtl discs
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0007_disc_d.dds_28.png
+
+newmtl sf25_wheel_hub
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0019_ferrari_wheel_d.dds_25.png
+
+newmtl tyre_sides
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0035_s.dds_27.png
+
+newmtl tyre_tread
+Ns 100.0
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.5 0.5 0.5
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 0035_s.dds_27.png
+

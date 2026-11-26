@@ -1,0 +1,3267 @@
+# Kurisu Engine Suzuka 2001 Material Library
+
+newmtl 092
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd water.png
+
+newmtl garageback
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd garageback.png
+
+newmtl WALL1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 274.png
+
+newmtl CRANE_02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd crane00.png
+
+newmtl 094
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 094.png
+
+newmtl 093
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 093.png
+
+newmtl TW01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 370.png
+
+newmtl TWALL
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd twall00.png
+
+newmtl GRDR_TOP
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grdrtop.png
+
+newmtl GRDR
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grdr.png
+
+newmtl GRASSJIN
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rk_green01.png
+
+newmtl RMBLA
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rmbl.png
+
+newmtl 344
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd house_b.png
+
+newmtl 304
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 304.png
+
+newmtl 306
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 306.png
+
+newmtl 303
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 303.png
+
+newmtl 296
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 296.png
+
+newmtl 299
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 299.png
+
+newmtl 234
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 234.png
+
+newmtl 314
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 314.png
+
+newmtl 313
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 313.png
+
+newmtl 312
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 312.png
+
+newmtl 311
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 311.png
+
+newmtl 050
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 050.png
+
+newmtl 049
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 049.png
+
+newmtl 358
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 358.png
+
+newmtl 357
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 357.png
+
+newmtl 354
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 354.png
+
+newmtl TrafficLight_1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd TrafficLight_BaseColor.png
+
+newmtl SKID02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 0.85
+illum 2
+map_Kd skidslong.png
+
+newmtl DIANTA03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cablefix.png
+
+newmtl 083
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 083.png
+
+newmtl 082
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 082.png
+
+newmtl 081
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 081.png
+
+newmtl 225
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 225.png
+
+newmtl 226
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 226.png
+
+newmtl 074
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 074.png
+
+newmtl GSBLADE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd gbladesd.png
+map_d gbladesd.png
+
+newmtl 079
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 079.png
+
+newmtl RDLTC
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rdlt.png
+map_d rdlt.png
+
+newmtl 309
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 309.png
+
+newmtl 305
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 305.png
+
+newmtl garage_suzuka_logo
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd garage_suzuka_logo.png
+
+newmtl WALL5
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 279.png
+
+newmtl 036
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 036.png
+
+newmtl 308
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 308.png
+
+newmtl 307
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 307.png
+
+newmtl 300
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 300.png
+
+newmtl 273
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 273.png
+
+newmtl 269
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 269.png
+
+newmtl 265
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 265.png
+
+newmtl 261
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 261.png
+
+newmtl 257
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 257.png
+
+newmtl 253
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 253.png
+
+newmtl 250
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 250.png
+
+newmtl 246
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 246.png
+
+newmtl 242
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 242.png
+
+newmtl 238
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 238.png
+
+newmtl 233
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 233.png
+
+newmtl 232
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 232.png
+
+newmtl START274
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 274a.png
+map_d 274a.png
+
+newmtl 292
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 292.png
+
+newmtl 291
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 291.png
+
+newmtl 290
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 290.png
+
+newmtl 289
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 289.png
+
+newmtl tvscreen
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd videoz.png
+
+newmtl 332
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cwal01.png
+
+newmtl 329
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 329.png
+
+newmtl 325
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cwal01.png
+
+newmtl 328
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 328.png
+
+newmtl 330
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 330.png
+
+newmtl 315
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 315.png
+
+newmtl 341
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 341.png
+map_d 341.png
+
+newmtl 339
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 339.png
+
+newmtl 342
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 342.png
+
+newmtl 326
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 326.png
+map_d 326.png
+
+newmtl 352
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 352.png
+
+newmtl 367
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 367.png
+
+newmtl GSTANDBASE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd gstandstairs.png
+
+newmtl 335
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 335.png
+
+newmtl BRIDGE08
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge08.png
+
+newmtl BRIDGE04
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge04.png
+
+newmtl BRIDGE01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge01.png
+
+newmtl BRIDGE06
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge06.png
+
+newmtl BRIDGE03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge03.png
+
+newmtl BRIDGE02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge02.png
+
+newmtl BRIDGE05
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge05.png
+
+newmtl 146
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 146.png
+
+newmtl 148
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 148.png
+
+newmtl 084
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 084.png
+
+newmtl POLE02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pole02.png
+
+newmtl POLE01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pole01.png
+
+newmtl 067
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 067.png
+
+newmtl 066
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 066.png
+
+newmtl 051
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 051.png
+
+newmtl YLOPITLTA
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd ylolt.png
+
+newmtl RDPITLTA
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rdlt.png
+map_d rdlt.png
+
+newmtl BLACKCASE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd blackcase.png
+
+newmtl PIT_LOGO_REAR
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pit_logo_rear.png
+
+newmtl PIT_LOGOS
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pit_logos.png
+
+newmtl GREY2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grey2.png
+
+newmtl GRLTA
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grlt.png
+map_d grlt.png
+
+newmtl RDLTB
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rdlt.png
+map_d rdlt.png
+
+newmtl RDLTD
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rdlt.png
+map_d rdlt.png
+
+newmtl GURDRC
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd gurdrc.png
+
+newmtl digital_01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd digital_01.png
+
+newmtl podium03_2001
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd podium03_2001.png
+
+newmtl PODIUM01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd podium01.png
+
+newmtl PODIUM02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd podium02.png
+
+newmtl CONCWTP
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd wall.png
+
+newmtl 337
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 337.png
+
+newmtl 368
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 368.png
+
+newmtl 286
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 286.png
+
+newmtl 284
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 284.png
+
+newmtl 283
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 283.png
+
+newmtl 285
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 285.png
+
+newmtl 287
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 287.png
+
+newmtl logo_canon_blue
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_canon_blue.png
+
+newmtl logo_canon_red
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_canon_red.png
+
+newmtl 355
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 355.png
+
+newmtl 346
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 346.png
+
+newmtl 342SDAW2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 342.png
+
+newmtl 359
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 359.png
+
+newmtl 104
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 104.png
+
+newmtl 102
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 102.png
+
+newmtl ZHUANPAN08
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd zhuanpan08.png
+
+newmtl ZHUANPAN09
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd zhuanpan09.png
+
+newmtl GSTANDBARE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd gstand_plain.png
+
+newmtl 324
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 324.png
+
+newmtl 323
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 323.png
+
+newmtl 321
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 321.png
+
+newmtl 302
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 302.png
+
+newmtl 322
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 322.png
+
+newmtl 080
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 079.png
+
+newmtl DIANTA02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd zhuanpan01.png
+
+newmtl marshall
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd commissario_NEW.png
+
+newmtl logo_bridgestone2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_bridgestone2.png
+
+newmtl logo_mercedes
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_mercedes.png
+
+newmtl logo_helx
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_helx.png
+
+newmtl logo_allianz
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_allianz.png
+
+newmtl logo_hsbc
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_hsbc.png
+
+newmtl 033
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 033.png
+
+newmtl logo_brother
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_brother.png
+
+newmtl logo_ngk
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_ngk.png
+
+newmtl logo_arai2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_arai_2.png
+
+newmtl logo_fujitv2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_fujitv2.png
+
+newmtl logo_orange3
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_orange3.png
+
+newmtl logo_fost_beer
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_fost_beer.png
+
+newmtl 294
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 294.png
+
+newmtl logomarl3
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logomarl3.png
+
+newmtl logosiem
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logosiem.png
+
+newmtl logo_arai
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_arai.png
+
+newmtl logo_pioneer
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_pioneer.png
+
+newmtl logo_nippo
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_nippo.png
+
+newmtl logo_daikin
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_daikin.png
+
+newmtl logo_magneti
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_magneti.png
+
+newmtl 003
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 003.png
+
+newmtl logoalpine
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logoalpine.png
+
+newmtl logo_orange
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_orange.png
+
+newmtl logo_tagh
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_tagh.png
+
+newmtl logo_orange2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_orange2.png
+
+newmtl LAMP
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd lamp.png
+
+newmtl logo_toenec
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_toenec.png
+
+newmtl logo_nissin
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_nissin.png
+
+newmtl logos_t2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logos_t2.png
+
+newmtl logo_honda
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_honda.png
+
+newmtl STANG01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd stang01.png
+
+newmtl GARAGEWALL01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd garagewall01.png
+
+newmtl CMWL14
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cmwl14.png
+
+newmtl LIGHTIN
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd lightin.png
+
+newmtl LAMP_1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd lamp_1.png
+
+newmtl aa-BLACK01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd black01.png
+
+newmtl HORN02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd horn02.png
+
+newmtl CRANE_00
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd crane_trye00.png
+
+newmtl HOUSE_A01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd house_a.png
+
+newmtl logocanon2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logocanon2.png
+
+newmtl LOGO_BRDG_ING
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_brdg_ing.png
+
+newmtl 045
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 045.png
+
+newmtl logofuji_03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logofuji_03.png
+
+newmtl sign
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd sign.png
+
+newmtl BOX10
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_jaguar01.png
+
+newmtl BOX09
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_sauber01.png
+
+newmtl BOX08
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_arrows01.png
+
+newmtl BOX07
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_prost01.png
+
+newmtl BOX06
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_minardi01.png
+
+newmtl BOX05
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_benetton01.png
+
+newmtl BOX04
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_jordan01.png
+
+newmtl BOX03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_williams01.png
+
+newmtl BOX11
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_bar01.png
+
+newmtl BOX02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_ferrari01.png
+
+newmtl BOX01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd box_mclaren01.png
+
+newmtl logo_fujitv
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_fujitv.png
+
+newmtl 319
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 319.png
+
+newmtl logo_ptz_v
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_ptz_v.png
+
+newmtl logo_brdg_v
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_brdg_v.png
+
+newmtl logofost
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logofost.png
+
+newmtl 024
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 024.png
+
+newmtl POLE03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pole03.png
+
+newmtl logo_t3
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logos_t3.png
+
+newmtl logo_ssr
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_ssr.png
+
+newmtl logo_yachiyo
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_yachiyo.png
+
+newmtl logo_ngk3
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_ngk3.png
+
+newmtl logo_shell
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_shell.png
+
+newmtl logo_arai4
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_arai4.png
+
+newmtl logo_million_card
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_million_card.png
+
+newmtl 028
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 028.png
+
+newmtl logo_keihin
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_keihin.png
+
+newmtl 006
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 006.png
+
+newmtl GRDR8
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 003.png
+
+newmtl 000
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 000.png
+
+newmtl RDLTA
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rdlt.png
+map_d rdlt.png
+
+newmtl 280
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 280.png
+
+newmtl cameraman
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd videocamera.png
+
+newmtl TWALL1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd andtwall1.png
+
+newmtl NODE.001
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd node.png
+
+newmtl CWAL01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cwal01.png
+
+newmtl CWAL06
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd bridge08.png
+
+newmtl logo_fujitv1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_fujitv1.png
+
+newmtl logo_marlboro
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_marlboro.png
+
+newmtl logo_mildseven
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_mildseven.png
+
+newmtl CWAL02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cwal02.png
+
+newmtl logo_mobil1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_mobil1.png
+
+newmtl logo_bmw
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_bmw.png
+
+newmtl logo_asahi_kasei
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_asahi_kasei.png
+
+newmtl logo_canon
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_canon.png
+
+newmtl logoshel
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logoshel.png
+
+newmtl logo_ps2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_ps2.png
+
+newmtl logo_boss_coffee
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_boss_coffee.png
+
+newmtl logo_mumm
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_mumm.png
+
+newmtl LOGO_WHITE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_white.png
+
+newmtl CWAL03_1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd cwal03_1.png
+
+newmtl logo_potenza
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_potenza.png
+
+newmtl logobrdg_2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logobrdg_2.png
+
+newmtl ROAD_RK_GREEN04
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rk_green04.png
+
+newmtl RMBLF
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 132.png
+
+newmtl GRASS_RK_GREEN06
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rk_green06.png
+
+newmtl GRASS_RK_GREEN07
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rk_green07.png
+
+newmtl GRASS_RK_GREEN05
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rk_green05.png
+
+newmtl GRVL01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rf_sand01.png
+
+newmtl GRASS11
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grassx1.png
+
+newmtl GRASS_RK_GREEN03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd rf_sand02.png
+
+newmtl GRASS01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grass05.png
+
+newmtl ROADD
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd roadd.png
+
+newmtl ROADX
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd roadx.png
+
+newmtl ROAD02
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road02.png
+
+newmtl ROAD06
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road06.png
+
+newmtl RDCP01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 130.png
+
+newmtl ROAD05
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road05.png
+
+newmtl PITROAD
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pitroad.png
+
+newmtl ROAD07
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road07.png
+
+newmtl ROAD01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road01.png
+
+newmtl flag_japan
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd flag_japan.png
+
+newmtl flag_fia
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd flag_fia.png
+
+newmtl flag_jaf
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd flag_jaf.png
+
+newmtl flag_f1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd flag_f1.png
+
+newmtl flag_fujitv
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd flag_fujitv.png
+
+newmtl TREE09
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_row_strip.png
+map_d tree_row_strip.png
+
+newmtl TREE04
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_conifer_b.png
+map_d tree_conifer_b.png
+
+newmtl TREE03
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_conifer_a.png
+map_d tree_conifer_a.png
+
+newmtl TREE02
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_broadleaf_b.png
+map_d tree_broadleaf_b.png
+
+newmtl TREE01
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_broadleaf_a.png
+map_d tree_broadleaf_a.png
+
+newmtl TREE06
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_mixed_b.png
+map_d tree_mixed_b.png
+
+newmtl TREE05
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_mixed_a.png
+map_d tree_mixed_a.png
+
+newmtl SHRUB_THREE
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd shrub_b.png
+map_d shrub_b.png
+
+newmtl SHRUB_ONE
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd shrub_a.png
+map_d shrub_a.png
+
+newmtl SHRUB_FINE
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd shrub_fine.png
+map_d shrub_fine.png
+
+newmtl SHRUB_FOUR
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd shrub_a.png
+map_d shrub_a.png
+
+newmtl SHRUB_TWO
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd shrub_b.png
+map_d shrub_b.png
+
+newmtl TREE_SHADOW
+Ns 8.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.02 0.02 0.02
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tree_shadow_canopy.png
+map_d tree_shadow_canopy.png
+
+newmtl POLE_LINE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd pole_line.png
+map_d pole_line.png
+
+newmtl towerdisplay2
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd towerdisplay2.png
+
+newmtl timedisplay1
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd towerdisplay1.png
+
+newmtl towerdisplay
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd towerdisplay.png
+
+newmtl 278
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 278.png
+map_d 278.png
+
+newmtl 276
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 276.png
+map_d 276.png
+
+newmtl 275
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 275.png
+map_d 275.png
+
+newmtl 230
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 230.png
+map_d 230.png
+
+newmtl 310
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 310.png
+map_d 310.png
+
+newmtl DIANXIAN
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 136.png
+map_d 136.png
+
+newmtl 331
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 331.png
+map_d 331.png
+
+newmtl 334
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 334.png
+map_d 334.png
+
+newmtl 340
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 340.png
+map_d 340.png
+
+newmtl 349
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 349.png
+map_d 349.png
+
+newmtl 343
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 343.png
+map_d 343.png
+
+newmtl 338
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 338.png
+map_d 338.png
+
+newmtl 362
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 362.png
+map_d 362.png
+
+newmtl 351
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 351.png
+map_d 351.png
+
+newmtl 365
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 365.png
+map_d 365.png
+
+newmtl 348
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 348.png
+map_d 348.png
+
+newmtl 147
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 147.png
+map_d 147.png
+
+newmtl 400
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 400.png
+map_d 400.png
+
+newmtl 399
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 399.png
+
+newmtl 402
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 402.png
+map_d 402.png
+
+newmtl 401
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 401.png
+map_d 401.png
+
+newmtl 069
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 069.png
+map_d 069.png
+
+newmtl 065
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 065.png
+map_d 065.png
+
+newmtl PITEXITLINE
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd lgedge.png
+map_d lgedge.png
+
+newmtl 336
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 336.png
+map_d 336.png
+
+newmtl 350
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 350.png
+map_d 350.png
+
+newmtl 360
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 360.png
+map_d 360.png
+
+newmtl 353
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 353.png
+map_d 353.png
+
+newmtl line4
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd line4.png
+map_d line4.png
+
+newmtl 282
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 282.png
+map_d 282.png
+
+newmtl 356
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 356.png
+map_d 356.png
+
+newmtl 378
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 378.png
+map_d 378.png
+
+newmtl 142
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 142.png
+map_d 142.png
+
+newmtl 141
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 141.png
+map_d 141.png
+
+newmtl GAOYADIANTA01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd dianta.png
+map_d dianta.png
+
+newmtl logo_orange_grass
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd logo_orange_grass.png
+
+newmtl 002
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 002.png
+map_d 002.png
+
+newmtl lapdisplay
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd lapdisplay.png
+
+newmtl HORN01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd horn01.png
+map_d horn01.png
+
+newmtl grid
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd grid1.png
+map_d grid1.png
+
+newmtl TIESIWANG01
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd tiesiwang01.png
+map_d tiesiwang01.png
+
+newmtl clockdisplay
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd clockdisplay.png
+
+newmtl 047
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 047.png
+map_d 047.png
+
+newmtl 046
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 046.png
+map_d 046.png
+
+newmtl 001
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd 001.png
+map_d 001.png
+
+newmtl ROAD03
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road03.png
+
+newmtl ROAD04
+Ns 32.0
+Ka 1.0 1.0 1.0
+Kd 1.0000 1.0000 1.0000
+Ks 0.1 0.1 0.1
+Ni 1.5
+d 1.0
+illum 2
+map_Kd road04.png
+

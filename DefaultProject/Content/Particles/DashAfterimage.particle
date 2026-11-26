@@ -1,0 +1,120 @@
+{
+  "Emitters": [
+    {
+      "LODLevels": [
+        {
+          "Modules": [
+            {
+              "Class": "UParticleModuleLifetime",
+              "Data": {
+                "Properties": {
+                  "Lifetime": {
+                    "Constant": 0.4000000059604645,
+                    "CurveKeys": [],
+                    "MaxValue": 0.4000000059604645,
+                    "MinValue": 0.4000000059604645,
+                    "Mode": "Constant"
+                  },
+                  "bEnabled": true
+                }
+              }
+            },
+            {
+              "Class": "UParticleModuleColor",
+              "Data": {
+                "Properties": {
+                  "StartColor": {
+                    "Constant": {
+                      "X": 0.550000011920929,
+                      "Y": 0.800000011920929,
+                      "Z": 1.0
+                    },
+                    "CurveKeysX": [],
+                    "CurveKeysY": [],
+                    "CurveKeysZ": [],
+                    "MaxValue": {
+                      "X": 0.550000011920929,
+                      "Y": 0.800000011920929,
+                      "Z": 1.0
+                    },
+                    "MinValue": {
+                      "X": 0.550000011920929,
+                      "Y": 0.800000011920929,
+                      "Z": 1.0
+                    },
+                    "Mode": "Constant",
+                    "bLockAxes": false
+                  },
+                  "StartAlpha": {
+                    "Constant": 1.0,
+                    "CurveKeys": [],
+                    "MaxValue": 1.0,
+                    "MinValue": 1.0,
+                    "Mode": "Constant"
+                  },
+                  "bClampAlpha": true,
+                  "bEnabled": true
+                }
+              }
+            }
+          ],
+          "Properties": {
+            "bEnabled": true
+          },
+          "RequiredModule": {
+            "Properties": {
+              "EmitterDelay": 0.0,
+              "EmitterDuration": 0.01,
+              "EmitterLoops": 0,
+              "InterpolationMethod": "None",
+              "Material": {
+                "Asset": "Materials/AfterimageMaterial.material"
+              },
+              "MaxActiveParticles": 16,
+              "RandomImageTime": 0.0,
+              "SortMode": "None",
+              "SubImages_Horizontal": 1,
+              "SubImages_Vertical": 1,
+              "bDelayFirstLoopOnly": false,
+              "bEnabled": true,
+              "bUseLocalSpace": false
+            }
+          },
+          "SpawnModule": {
+            "Properties": {
+              "BurstList": [],
+              "Rate": {
+                "Constant": 20.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "RateScale": {
+                "Constant": 1.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "bEnabled": true
+            }
+          },
+          "TypeDataModule": {
+            "Class": "UParticleModuleTypeDataAfterimage",
+            "Data": {
+              "Properties": {
+                "bEnabled": true
+              }
+            }
+          }
+        }
+      ],
+      "Properties": {
+        "EmitterName": "DashAfterimage"
+      }
+    }
+  ],
+  "Properties": {},
+  "Version": 1
+}

@@ -1,0 +1,42 @@
+{
+  "BlendInTime": 0.05,
+  "BlendOutTime": 0.12,
+  "Loop": false,
+  "Notifies": [
+    {
+      "ClassName": "UAnimNotifyState_ParticleEffect",
+      "Duration": 0.85,
+      "Name": "DashAfterimage",
+      "Properties": {
+        "BaseParameterName": "RibbonBase",
+        "BoneName": "",
+        "BoneOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "FadeOutDuration": 0.4,
+        "ParticlePath": "Particles/DashAfterimage.particle",
+        "SecondBoneName": "",
+        "TipParameterName": "RibbonTip",
+        "bFollowBoneRotation": false,
+        "bLoopDuringState": true
+      },
+      "Time": 0.03
+    }
+  ],
+  "PlayRate": 1.0,
+  "Sections": [
+    {
+      "EndTime": 0.9666666686534882,
+      "Name": "Default",
+      "NextSection": "",
+      "StartTime": 0.0
+    }
+  ],
+  "Sequence": "Models/UnrealModel/AS_MM_Dash.anim.bin",
+  "Skeleton": "Models/UnrealModel/SK_SKM_Quinn_Simple_root.fbx.bin",
+  "Slot": "FullBody",
+  "Version": 1,
+  "PreviewMesh": "Models/UnrealModel/SK_SKM_Quinn_Simple_root.fbx.bin"
+}

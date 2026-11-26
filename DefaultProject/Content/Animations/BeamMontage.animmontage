@@ -1,0 +1,116 @@
+{
+  "BlendInTime": 0.10000000149011612,
+  "BlendOutTime": 0.20000000298023224,
+  "Loop": false,
+  "Notifies": [
+    {
+      "ClassName": "UAnimNotifyState_ParticleEffect",
+      "Duration": 11.0,
+      "Name": "BeamParticle",
+      "Properties": {
+        "BaseParameterName": "RibbonBase",
+        "BoneName": "hand_l",
+        "BoneOffset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "FadeOutDuration": 0.25,
+        "ParticlePath": "Particles/DragonBallBeam.particle",
+        "SecondBoneName": "hand_r",
+        "TipParameterName": "RibbonTip",
+        "bFollowBoneRotation": false,
+        "bLoopDuringState": false
+      },
+      "Time": 0.0
+    }
+  ],
+  "PlayRate": 1.0,
+  "Sections": [
+    {
+      "EndTime": 4.0,
+      "Name": "Charge",
+      "NextSection": "Begin",
+      "StartTime": 0.0
+    },
+    {
+      "EndTime": 4.366666793823242,
+      "Name": "Begin",
+      "NextSection": "Loop1",
+      "StartTime": 4.0
+    },
+    {
+      "EndTime": 6.366666793823242,
+      "Name": "Loop1",
+      "NextSection": "Loop2",
+      "StartTime": 4.366666793823242
+    },
+    {
+      "EndTime": 8.366666793823242,
+      "Name": "Loop2",
+      "NextSection": "Loop3",
+      "StartTime": 6.366666793823242
+    },
+    {
+      "EndTime": 10.366666793823242,
+      "Name": "Loop3",
+      "NextSection": "End",
+      "StartTime": 8.366666793823242
+    },
+    {
+      "EndTime": 11.0,
+      "Name": "End",
+      "NextSection": "",
+      "StartTime": 10.366666793823242
+    }
+  ],
+  "Segments": [
+    {
+      "AnimStartOffset": 0.0,
+      "EndTime": 4.0,
+      "PlayRate": 1.0,
+      "Sequence": "Models/SwordModel/AS_A_2HandCharge.anim.bin",
+      "StartTime": 0.0
+    },
+    {
+      "AnimStartOffset": 0.0,
+      "EndTime": 4.366666793823242,
+      "PlayRate": 1.0,
+      "Sequence": "Models/SwordModel/AS_A_2HandCast_Begin.anim.bin",
+      "StartTime": 4.0
+    },
+    {
+      "AnimStartOffset": 0.0,
+      "EndTime": 6.366666793823242,
+      "PlayRate": 1.0,
+      "Sequence": "Models/SwordModel/AS_A_2HandCastLoop.anim.bin",
+      "StartTime": 4.366666793823242
+    },
+    {
+      "AnimStartOffset": 0.0,
+      "EndTime": 8.366666793823242,
+      "PlayRate": 1.0,
+      "Sequence": "Models/SwordModel/AS_A_2HandCastLoop.anim.bin",
+      "StartTime": 6.366666793823242
+    },
+    {
+      "AnimStartOffset": 0.0,
+      "EndTime": 10.366666793823242,
+      "PlayRate": 1.0,
+      "Sequence": "Models/SwordModel/AS_A_2HandCastLoop.anim.bin",
+      "StartTime": 8.366666793823242
+    },
+    {
+      "AnimStartOffset": 0.0,
+      "EndTime": 11.0,
+      "PlayRate": 1.0,
+      "Sequence": "Models/SwordModel/AS_A_2HandCast_End.anim.bin",
+      "StartTime": 10.366666793823242
+    }
+  ],
+  "Sequence": "Models/SwordModel/AS_A_2HandCharge.anim.bin",
+  "Skeleton": "Models/SwordModel/SK_SK_Mannequin_root.fbx.bin",
+  "Slot": "FullBody",
+  "Version": 1,
+  "PreviewMesh": "Models/SwordModel/SK_SK_Mannequin_root.fbx.bin"
+}

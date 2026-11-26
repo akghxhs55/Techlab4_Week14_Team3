@@ -1,0 +1,2113 @@
+#include "EnginePCH.h"
+#include "Editor/MaterialEditor/MaterialEditorPanel.h"
+
+#include "Editor/EditorUI/EditorStyle.h"
+#include "Editor/KurisuEd/EditorDragDrop.h"
+#include "Editor/KurisuEd/EditorEngine.h"
+#include "Launch/LaunchEngineLoop.h"
+
+#include "Asset/AssetManager.h"
+#include "Asset/AssetUtils.h"
+
+#include "Render/Material.h"
+#include "Render/MaterialInstance.h"
+#include "Render/MaterialRenderProxy.h"
+#include "Render/RenderResourceManager.h"
+#include "Render/Mesh.h"
+#include "Render/Texture2D.h"
+
+#include "UObject/UObjectIterator.h"
+
+#include "Engine/World.h"
+#include "Components/StaticMeshComponent.h"
+#include "Math/BoxSphereBounds.h"
+
+#include <algorithm>
+#include <functional>
+#include <cmath>
+#include <cstring>
+#include <set>
+
+namespace
+{
+	const FMaterialExpressionNode* FindMaterialNode(const UMaterial& Material, int32 NodeId)
+	{
+		for (const FMaterialExpressionNode& Node : Material.ExpressionNodes)
+		{
+			if (Node.Id == NodeId)
+			{
+				return &Node;
+			}
+		}
+
+		return nullptr;
+	}
+
+	const char* GetMaterialExpressionName(EMaterialExpressionType Type)
+	{
+		switch (Type)
+		{
+		case EMaterialExpressionType::Constant:
+			return "Constant";
+		case EMaterialExpressionType::Constant2Vector:
+			return "Constant2Vector";
+		case EMaterialExpressionType::Constant3Vector:
+			return "Constant3Vector";
+		case EMaterialExpressionType::Constant4Vector:
+			return "Constant4Vector";
+		case EMaterialExpressionType::ScalarParameter:
+			return "Scalar Parameter";
+		case EMaterialExpressionType::VectorParameter:
+			return "Vector Parameter";
+		case EMaterialExpressionType::TextureSample:
+			return "Texture Sample";
+		case EMaterialExpressionType::TextureCoordinate:
+			return "Texture Coordinate";
+		case EMaterialExpressionType::Add:
+			return "Add";
+		case EMaterialExpressionType::Multiply:
+			return "Multiply";
+		case EMaterialExpressionType::Lerp:
+			return "Lerp";
+		case EMaterialExpressionType::OneMinus:
+			return "One Minus";
+		case EMaterialExpressionType::Subtract:
+			return "Subtract";
+		case EMaterialExpressionType::Step:
+			return "Step";
+		case EMaterialExpressionType::Noise:
+			return "Noise";
+		case EMaterialExpressionType::Divide:
+			return "Divide";
+		case EMaterialExpressionType::Clamp:
+			return "Clamp";
+		case EMaterialExpressionType::Power:
+			return "Power";
+		case EMaterialExpressionType::Abs:
+			return "Abs";
+		case EMaterialExpressionType::Frac:
+			return "Frac";
+		case EMaterialExpressionType::Sine:
+			return "Sine";
+		case EMaterialExpressionType::Min:
+			return "Min";
+		case EMaterialExpressionType::Max:
+			return "Max";
+		case EMaterialExpressionType::AppendVector:
+			return "Append Vector";
+		case EMaterialExpressionType::Custom:
+			return "Custom";
+		case EMaterialExpressionType::Saturate:
+			return "Saturate";
+		case EMaterialExpressionType::Panner:
+			return "Panner";
+		case EMaterialExpressionType::Fresnel:
+			return "Fresnel";
+		case EMaterialExpressionType::Cosine:
+			return "Cosine";
+		case EMaterialExpressionType::Floor:
+			return "Floor";
+		case EMaterialExpressionType::Distance:
+			return "Distance";
+		case EMaterialExpressionType::Length:
+			return "Length";
+		case EMaterialExpressionType::CrossProduct:
+			return "Cross Product";
+		case EMaterialExpressionType::Desaturation:
+			return "Desaturation";
+		case EMaterialExpressionType::SphereMask:
+			return "Sphere Mask";
+		case EMaterialExpressionType::ConstantBiasScale:
+			return "Constant Bias Scale";
+		case EMaterialExpressionType::Rotator:
+			return "Rotator";
+		case EMaterialExpressionType::ComponentMask:
+			return "Component Mask";
+		case EMaterialExpressionType::DotProduct:
+			return "Dot Product";
+		case EMaterialExpressionType::Normalize:
+			return "Normalize";
+		case EMaterialExpressionType::TextureSampleParameter2D:
+			return "Texture Sample Parameter 2D";
+		case EMaterialExpressionType::Time:
+			return "Time";
+		case EMaterialExpressionType::VertexColor:
+			return "Vertex Color";
+		case EMaterialExpressionType::WorldPosition:
+			return "World Position";
+		case EMaterialExpressionType::CameraVectorWS:
+			return "Camera Vector WS";
+		case EMaterialExpressionType::VertexNormalWS:
+			return "Vertex Normal WS";
+		case EMaterialExpressionType::MaterialOutput:
+			return "Material Output";
+		default:
+			return "Unknown";
+		}
+	}
+
+	const char* GetMaterialValueTypeName(EMaterialValueType Type)
+	{
+		switch (Type)
+		{
+		case EMaterialValueType::Scalar:
+			return "float";
+		case EMaterialValueType::Vector2:
+			return "float2";
+		case EMaterialValueType::Vector3:
+			return "float3";
+		case EMaterialValueType::Vector4:
+			return "float4";
+		case EMaterialValueType::Texture2D:
+			return "Texture2D";
+		default:
+			return "Unknown";
+		}
+	}
+
+	FString GetMaterialInputTypeLabel(const UMaterial& Material, const FMaterialExpressionNode& Node, int32 PinIndex)
+	{
+		std::function<EMaterialValueType(int32)> GetConnectedType = [&](int32 InputPin)
+		{
+			for (const FMaterialExpressionConnection& Connection : Material.ExpressionConnections)
+			{
+				if (Connection.InputNodeId == Node.Id && Connection.InputPin == InputPin)
+				{
+					return Material.GetExpressionOutputType(Connection.OutputNodeId, Connection.OutputPin);
+				}
+			}
+
+			return EMaterialValueType::Unknown;
+		};
+
+		EMaterialValueType Type = EMaterialValueType::Unknown;
+
+		switch (Node.Type)
+		{
+		case EMaterialExpressionType::TextureSample:
+		case EMaterialExpressionType::Noise:
+		case EMaterialExpressionType::TextureSampleParameter2D:
+			return "float2";
+		case EMaterialExpressionType::Step:
+			return "float";
+		case EMaterialExpressionType::Add:
+		case EMaterialExpressionType::Subtract:
+		case EMaterialExpressionType::Multiply:
+		case EMaterialExpressionType::Divide:
+		case EMaterialExpressionType::Power:
+		case EMaterialExpressionType::Min:
+		case EMaterialExpressionType::Max:
+		case EMaterialExpressionType::DotProduct:
+		case EMaterialExpressionType::AppendVector:
+		case EMaterialExpressionType::Custom:
+			Type = GetConnectedType(PinIndex);
+
+			if (Type == EMaterialValueType::Unknown)
+			{
+				Type = GetConnectedType(1 - PinIndex);
+			}
+
+			return Type == EMaterialValueType::Unknown ? FString("numeric") : FString(GetMaterialValueTypeName(Type));
+		case EMaterialExpressionType::Panner:
+			return "float2";
+
+		case EMaterialExpressionType::Rotator:
+			return PinIndex == 2 ? "float" : "float2";
+
+		case EMaterialExpressionType::Fresnel:
+			return PinIndex == 0 ? "float3" : "float";
+
+		case EMaterialExpressionType::Distance:
+			return "same vector type";
+
+		case EMaterialExpressionType::CrossProduct:
+			return "float3";
+
+		case EMaterialExpressionType::Desaturation:
+			return PinIndex == 0 ? "float3 / float4" : "float";
+
+		case EMaterialExpressionType::SphereMask:
+			return PinIndex < 2 ? "float3" : "float";
+
+		case EMaterialExpressionType::ConstantBiasScale:
+			if (PinIndex == 0)
+			{
+				return "numeric";
+			}
+
+			Type = GetConnectedType(0);
+			return Type == EMaterialValueType::Unknown
+				? FString("scalar or input type")
+				: FString(GetMaterialValueTypeName(Type));
+
+		case EMaterialExpressionType::Length:
+			return "float2 / float3 / float4";
+		case EMaterialExpressionType::Lerp:
+			if (PinIndex == 2)
+			{
+				return "float";
+			}
+
+			Type = GetConnectedType(PinIndex);
+
+			if (Type == EMaterialValueType::Unknown)
+			{
+				Type = GetConnectedType(1 - PinIndex);
+			}
+
+			return Type == EMaterialValueType::Unknown ? FString("same numeric type") : FString(GetMaterialValueTypeName(Type));
+
+		case EMaterialExpressionType::OneMinus:
+		case EMaterialExpressionType::Abs:
+		case EMaterialExpressionType::Frac:
+		case EMaterialExpressionType::Sine:
+		case EMaterialExpressionType::Normalize:
+		case EMaterialExpressionType::ComponentMask:
+		case EMaterialExpressionType::Saturate:
+		case EMaterialExpressionType::Cosine:
+		case EMaterialExpressionType::Floor:
+			Type = GetConnectedType(PinIndex);
+			return Type == EMaterialValueType::Unknown ? FString("numeric") : FString(GetMaterialValueTypeName(Type));
+		case EMaterialExpressionType::Clamp:
+			if (PinIndex == 0)
+			{
+				return "numeric";
+			}
+
+			return GetConnectedType(0) == EMaterialValueType::Unknown
+				? FString("scalar or input type")
+				: FString(GetMaterialValueTypeName(GetConnectedType(0)));
+		case EMaterialExpressionType::MaterialOutput:
+			switch (PinIndex)
+			{
+			case 0:
+			case 1:
+			case 3:
+				return "float3 / float4";
+			case 2:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 9:
+				return "float";
+			case 8:
+				return "float3";
+			default:
+				return "Unknown";
+			}
+
+		default:
+			return "Unknown";
+		}
+	}
+
+	bool HasMaterialTexturePreview(EMaterialExpressionType Type)
+	{
+		return Type == EMaterialExpressionType::TextureSample ||
+			Type == EMaterialExpressionType::TextureSampleParameter2D;
+	}
+
+	bool HasInlineMaterialValue(EMaterialExpressionType Type)
+	{
+		switch (Type)
+		{
+		case EMaterialExpressionType::Constant:
+		case EMaterialExpressionType::Constant2Vector:
+		case EMaterialExpressionType::Constant3Vector:
+		case EMaterialExpressionType::Constant4Vector:
+		case EMaterialExpressionType::ScalarParameter:
+		case EMaterialExpressionType::VectorParameter:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	ImVec2 GetMaterialNodeSize(const UMaterial& Material, const FMaterialExpressionNode& Node)
+	{
+		const float ValueHeight = HasInlineMaterialValue(Node.Type) ? 42.0f : 0.0f;
+		const float TexturePreviewHeight = HasMaterialTexturePreview(Node.Type) ? 78.0f : 0.0f;
+		const float Height = std::max(76.0f, 48.0f + Material.GetExpressionInputPinCount(Node.Type) * 25.0f + ValueHeight + TexturePreviewHeight);
+		return ImVec2(230.0f, Height);
+	}
+
+	ImVec2 GetMaterialInputPinPosition(ImVec2 Min, int32 PinIndex, float Scale)
+	{
+		return ImVec2(Min.x, Min.y + (43.0f + PinIndex * 25.0f) * Scale);
+	}
+
+	ImVec2 GetMaterialOutputPinPosition(ImVec2 Min, ImVec2 Size, float Scale)
+	{
+		return ImVec2(Min.x + Size.x * Scale, Min.y + 43.0f * Scale);
+	}
+
+	bool DrawMaterialTexturePicker(const char* Label, UTexture2D*& InOutTexture, const char* EmptyLabel)
+	{
+		bool bChanged = false;
+		const FString CurrentPath = InOutTexture ? InOutTexture->GetPath() : FString();
+		FString Display = EmptyLabel ? EmptyLabel : "None";
+		if (!CurrentPath.empty())
+		{
+			const size_t Slash = CurrentPath.find_last_of("/\\");
+			Display = Slash == FString::npos ? CurrentPath : CurrentPath.substr(Slash + 1);
+		}
+		if (ImGui::BeginCombo(Label, Display.c_str()))
+		{
+			if (ImGui::Selectable(EmptyLabel ? EmptyLabel : "None", InOutTexture == nullptr))
+			{
+				InOutTexture = nullptr;
+				bChanged = true;
+			}
+			TArray<FString> SeenPaths;
+			for (TObjectIterator<UTexture2D> It{}; It; ++It)
+			{
+				UTexture2D* Tex = *It;
+				if (!IsValid(Tex) || !Tex->GetResource() || Tex->GetPath().empty())
+				{
+					continue;
+				}
+				const FString& ItemPath = Tex->GetPath();
+				SeenPaths.Add(ItemPath);
+				const size_t Slash = ItemPath.find_last_of("/\\");
+				const FString ItemName = Slash == FString::npos ? ItemPath : ItemPath.substr(Slash + 1);
+				ImGui::PushID(Tex);
+				if (ImGui::Selectable(ItemName.c_str(), InOutTexture == Tex))
+				{
+					InOutTexture = Tex;
+					bChanged = true;
+				}
+				if (ImGui::IsItemHovered())
+				{
+					ImGui::SetTooltip("%s", ItemPath.c_str());
+				}
+				ImGui::PopID();
+			}
+			for (const FString& ItemPath : UAssetManager::GetUnloadedAssetPaths(EAssetType::Texture))
+			{
+				if (SeenPaths.Contains(ItemPath))
+				{
+					continue;
+				}
+				const size_t Slash = ItemPath.find_last_of("/\\");
+				const FString ItemName = Slash == FString::npos ? ItemPath : ItemPath.substr(Slash + 1);
+				ImGui::PushID(ItemPath.c_str());
+				if (ImGui::Selectable(ItemName.c_str(), false))
+				{
+					if (UTexture2D* LoadedTex = UAssetManager::GetAssetByPath<UTexture2D>(ItemPath))
+					{
+						InOutTexture = LoadedTex;
+						bChanged = true;
+					}
+				}
+				if (ImGui::IsItemHovered())
+				{
+					ImGui::SetTooltip("%s", ItemPath.c_str());
+				}
+				ImGui::PopID();
+			}
+			ImGui::EndCombo();
+		}
+		return bChanged;
+	}
+
+	bool EditMaterialColor(const char* Label, float* Value, bool bAlpha = false)
+	{
+		float Display[4] = {
+			std::pow(std::max(Value[0], 0.0f), 1.0f / 2.2f),
+			std::pow(std::max(Value[1], 0.0f), 1.0f / 2.2f),
+			std::pow(std::max(Value[2], 0.0f), 1.0f / 2.2f),
+			bAlpha ? Value[3] : 1.0f
+		};
+
+		const bool bChanged = bAlpha
+			? ImGui::ColorEdit4(Label, Display, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_Float)
+			: ImGui::ColorEdit3(Label, Display, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_Float);
+
+		if (!bChanged)
+		{
+			return false;
+		}
+
+		for (int32 Index = 0; Index < 3; ++Index)
+		{
+			Value[Index] = std::pow(std::max(Display[Index], 0.0f), 2.2f);
+		}
+
+		if (bAlpha)
+		{
+			Value[3] = Display[3];
+		}
+		return true;
+	}
+
+	float DistanceSquaredToSegment(const ImVec2& Point, const ImVec2& Start, const ImVec2& End)
+	{
+		const float DX = End.x - Start.x;
+		const float DY = End.y - Start.y;
+		const float LengthSquared = DX * DX + DY * DY;
+		const float T = LengthSquared > 0.0f ? std::clamp(((Point.x - Start.x) * DX + (Point.y - Start.y) * DY) / LengthSquared, 0.0f, 1.0f) : 0.0f;
+		const float ClosestX = Start.x + DX * T;
+		const float ClosestY = Start.y + DY * T;
+		const float DiffX = Point.x - ClosestX;
+		const float DiffY = Point.y - ClosestY;
+		return DiffX * DiffX + DiffY * DiffY;
+	}
+
+	bool IsPointNearBezier(const ImVec2& Point, const ImVec2& Start, const ImVec2& Control1, const ImVec2& Control2, const ImVec2& End, float Radius)
+	{
+		ImVec2 Previous = Start;
+
+		for (int32 Step = 1; Step <= 24; ++Step)
+		{
+			const float T = static_cast<float>(Step) / 24.0f;
+			const float U = 1.0f - T;
+			const ImVec2 Current(
+				U * U * U * Start.x + 3.0f * U * U * T * Control1.x + 3.0f * U * T * T * Control2.x + T * T * T * End.x,
+				U * U * U * Start.y + 3.0f * U * U * T * Control1.y + 3.0f * U * T * T * Control2.y + T * T * T * End.y);
+
+			if (DistanceSquaredToSegment(Point, Previous, Current) <= Radius * Radius)
+			{
+				return true;
+			}
+
+			Previous = Current;
+		}
+
+		return false;
+	}
+}
+
+FMaterialEditorPanel::FMaterialEditorPanel() = default;
+
+FMaterialEditorPanel::~FMaterialEditorPanel()
+{
+	Release();
+}
+
+void FMaterialEditorPanel::Release()
+{
+	PreviewClient.reset();
+	PreviewScene.Release();
+	Asset = nullptr;
+}
+
+void FMaterialEditorPanel::NewMaterial(const FString& InPath)
+{
+	if (bDirty && IsValid(Asset))
+	{
+		SaveMaterial();
+		if (bDirty)
+		{
+			return;
+		}
+	}
+
+	Release();
+
+	bDirty = false;
+	Path = InPath;
+	Status.clear();
+
+	UMaterial* Template = UAssetManager::GetAssetByPath<UMaterial>("DefaultMaterial");
+
+	if (!Template)
+	{
+		Status = "Material template not found.";
+		SetOpen(true);
+		return;
+	}
+
+	UMaterial* New = NewObject<UMaterial>();
+
+	if (!New)
+	{
+		Status = "Failed to create Material.";
+		SetOpen(true);
+		return;
+	}
+
+	New->CopySettingsFrom(*Template);
+	New->EnsureDefaultGraph();
+
+	Asset = New;
+	bDirty = true;
+
+	SaveMaterial();
+
+	if (Status == "Saved")
+	{
+		OpenAsset(InPath);
+	}
+	else
+	{
+		SetOpen(true);
+	}
+}
+
+void FMaterialEditorPanel::NewMaterialInstance(const FString& InPath, const FString& ParentPath)
+{
+	if (bDirty && IsValid(Asset))
+	{
+		SaveMaterial();
+		if (bDirty)
+		{
+			return;
+		}
+	}
+
+	Release();
+
+	bDirty = false;
+	Path = InPath;
+	Status.clear();
+
+	UMaterialInterface* Parent = UAssetManager::LoadMaterialAsset(ParentPath);
+
+	if (!Parent)
+	{
+		Status = "Parent Material not found.";
+		SetOpen(true);
+		return;
+	}
+
+	UMaterialInstanceConstant* New = NewObject<UMaterialInstanceConstant>();
+
+	if (!New)
+	{
+		Status = "Failed to create Material Instance.";
+		SetOpen(true);
+		return;
+	}
+
+	New->SetParent(Parent);
+	Asset = New;
+	bDirty = true;
+
+	SaveMaterial();
+
+	if (Status == "Saved")
+	{
+		OpenAsset(InPath);
+	}
+	else
+	{
+		SetOpen(true);
+	}
+}
+
+void FMaterialEditorPanel::OpenAsset(const FString& InPath)
+{
+	if (bDirty && Asset && Path != InPath)
+	{
+		SaveMaterial();
+		if (bDirty)
+		{
+			return;
+		}
+	}
+
+	UMaterialInterface* Loaded = UAssetManager::LoadMaterialAsset(InPath);
+
+	if (!Loaded)
+	{
+		Status = "Cannot load Material: " + InPath;
+		SetOpen(true);
+		return;
+	}
+
+	Release();
+
+	Path = InPath;
+	Asset = Loaded;
+	bDirty = false;
+	Status.clear();
+	SetOpen(true);
+
+	if (UMaterial* Material = Asset->GetBaseMaterial())
+	{
+		Material->EnsureDefaultGraph();
+		SelectedNodeId = Material->OutputNodeId;
+
+		if (Material == Asset && Material->bLegacyGraphMigrated)
+		{
+			bDirty = true;
+			Status = "Legacy Material Graph generated. Save to keep the migrated graph.";
+		}
+	}
+
+	const EPSOType Type = Asset->GetPSOType();
+
+	if (Type == EPSOType::Particle_AlphaBlend || Type == EPSOType::Particle_Additive)
+	{
+		return;
+	}
+
+	UStaticMesh* Mesh = UAssetManager::GetAssetByPath<UStaticMesh>("Sphere");
+
+	if (!Mesh)
+	{
+		Status = "Preview Sphere mesh not found.";
+		return;
+	}
+
+	if (!PreviewScene.Initialize(static_cast<UEditorEngine*>(GEngine)))
+	{
+		return;
+	}
+
+	PreviewScene.Setup();
+	UStaticMeshComponent* SphereComp = Cast<UStaticMeshComponent>(PreviewScene.AddComponent(UStaticMeshComponent::StaticClass()));
+	if (!SphereComp)
+	{
+		PreviewScene.Release();
+		return;
+	}
+
+	SphereComp->SetStaticMesh(Mesh);
+	SphereComp->SetMaterial(0, Asset);
+
+	PreviewClient = MakeUnique<FEditorViewportClient>(PreviewScene);
+	PreviewClient->Resize(512, 512);
+	PreviewClient->SetActive(true);
+	PreviewClient->SetViewRotation(FRotator(15.0f, 160.0f, 0.0f));
+
+	const FBox Bounds = Mesh->GetRenderBounds();
+	const FVector Extent = (Bounds.Max - Bounds.Min) * 0.5f;
+	const FBoxSphereBounds SphereBounds{ (Bounds.Min + Bounds.Max) * 0.5f, Extent, std::max(0.1f, Extent.Size()) };
+	PreviewClient->FocusOnBounds(SphereBounds);
+}
+
+void FMaterialEditorPanel::SaveMaterial()
+{
+	if (!Asset)
+	{
+		Status = "No Material is open.";
+		return;
+	}
+
+	FString ValidationError;
+
+	if (UMaterial* BaseMaterial = Asset->GetBaseMaterial())
+	{
+		if (!BaseMaterial->ValidateExpressionGraph(ValidationError))
+		{
+			Status = "Cannot save: " + ValidationError;
+			return;
+		}
+	}
+
+	if (!UAssetManager::SaveMaterialAsset(Path, *Asset))
+	{
+		Status = "Failed to save Material.";
+		return;
+	}
+
+	if (UMaterial* BaseMaterial = Cast<UMaterial>(Asset))
+	{
+		BaseMaterial->bLegacyGraphMigrated = false;
+	}
+
+	bDirty = false;
+	bMaterialThumbnailDirty = false;
+	Status = "Saved";
+
+	}
+
+void FMaterialEditorPanel::MarkMaterialChanged()
+{
+	UMaterialInterface::NotifyRenderDataChanged();
+	bDirty = true;
+	bMaterialThumbnailDirty = true;
+}
+
+void FMaterialEditorPanel::SaveIfDirty()
+{
+	if (IsOpen() && bDirty)
+	{
+		SaveMaterial();
+	}
+}
+
+void FMaterialEditorPanel::Tick(float DeltaTime)
+{
+	if (Asset && !IsValid(Asset))
+	{
+		const bool bWasOpen = IsOpen();
+		const FString ReopenPath = Path;
+		OpenAsset(ReopenPath);
+		SetOpen(bWasOpen);
+	}
+
+	if (PreviewClient && PreviewClient->GetWorld())
+	{
+		PreviewScene.Tick(DeltaTime);
+		PreviewClient->TickInput(DeltaTime, false, false, 0, 4.0f * CameraSpeed, 1.0f);
+	}
+}
+
+void FMaterialEditorPanel::RenderPreview(UEditorEngine* Engine)
+{
+	if (Engine && Engine->GetEngineLoop().GetRenderer() && IsOpen() && bVisible && PreviewClient && PreviewClient->GetWorld())
+	{
+		PreviewClient->Draw(Engine->GetEngineLoop().GetRenderer());
+	}
+}
+
+void FMaterialEditorPanel::AddMaterialExpression(UMaterial& Material, EMaterialExpressionType Type, float X, float Y)
+{
+	if (Type == EMaterialExpressionType::MaterialOutput)
+	{
+		return;
+	}
+
+	int32 NewId = 1;
+
+	for (const FMaterialExpressionNode& Node : Material.ExpressionNodes)
+	{
+		NewId = std::max(NewId, Node.Id + 1);
+	}
+
+	FMaterialExpressionNode Node;
+	Node.Id = NewId;
+	Node.Type = Type;
+	Node.Position = FVector2(X, Y);
+
+	if (Type == EMaterialExpressionType::ScalarParameter)
+	{
+		Node.ParameterName = "ScalarParameter_" + std::to_string(NewId);
+	}
+
+	if (Type == EMaterialExpressionType::VectorParameter)
+	{
+		Node.ParameterName = "VectorParameter_" + std::to_string(NewId);
+	}
+	if (Type == EMaterialExpressionType::TextureSampleParameter2D)
+	{
+		Node.ParameterName = "TextureParameter_" + std::to_string(NewId);
+	}
+
+	Material.ExpressionNodes.Add(Node);
+
+	SelectedNodeId = NewId;
+	MarkMaterialChanged();
+}
+
+void FMaterialEditorPanel::DrawMaterialGraphPalette(UMaterial& Material)
+{
+	ImGui::TextUnformatted("Palette");
+	ImGui::Separator();
+
+	ImGui::InputText("Search", SearchText, sizeof(SearchText));
+
+	std::function<void(const char*, EMaterialExpressionType)> AddItem = [&](const char* Name, EMaterialExpressionType Type)
+	{
+		if (SearchText[0] && std::strstr(Name, SearchText) == nullptr)
+		{
+			return;
+		}
+
+		ImGui::PushID(static_cast<int32>(Type));
+
+		if (ImGui::Selectable(Name))
+		{
+			const int32 Count = Material.ExpressionNodes.Num();
+			AddMaterialExpression(Material, Type, 100.0f + (Count % 3) * 220.0f, 100.0f + (Count / 3) * 130.0f);
+		}
+
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("MATERIAL_EXPRESSION", &Type, sizeof(Type));
+			ImGui::TextUnformatted(Name);
+			ImGui::EndDragDropSource();
+		}
+
+		ImGui::PopID();
+	};
+
+	if (ImGui::TreeNodeEx("Constants", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("Constant", EMaterialExpressionType::Constant);
+		AddItem("Constant2Vector", EMaterialExpressionType::Constant2Vector);
+		AddItem("Constant3Vector", EMaterialExpressionType::Constant3Vector);
+		AddItem("Constant4Vector", EMaterialExpressionType::Constant4Vector);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNodeEx("Parameters", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("Scalar Parameter", EMaterialExpressionType::ScalarParameter);
+		AddItem("Vector Parameter", EMaterialExpressionType::VectorParameter);
+		AddItem("Texture Sample Parameter 2D", EMaterialExpressionType::TextureSampleParameter2D);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNodeEx("Textures", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("Texture Sample", EMaterialExpressionType::TextureSample);
+		AddItem("Texture Coordinate", EMaterialExpressionType::TextureCoordinate);
+		AddItem("Noise", EMaterialExpressionType::Noise);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNodeEx("Input", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("Time", EMaterialExpressionType::Time);
+		AddItem("Vertex Color", EMaterialExpressionType::VertexColor);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNodeEx("World", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("World Position", EMaterialExpressionType::WorldPosition);
+		AddItem("Camera Vector WS", EMaterialExpressionType::CameraVectorWS);
+		AddItem("Vertex Normal WS", EMaterialExpressionType::VertexNormalWS);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNodeEx("Math", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("Add", EMaterialExpressionType::Add);
+		AddItem("Subtract", EMaterialExpressionType::Subtract);
+		AddItem("Multiply", EMaterialExpressionType::Multiply);
+		AddItem("Divide", EMaterialExpressionType::Divide);
+		AddItem("Linear Interpolate", EMaterialExpressionType::Lerp);
+		AddItem("Clamp", EMaterialExpressionType::Clamp);
+		AddItem("Power", EMaterialExpressionType::Power);
+		AddItem("Abs", EMaterialExpressionType::Abs);
+		AddItem("Frac", EMaterialExpressionType::Frac);
+		AddItem("Sine", EMaterialExpressionType::Sine);
+		AddItem("Min", EMaterialExpressionType::Min);
+		AddItem("Max", EMaterialExpressionType::Max);
+		AddItem("One Minus", EMaterialExpressionType::OneMinus);
+		AddItem("Step", EMaterialExpressionType::Step);
+		AddItem("Saturate", EMaterialExpressionType::Saturate);
+		AddItem("Cosine", EMaterialExpressionType::Cosine);
+		AddItem("Floor", EMaterialExpressionType::Floor);
+		AddItem("Distance", EMaterialExpressionType::Distance);
+		AddItem("Length", EMaterialExpressionType::Length);
+		AddItem("Cross Product", EMaterialExpressionType::CrossProduct);
+		AddItem("Desaturation", EMaterialExpressionType::Desaturation);
+		AddItem("Constant Bias Scale", EMaterialExpressionType::ConstantBiasScale);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNodeEx("Vector", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		AddItem("Append Vector", EMaterialExpressionType::AppendVector);
+		AddItem("Component Mask", EMaterialExpressionType::ComponentMask);
+		AddItem("Dot Product", EMaterialExpressionType::DotProduct);
+		AddItem("Normalize", EMaterialExpressionType::Normalize);
+		if (ImGui::TreeNodeEx("Coordinates", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			AddItem("Panner", EMaterialExpressionType::Panner);
+			AddItem("Rotator", EMaterialExpressionType::Rotator);
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNodeEx("Utility", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			AddItem("Fresnel", EMaterialExpressionType::Fresnel);
+			AddItem("Sphere Mask", EMaterialExpressionType::SphereMask);
+			ImGui::TreePop();
+		}
+		AddItem("Custom", EMaterialExpressionType::Custom);
+		ImGui::TreePop();
+	}
+
+	ImGui::TextDisabled("Material Output is created automatically.");
+}
+
+void FMaterialEditorPanel::DrawMaterialGraphCanvas(UMaterial& Material)
+{
+	ImGui::TextUnformatted("Material Graph");
+
+	const ImVec2 Size = ImGui::GetContentRegionAvail();
+	const ImVec2 Origin = ImGui::GetCursorScreenPos();
+
+	ImGui::InvisibleButton("##MaterialGraphCanvas", Size, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight | ImGuiButtonFlags_AllowOverlap);
+
+	const bool bHovered = ImGui::IsItemHovered();
+	const ImVec2 Mouse = ImGui::GetMousePos();
+	const float Scale = EditorStyle::Scale(1.0f) * GraphZoom;
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* Payload = ImGui::AcceptDragDropPayload("MATERIAL_EXPRESSION"))
+		{
+			const EMaterialExpressionType Type = *static_cast<const EMaterialExpressionType*>(Payload->Data);
+
+			const float X = (Mouse.x - Origin.x - GraphPanX) / Scale;
+			const float Y = (Mouse.y - Origin.y - GraphPanY) / Scale;
+
+			AddMaterialExpression(Material, Type, X, Y);
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
+	ImDrawList* Draw = ImGui::GetWindowDrawList();
+	Draw->PushClipRect(Origin, { Origin.x + Size.x, Origin.y + Size.y }, true);
+
+	Draw->AddRectFilled(Origin, { Origin.x + Size.x, Origin.y + Size.y }, IM_COL32(27, 29, 33, 255));
+
+	const float Grid = 60.0f * GraphZoom;
+
+	for (float X = std::fmod(GraphPanX, Grid); X < Size.x; X += Grid)
+	{
+		Draw->AddLine({ Origin.x + X, Origin.y }, { Origin.x + X, Origin.y + Size.y }, IM_COL32(43, 45, 50, 255));
+	}
+
+	for (float Y = std::fmod(GraphPanY, Grid); Y < Size.y; Y += Grid)
+	{
+		Draw->AddLine({ Origin.x, Origin.y + Y }, { Origin.x + Size.x, Origin.y + Y }, IM_COL32(43, 45, 50, 255));
+	}
+
+	std::function<ImVec2(float, float)> ToScreen = [&](float X, float Y)
+	{
+		return ImVec2(Origin.x + GraphPanX + X * Scale, Origin.y + GraphPanY + Y * Scale);
+	};
+
+	std::function<const FMaterialExpressionNode*(int32)> FindNodePosition = [&](int32 Id) -> const FMaterialExpressionNode*
+	{
+		return FindMaterialNode(Material, Id);
+	};
+
+	bool bHandledClick = false;
+
+	for (const FMaterialExpressionConnection& Connection : Material.ExpressionConnections)
+	{
+		const FMaterialExpressionNode* Output = FindNodePosition(Connection.OutputNodeId);
+		const FMaterialExpressionNode* Input = FindNodePosition(Connection.InputNodeId);
+
+		if (!Output || !Input)
+		{
+			continue;
+		}
+
+		const ImVec2 OutputMin = ToScreen(Output->Position.X, Output->Position.Y);
+		const ImVec2 InputMin = ToScreen(Input->Position.X, Input->Position.Y);
+
+		const ImVec2 OutputSize = GetMaterialNodeSize(Material, *Output);
+		const ImVec2 InputSize = GetMaterialNodeSize(Material, *Input);
+
+		const ImVec2 A = GetMaterialOutputPinPosition(OutputMin, OutputSize, Scale);
+		const ImVec2 B = GetMaterialInputPinPosition(InputMin, Connection.InputPin, Scale);
+		const ImVec2 Control1(A.x + 70.0f * Scale, A.y);
+		const ImVec2 Control2(B.x - 70.0f * Scale, B.y);
+
+		const bool bSelectedConnection =
+			SelectedConnectionOutputNodeId == Connection.OutputNodeId &&
+			SelectedConnectionOutputPin == Connection.OutputPin &&
+			SelectedConnectionInputNodeId == Connection.InputNodeId &&
+			SelectedConnectionInputPin == Connection.InputPin;
+
+		Draw->AddBezierCubic(A, Control1, Control2, B,
+			bSelectedConnection ? IM_COL32(255, 190, 90, 255) : IM_COL32(180, 190, 205, 255),
+			bSelectedConnection ? 3.0f : 2.0f);
+
+		if (bHovered && !bHandledClick && ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
+			IsPointNearBezier(Mouse, A, Control1, Control2, B, EditorStyle::Scale(8.0f)))
+		{
+			SelectedConnectionOutputNodeId = Connection.OutputNodeId;
+			SelectedConnectionOutputPin = Connection.OutputPin;
+			SelectedConnectionInputNodeId = Connection.InputNodeId;
+			SelectedConnectionInputPin = Connection.InputPin;
+
+			SelectedNodeId = 0;
+			DraggingNodeId = 0;
+			bHandledClick = true;
+		}
+	}
+
+	for (FMaterialExpressionNode& Node : Material.ExpressionNodes)
+	{
+		const ImVec2 Min = ToScreen(Node.Position.X, Node.Position.Y);
+		const ImVec2 NodeSize = GetMaterialNodeSize(Material, Node);
+		const ImVec2 Max(Min.x + NodeSize.x * Scale, Min.y + NodeSize.y * Scale);
+
+		const bool bSelected = SelectedNodeId == Node.Id;
+
+		Draw->AddRectFilled(Min, Max, IM_COL32(48, 53, 62, 255), 7.0f);
+		Draw->AddRect(Min, Max, bSelected ? IM_COL32(255, 190, 90, 255) : IM_COL32(105, 112, 124, 255), 7.0f, ImDrawFlags_None, bSelected ? 2.0f : 1.0f);
+
+		Draw->AddText({ Min.x + 10.0f, Min.y + 10.0f }, IM_COL32_WHITE, GetMaterialExpressionName(Node.Type));
+
+		const int32 InputCount = Material.GetExpressionInputPinCount(Node.Type);
+
+		for (int32 Pin = 0; Pin < InputCount; ++Pin)
+		{
+			const ImVec2 PinPosition = GetMaterialInputPinPosition(Min, Pin, Scale);
+			const char* PinName = Material.GetExpressionInputPinName(Node.Type, Pin);
+			const FString PinLabel = FString(PinName ? PinName : "Input") + " (" + GetMaterialInputTypeLabel(Material, Node, Pin) + ")";
+
+			Draw->AddCircleFilled(PinPosition, 5.0f * Scale, IM_COL32(130, 190, 230, 255));
+			Draw->AddText({ PinPosition.x + 10.0f * Scale, PinPosition.y - 7.0f * Scale }, IM_COL32(220, 220, 225, 255), PinLabel.c_str());
+
+			if (bDraggingConnection && ImGui::IsMouseReleased(ImGuiMouseButton_Left) &&
+				Mouse.x >= PinPosition.x - 10.0f * Scale && Mouse.x <= PinPosition.x + 10.0f * Scale &&
+				Mouse.y >= PinPosition.y - 10.0f * Scale && Mouse.y <= PinPosition.y + 10.0f * Scale)
+			{
+				FString Error;
+
+				if (Material.ConnectExpressionPins(PendingOutputNodeId, PendingOutputPin, Node.Id, Pin, Error))
+				{
+					SelectedConnectionOutputNodeId = PendingOutputNodeId;
+					SelectedConnectionOutputPin = PendingOutputPin;
+					SelectedConnectionInputNodeId = Node.Id;
+					SelectedConnectionInputPin = Pin;
+					SelectedNodeId = 0;
+
+					MarkMaterialChanged();
+					Status = "Connected.";
+				}
+				else
+				{
+					Status = Error;
+				}
+
+				bDraggingConnection = false;
+				PendingOutputNodeId = 0;
+				bHandledClick = true;
+			}
+		}
+
+		if (Material.GetExpressionOutputPinCount(Node.Type) > 0)
+		{
+			const ImVec2 PinPosition = GetMaterialOutputPinPosition(Min, NodeSize, Scale);
+
+			Draw->AddCircleFilled(PinPosition, 5.0f * Scale, IM_COL32(130, 190, 230, 255));
+			const char* OutputPinName = Material.GetExpressionOutputPinName(Node.Type, 0);
+			const EMaterialValueType OutputType = Material.GetExpressionOutputType(Node.Id, 0);
+			const FString OutputLabel = FString(OutputPinName ? OutputPinName : "Value") + " (" + GetMaterialValueTypeName(OutputType) + ")";
+			const ImVec2 OutputTextSize = ImGui::CalcTextSize(OutputLabel.c_str());
+
+			Draw->AddText({ PinPosition.x - OutputTextSize.x - 10.0f * Scale, PinPosition.y - 7.0f * Scale }, IM_COL32(220, 220, 225, 255), OutputLabel.c_str());
+
+			if (bHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
+				Mouse.x >= PinPosition.x - 10.0f * Scale && Mouse.x <= PinPosition.x + 10.0f * Scale &&
+				Mouse.y >= PinPosition.y - 10.0f * Scale && Mouse.y <= PinPosition.y + 10.0f * Scale)
+			{
+				PendingOutputNodeId = Node.Id;
+				PendingOutputPin = 0;
+				bDraggingConnection = true;
+				bHandledClick = true;
+			}
+		}
+
+		if (HasMaterialTexturePreview(Node.Type))
+		{
+			const float PreviewTop = 48.0f + InputCount * 25.0f;
+			const float ThumbnailSize = 64.0f;
+
+			const ImVec2 ThumbnailMin(Min.x + 10.0f * Scale, Min.y + PreviewTop * Scale);
+			const ImVec2 ThumbnailMax(ThumbnailMin.x + ThumbnailSize * Scale, ThumbnailMin.y + ThumbnailSize * Scale);
+
+			Draw->AddRectFilled(ThumbnailMin, ThumbnailMax, IM_COL32(25, 27, 30, 255), 4.0f * Scale);
+
+			UTexture2D* Texture = Node.TexturePath.empty() ? nullptr : UAssetManager::Get().LoadTexture(Node.TexturePath);
+			ID3D11ShaderResourceView* TextureSRV = Texture && Texture->GetResource() ? Texture->GetResource()->GetSRV() : nullptr;
+
+			if (TextureSRV && Texture->GetWidth() > 0 && Texture->GetHeight() > 0)
+			{
+				const float FitScale = ThumbnailSize / static_cast<float>(std::max(Texture->GetWidth(), Texture->GetHeight()));
+				const ImVec2 ImageSize(Texture->GetWidth() * FitScale * Scale, Texture->GetHeight() * FitScale * Scale);
+				const ImVec2 ImageMin(ThumbnailMin.x + (ThumbnailSize * Scale - ImageSize.x) * 0.5f,
+					ThumbnailMin.y + (ThumbnailSize * Scale - ImageSize.y) * 0.5f);
+
+				Draw->AddImage(reinterpret_cast<ImTextureID>(TextureSRV), ImageMin, ImVec2(ImageMin.x + ImageSize.x, ImageMin.y + ImageSize.y));
+			}
+			else
+			{
+				Draw->AddText(ImVec2(ThumbnailMin.x + 7.0f * Scale, ThumbnailMin.y + 25.0f * Scale),
+					IM_COL32(170, 170, 170, 255), Node.TexturePath.empty() ? "No Texture" : "No Preview");
+			}
+
+			Draw->AddRect(ThumbnailMin, ThumbnailMax, IM_COL32(100, 105, 115, 255), 4.0f * Scale);
+
+			const FString TextureLabel = Node.TexturePath.empty()
+				? FString("No Texture")
+				: FPaths::ToUtf8(FPaths::FromUtf8(Node.TexturePath).filename());
+
+			const ImVec2 LabelMin(ThumbnailMax.x + 8.0f * Scale, ThumbnailMin.y + 5.0f * Scale);
+			const ImVec2 LabelMax(Max.x - 8.0f * Scale, ThumbnailMin.y + 36.0f * Scale);
+
+			Draw->PushClipRect(LabelMin, LabelMax, true);
+			Draw->AddText(LabelMin, IM_COL32(230, 230, 235, 255), TextureLabel.c_str());
+			Draw->PopClipRect();
+
+			if (Texture)
+			{
+				const FString TextureSize = std::to_string(Texture->GetWidth()) + " x " + std::to_string(Texture->GetHeight());
+				Draw->AddText(ImVec2(LabelMin.x, ThumbnailMin.y + 42.0f * Scale), IM_COL32(155, 160, 170, 255), TextureSize.c_str());
+			}
+		}
+
+		if (HasInlineMaterialValue(Node.Type))
+		{
+			ImGui::PushID(Node.Id);
+
+			ImGui::SetCursorScreenPos({ Min.x + 10.0f * Scale, Min.y + 55.0f * Scale });
+			ImGui::SetNextItemWidth((NodeSize.x - 20.0f) * Scale);
+
+			bool bValueChanged = false;
+
+			switch (Node.Type)
+			{
+			case EMaterialExpressionType::Constant:
+			case EMaterialExpressionType::ScalarParameter:
+				bValueChanged = ImGui::DragFloat("Value", &Node.ScalarValue, 0.01f);
+				break;
+
+			case EMaterialExpressionType::Constant2Vector:
+				bValueChanged = ImGui::DragFloat2("Value", &Node.VectorValue.X, 0.01f);
+				break;
+
+			case EMaterialExpressionType::Constant3Vector:
+				bValueChanged = EditMaterialColor("Value", &Node.VectorValue.X);
+				break;
+
+			case EMaterialExpressionType::Constant4Vector:
+			case EMaterialExpressionType::VectorParameter:
+				bValueChanged = EditMaterialColor("Value", &Node.VectorValue.X, true);
+				break;
+
+			default:
+				break;
+			}
+
+			const bool bControlHovered = ImGui::IsItemHovered() || ImGui::IsItemActive();
+
+			if (bControlHovered)
+			{
+				bHandledClick = true;
+			}
+
+			if (bValueChanged)
+			{
+				MarkMaterialChanged();
+			}
+
+			ImGui::PopID();
+		}
+
+		if (bHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !bHandledClick &&
+			Mouse.x >= Min.x && Mouse.x <= Max.x && Mouse.y >= Min.y && Mouse.y <= Max.y)
+		{
+			SelectedNodeId = Node.Id;
+			DraggingNodeId = Node.Id;
+
+			SelectedConnectionOutputNodeId = 0;
+			SelectedConnectionOutputPin = 0;
+			SelectedConnectionInputNodeId = 0;
+			SelectedConnectionInputPin = 0;
+
+			bHandledClick = true;
+		}
+
+		if (DraggingNodeId == Node.Id && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+		{
+			Node.Position.X += ImGui::GetIO().MouseDelta.x / Scale;
+			Node.Position.Y += ImGui::GetIO().MouseDelta.y / Scale;
+			bDirty = true;
+		}
+	}
+
+	if (bHovered && !bHandledClick && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+	{
+		// 빈 배경 클릭 시 노드와 연결선 선택 해제
+		SelectedNodeId = 0;
+		DraggingNodeId = 0;
+		SelectedConnectionOutputNodeId = 0;
+		SelectedConnectionOutputPin = 0;
+		SelectedConnectionInputNodeId = 0;
+		SelectedConnectionInputPin = 0;
+	}
+
+	if (DraggingNodeId != 0 && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+	{
+		DraggingNodeId = 0;
+	}
+
+	if (bDraggingConnection && ImGui::IsMouseDown(ImGuiMouseButton_Left))
+	{
+		const FMaterialExpressionNode* Output = FindNodePosition(PendingOutputNodeId);
+
+		if (Output)
+		{
+			const ImVec2 Min = ToScreen(Output->Position.X, Output->Position.Y);
+			const ImVec2 NodeSize = GetMaterialNodeSize(Material, *Output);
+			const ImVec2 Start = GetMaterialOutputPinPosition(Min, NodeSize, Scale);
+
+			Draw->AddBezierCubic(Start, { Start.x + 70.0f, Start.y }, { Mouse.x - 70.0f, Mouse.y }, Mouse,
+				IM_COL32(255, 205, 115, 255), 2.0f);
+		}
+	}
+
+	if (ImGui::IsMouseReleased(ImGuiMouseButton_Left) && bDraggingConnection)
+	{
+		bDraggingConnection = false;
+		PendingOutputNodeId = 0;
+	}
+
+	if (bHovered && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
+	{
+		GraphPanX += ImGui::GetIO().MouseDelta.x;
+		GraphPanY += ImGui::GetIO().MouseDelta.y;
+	}
+
+	if (bHovered && ImGui::GetIO().MouseWheel != 0.0f)
+	{
+		GraphZoom = std::clamp(GraphZoom + ImGui::GetIO().MouseWheel * 0.1f, 0.5f, 2.0f);
+	}
+
+	if (bHovered && ImGui::IsKeyPressed(ImGuiKey_Escape))
+	{
+		bDraggingConnection = false;
+		PendingOutputNodeId = 0;
+	}
+
+	if (bHovered && ImGui::IsWindowFocused() && ImGui::IsKeyPressed(ImGuiKey_Delete))
+	{
+		if (SelectedConnectionOutputNodeId != 0)
+		{
+			for (int32 Index = Material.ExpressionConnections.Num() - 1; Index >= 0; --Index)
+			{
+				const FMaterialExpressionConnection& Connection = Material.ExpressionConnections[Index];
+
+				if (Connection.OutputNodeId == SelectedConnectionOutputNodeId &&
+					Connection.OutputPin == SelectedConnectionOutputPin &&
+					Connection.InputNodeId == SelectedConnectionInputNodeId &&
+					Connection.InputPin == SelectedConnectionInputPin)
+				{
+					Material.ExpressionConnections.RemoveAt(Index);
+					break;
+				}
+			}
+
+			SelectedConnectionOutputNodeId = 0;
+			SelectedConnectionOutputPin = 0;
+			SelectedConnectionInputNodeId = 0;
+			SelectedConnectionInputPin = 0;
+
+			MarkMaterialChanged();
+		}
+		else if (SelectedNodeId != 0 && SelectedNodeId != Material.OutputNodeId)
+		{
+			for (int32 Index = Material.ExpressionConnections.Num() - 1; Index >= 0; --Index)
+			{
+				const FMaterialExpressionConnection& Connection = Material.ExpressionConnections[Index];
+
+				if (Connection.OutputNodeId == SelectedNodeId || Connection.InputNodeId == SelectedNodeId)
+				{
+					Material.ExpressionConnections.RemoveAt(Index);
+				}
+			}
+
+			for (int32 Index = Material.ExpressionNodes.Num() - 1; Index >= 0; --Index)
+			{
+				if (Material.ExpressionNodes[Index].Id == SelectedNodeId)
+				{
+					Material.ExpressionNodes.RemoveAt(Index);
+				}
+			}
+
+			SelectedNodeId = 0;
+			MarkMaterialChanged();
+		}
+	}
+
+	Draw->PopClipRect();
+}
+
+void FMaterialEditorPanel::DrawMaterialGraphDetails(UMaterial& Material)
+{
+	ImGui::TextUnformatted("Details");
+	ImGui::Separator();
+
+	if (ImGui::CollapsingHeader("Usage Flags", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		std::function<void(const char*, EMaterialUsage)> DrawUsageFlag = [&](const char* Label, EMaterialUsage Usage)
+		{
+			bool bEnabled = Material.HasUsage(Usage);
+			if (ImGui::Checkbox(Label, &bEnabled))
+			{
+				Material.SetUsage(Usage, bEnabled);
+				MarkMaterialChanged();
+			}
+		};
+
+		DrawUsageFlag("Used with Static Mesh", EMaterialUsage::StaticMesh);
+		DrawUsageFlag("Used with Skeletal Mesh", EMaterialUsage::SkeletalMesh);
+		DrawUsageFlag("Used with Particle Sprites", EMaterialUsage::ParticleSprite);
+		DrawUsageFlag("Used with Mesh Particles", EMaterialUsage::ParticleMesh);
+		DrawUsageFlag("Used with Beam Trails", EMaterialUsage::ParticleBeamTrail);
+	}
+
+	ImGui::Separator();
+
+	FMaterialExpressionNode* Selected = nullptr;
+
+	for (FMaterialExpressionNode& Node : Material.ExpressionNodes)
+	{
+		if (Node.Id == SelectedNodeId)
+		{
+			Selected = &Node;
+		}
+	}
+
+	if (!Selected)
+	{
+		ImGui::TextUnformatted("Material Settings");
+
+		if (EditMaterialColor("Base Color", &Material.BaseColor.X, true))
+		{
+			MarkMaterialChanged();
+		}
+		if (EditMaterialColor("Specular", &Material.SpecularColor.X))
+		{
+			MarkMaterialChanged();
+		}
+		if (ImGui::DragFloat("Specular Factor", &Material.SpecularFactor, 0.02f, 0.0f, 100.0f))
+		{
+			MarkMaterialChanged();
+		}
+		if (EditMaterialColor("Emissive", &Material.EmissiveColor.X))
+		{
+			MarkMaterialChanged();
+		}
+		if (ImGui::DragFloat("Emissive Factor", &Material.EmissiveFactor, 0.02f, 0.0f, 100.0f))
+		{
+			MarkMaterialChanged();
+		}
+		if (ImGui::DragFloat("Shininess", &Material.Shininess, 0.5f, 1.0f, 512.0f))
+		{
+			MarkMaterialChanged();
+		}
+
+		int Blend = 0;
+		if (Material.BlendState == EBlendState::AlphaBlend)
+			Blend = 1;
+		else if (Material.BlendState == EBlendState::Additive)
+			Blend = 2;
+
+		if (ImGui::Combo("Blend", &Blend, "Opaque\0Alpha Blend\0Additive\0"))
+		{
+			EBlendState NewBlend = EBlendState::Opaque;
+			if (Blend == 1)
+				NewBlend = EBlendState::AlphaBlend;
+			else if (Blend == 2)
+				NewBlend = EBlendState::Additive;
+			Material.SetBlendState(NewBlend);
+			MarkMaterialChanged();
+		}
+
+		// 기본 텍스처 슬롯 표시 및 편집
+		const char* TextureSlotLabels[2] = { "Base Texture", "Normal Texture" };
+		for (int32 SlotIndex = 0; SlotIndex < 2; ++SlotIndex)
+		{
+			UTexture2D* SlotTexture = Material.Textures.IsValidIndex(SlotIndex) ? Material.Textures[SlotIndex] : nullptr;
+			if (DrawMaterialTexturePicker(TextureSlotLabels[SlotIndex], SlotTexture, "None"))
+			{
+				while (Material.Textures.Num() <= SlotIndex)
+				{
+					Material.Textures.Add(nullptr);
+				}
+				Material.Textures[SlotIndex] = SlotTexture;
+				MarkMaterialChanged();
+			}
+		}
+
+		return;
+	}
+
+	ImGui::TextUnformatted(GetMaterialExpressionName(Selected->Type));
+	ImGui::Separator();
+
+	switch (Selected->Type)
+	{
+	case EMaterialExpressionType::Constant:
+		if (ImGui::DragFloat("Value", &Selected->ScalarValue, 0.01f))
+		{
+			MarkMaterialChanged();
+		}
+		break;
+
+	case EMaterialExpressionType::Constant2Vector:
+		if (ImGui::DragFloat2("Value", &Selected->VectorValue.X, 0.01f))
+		{
+			MarkMaterialChanged();
+		}
+		break;
+
+	case EMaterialExpressionType::Constant3Vector:
+		if (EditMaterialColor("Value", &Selected->VectorValue.X))
+		{
+			MarkMaterialChanged();
+		}
+		break;
+
+	case EMaterialExpressionType::Constant4Vector:
+		if (EditMaterialColor("Value", &Selected->VectorValue.X, true))
+		{
+			MarkMaterialChanged();
+		}
+		break;
+
+	case EMaterialExpressionType::ScalarParameter:
+	case EMaterialExpressionType::VectorParameter:
+	case EMaterialExpressionType::TextureSampleParameter2D:
+	{
+		char Name[128]{};
+		strncpy_s(Name, sizeof(Name), Selected->ParameterName.c_str(), _TRUNCATE);
+
+		if (ImGui::InputText("Parameter Name", Name, sizeof(Name)))
+		{
+			Selected->ParameterName = Name;
+			MarkMaterialChanged();
+		}
+
+		char Group[128]{};
+		strncpy_s(Group, sizeof(Group), Selected->ParameterGroup.c_str(), _TRUNCATE);
+
+		if (ImGui::InputText("Group", Group, sizeof(Group)))
+		{
+			Selected->ParameterGroup = Group;
+			MarkMaterialChanged();
+		}
+
+		
+		if (Selected->Type == EMaterialExpressionType::ScalarParameter)
+		{
+			if (ImGui::DragFloat("Default Value", &Selected->ScalarValue, 0.01f))
+			{
+				MarkMaterialChanged();
+			}
+		}
+		else if (Selected->Type == EMaterialExpressionType::VectorParameter)
+		{
+			if (EditMaterialColor("Default Value", &Selected->VectorValue.X, true))
+			{
+				MarkMaterialChanged();
+			}
+		}
+		else if (Selected->Type == EMaterialExpressionType::TextureSampleParameter2D)
+		{
+			UTexture2D* Current = Selected->TexturePath.empty() ? nullptr : UAssetManager::Get().LoadTexture(Selected->TexturePath);
+
+			if (DrawMaterialTexturePicker("Default Texture", Current, "None"))
+			{
+				Selected->TexturePath = Current ? Current->GetPath() : FString();
+				MarkMaterialChanged();
+			}
+			if (ImGui::Checkbox("sRGB", &Selected->bSRGB))
+			{
+				MarkMaterialChanged();
+			}
+		}
+
+		break;
+	}
+
+	case EMaterialExpressionType::TextureSample:
+	{
+		UTexture2D* Current = Selected->TexturePath.empty() ? nullptr : UAssetManager::Get().LoadTexture(Selected->TexturePath);
+		if (DrawMaterialTexturePicker("Texture", Current, "None"))
+		{
+			Selected->TexturePath = Current ? Current->GetPath() : FString();
+			MarkMaterialChanged();
+		}
+
+		if (ImGui::Checkbox("sRGB", &Selected->bSRGB))
+		{
+			MarkMaterialChanged();
+		}
+
+		break;
+	}
+
+	case EMaterialExpressionType::TextureCoordinate:
+		ImGui::TextDisabled("Coordinate Index: 0");
+		break;
+
+	case EMaterialExpressionType::ComponentMask:
+	{
+		bool R = (Selected->ComponentMask & 0x01) != 0;
+		bool G = (Selected->ComponentMask & 0x02) != 0;
+		bool B = (Selected->ComponentMask & 0x04) != 0;
+		bool A = (Selected->ComponentMask & 0x08) != 0;
+
+		bool bChanged = false;
+		bChanged |= ImGui::Checkbox("R", &R);
+		ImGui::SameLine();
+		bChanged |= ImGui::Checkbox("G", &G);
+		ImGui::SameLine();
+		bChanged |= ImGui::Checkbox("B", &B);
+		ImGui::SameLine();
+		bChanged |= ImGui::Checkbox("A", &A);
+
+		if (bChanged)
+		{
+			Selected->ComponentMask = static_cast<uint8>((R ? 0x01 : 0) | (G ? 0x02 : 0) | (B ? 0x04 : 0) | (A ? 0x08 : 0));
+			MarkMaterialChanged();
+		}
+
+		break;
+	}
+
+	case EMaterialExpressionType::Custom:
+	{
+		ImGui::TextDisabled("Use A and B as input variable names.");
+
+		char Code[4096]{};
+		strncpy_s(Code, sizeof(Code), Selected->CustomCode.c_str(), _TRUNCATE);
+
+		if (ImGui::InputTextMultiline("HLSL Expression", Code, sizeof(Code), ImVec2(-1.0f, 120.0f)))
+		{
+			Selected->CustomCode = Code;
+			MarkMaterialChanged();
+		}
+
+		int32 OutputType = static_cast<int32>(Selected->CustomOutputType);
+
+		if (ImGui::Combo("Output Type", &OutputType, "Scalar\0Vector2\0Vector3\0Vector4\0"))
+		{
+			Selected->CustomOutputType = static_cast<EMaterialValueType>(OutputType);
+			MarkMaterialChanged();
+		}
+
+		ImGui::TextDisabled("Example: cross(A, B)");
+		break;
+	}
+
+	default:
+		ImGui::TextDisabled("This node has no editable properties.");
+		break;
+	}
+}
+
+void FMaterialEditorPanel::DrawPreview()
+{
+	ImGui::TextUnformatted("Preview");
+
+	if (!PreviewClient || !PreviewClient->GetWorld() || !PreviewClient->GetColorTarget())
+	{
+		ImGui::TextDisabled("Preview is unavailable.");
+		return;
+	}
+
+	const ImVec2 Size = ImGui::GetContentRegionAvail();
+
+	PreviewClient->Resize(static_cast<uint32>(std::max(1.0f, Size.x)), static_cast<uint32>(std::max(1.0f, Size.y)));
+
+	ImGui::Image(reinterpret_cast<ImTextureID>(PreviewClient->GetColorTarget()->GetSRV()), Size);
+
+	const bool Hovered = ImGui::IsItemHovered();
+	const bool Captured = Hovered && ImGui::IsMouseDown(ImGuiMouseButton_Right);
+	const bool LeftDrag = Hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
+
+	float Wheel = ImGui::GetIO().MouseWheel;
+
+	if (Captured && Wheel != 0.0f)
+	{
+		CameraSpeed = std::clamp(CameraSpeed + Wheel * 0.5f, 0.1f, 20.0f);
+		Wheel = 0.0f;
+	}
+
+	const ImVec2 MouseDelta = ImGui::GetIO().MouseDelta;
+	PreviewClient->TickInput(ImGui::GetIO().DeltaTime, Captured, Hovered,
+		static_cast<int32>(Wheel * 120), 4.0f * CameraSpeed, 0.2f, MouseDelta.x, MouseDelta.y, LeftDrag);
+}
+
+void FMaterialEditorPanel::DrawMaterialGraph(UMaterial& Material)
+{
+	const ImVec2 Available = ImGui::GetContentRegionAvail();
+	const float DpiScale = std::max(0.01f, EditorStyle::Scale(1.0f));
+	const float SplitterSize = EditorStyle::Scale(6.0f);
+	const float PaletteWidth = EditorStyle::Scale(190.0f);
+	const float MinCanvasWidth = EditorStyle::Scale(180.0f);
+	const float MinDetailsWidth = EditorStyle::Scale(200.0f);
+	const float MaxDetailsWidth = std::max(MinDetailsWidth, Available.x - PaletteWidth - MinCanvasWidth - SplitterSize);
+	const float DetailsWidth = std::clamp(EditorStyle::Scale(RightPanelWidth), MinDetailsWidth, MaxDetailsWidth);
+	const float CanvasWidth = std::max(1.0f, Available.x - PaletteWidth - DetailsWidth - SplitterSize);
+
+	ImGui::BeginChild("MaterialPalette", { PaletteWidth, Available.y }, ImGuiChildFlags_Borders);
+	DrawMaterialGraphPalette(Material);
+	ImGui::EndChild();
+
+	ImGui::SameLine(0, 0);
+
+	ImGui::BeginChild("MaterialGraphCanvas", { CanvasWidth, Available.y }, ImGuiChildFlags_Borders);
+	DrawMaterialGraphCanvas(Material);
+	ImGui::EndChild();
+
+	ImGui::SameLine(0, 0);
+
+	// 오른쪽 프리뷰와 디테일 영역 폭을 드래그로 조절한다
+	ImGui::InvisibleButton("##MaterialRightSplitter", ImVec2(SplitterSize, Available.y));
+	const bool bHorizSplitterActive = ImGui::IsItemActive();
+	const bool bHorizSplitterHovered = ImGui::IsItemHovered();
+	if (bHorizSplitterHovered || bHorizSplitterActive)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+	}
+	if (bHorizSplitterActive)
+	{
+		RightPanelWidth = std::clamp(
+			(DetailsWidth - ImGui::GetIO().MouseDelta.x) / DpiScale,
+			MinDetailsWidth / DpiScale,
+			MaxDetailsWidth / DpiScale);
+	}
+	{
+		const ImVec2 MinPos = ImGui::GetItemRectMin();
+		const ImVec2 MaxPos = ImGui::GetItemRectMax();
+		const ImU32 SplitCol = (bHorizSplitterActive || bHorizSplitterHovered)
+			? IM_COL32(190, 120, 155, 255)
+			: IM_COL32(70, 70, 76, 180);
+		ImGui::GetWindowDrawList()->AddRectFilled(MinPos, MaxPos, SplitCol);
+	}
+
+	ImGui::SameLine(0, 0);
+
+	ImGui::BeginChild("MaterialRightPanel", { DetailsWidth, Available.y }, ImGuiChildFlags_Borders);
+
+	const ImVec2 RightAvail = ImGui::GetContentRegionAvail();
+	const float MinPaneH = EditorStyle::Scale(80.0f);
+	const float UsableH = std::max(MinPaneH * 2.0f, RightAvail.y - SplitterSize);
+	const float PreviewHeight = std::clamp(UsableH * PreviewSplitRatio, MinPaneH, std::max(MinPaneH, UsableH - MinPaneH));
+
+	ImGui::BeginChild("MaterialPreview", { 0.0f, PreviewHeight }, ImGuiChildFlags_Borders);
+	DrawPreview();
+	ImGui::EndChild();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+
+	// 프리뷰와 노드 디테일 높이 비율을 드래그로 조절한다
+	ImGui::InvisibleButton("##MaterialPreviewSplitter", ImVec2(-1.0f, SplitterSize));
+	const bool bVertSplitterActive = ImGui::IsItemActive();
+	const bool bVertSplitterHovered = ImGui::IsItemHovered();
+	if (bVertSplitterHovered || bVertSplitterActive)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+	}
+	if (bVertSplitterActive)
+	{
+		PreviewSplitRatio = std::clamp(
+			(PreviewHeight + ImGui::GetIO().MouseDelta.y) / std::max(1.0f, UsableH),
+			0.15f,
+			0.85f);
+	}
+	{
+		const ImVec2 MinPos = ImGui::GetItemRectMin();
+		const ImVec2 MaxPos = ImGui::GetItemRectMax();
+		const ImU32 SplitCol = (bVertSplitterActive || bVertSplitterHovered)
+			? IM_COL32(190, 120, 155, 255)
+			: IM_COL32(70, 70, 76, 180);
+		ImGui::GetWindowDrawList()->AddRectFilled(MinPos, MaxPos, SplitCol);
+	}
+	ImGui::PopStyleVar();
+
+	ImGui::BeginChild("MaterialNodeDetails", { 0.0f, 0.0f }, ImGuiChildFlags_Borders);
+	DrawMaterialGraphDetails(Material);
+	ImGui::EndChild();
+
+	ImGui::EndChild();
+}
+
+void FMaterialEditorPanel::OnRender()
+{
+	if (!IsOpen())
+	{
+		bVisible = false;
+		bFocused = false;
+		return;
+	}
+
+	const FString Title = (Asset ? FPaths::ToUtf8(FPaths::FromUtf8(Path).filename()) : FString(GetPanelName())) + "###MaterialEditor";
+
+	bool bPanelOpen = IsOpen();
+	bVisible = ImGui::Begin(Title.c_str(), &bPanelOpen);
+	SetOpen(bPanelOpen);
+	bFocused = bVisible && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+
+	if (!bVisible)
+	{
+		ImGui::End();
+		return;
+	}
+
+	if (!Asset)
+	{
+		ImGui::TextUnformatted("No Material is open.");
+		ImGui::End();
+		return;
+	}
+
+	if (bFocused && ImGui::GetIO().KeyCtrl && !ImGui::GetIO().KeyShift && !ImGui::GetIO().KeyAlt && ImGui::IsKeyPressed(ImGuiKey_S, false))
+	{
+		SaveMaterial();
+	}
+
+	ImGui::TextWrapped("%s", Path.c_str());
+
+	if (ImGui::Button("Save"))
+	{
+		SaveMaterial();
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Compile"))
+	{
+		if (UMaterial* Material = Asset->GetBaseMaterial())
+		{
+			FString CompileError;
+
+			if (!Material->ValidateExpressionGraph(CompileError))
+			{
+				Status = CompileError;
+			}
+			else
+			{
+				bool bCompiledAny = false;
+				bool bCompileSucceeded = true;
+
+				std::function<void(EPSOType, EVertexFactoryType)> CompileVariant = [&](EPSOType TargetPSO, EVertexFactoryType VFType)
+				{
+					bCompiledAny = true;
+
+					FString Error;
+					FShaderProgram* Program = FRenderResourceManager::GetMaterialGraphShaderProgram(*Material, TargetPSO, ELightingModel::Phong, VFType, Error);
+
+					if (!Program)
+					{
+						CompileError = Error;
+						bCompileSucceeded = false;
+					}
+				};
+
+				const bool bIsTranslucent = Material->GetBlendState() != EBlendState::Opaque;
+				const EPSOType MeshPSO = Material->GetBlendState() == EBlendState::Additive
+					? EPSOType::StaticMesh_Additive
+					: (bIsTranslucent ? EPSOType::StaticMesh_Translucent : EPSOType::StaticMesh_Forward);
+
+				if (Material->HasUsage(EMaterialUsage::StaticMesh))
+				{
+					CompileVariant(MeshPSO, EVertexFactoryType::Local);
+				}
+
+				if (Material->HasUsage(EMaterialUsage::SkeletalMesh))
+				{
+					CompileVariant(MeshPSO, EVertexFactoryType::GpuSkin);
+				}
+
+				if (Material->HasUsage(EMaterialUsage::ParticleSprite))
+				{
+					const EPSOType SpritePSO = Material->GetBlendState() == EBlendState::Additive
+						? EPSOType::Particle_Additive
+						: EPSOType::Particle_AlphaBlend;
+					CompileVariant(SpritePSO, EVertexFactoryType::SpriteParticle);
+				}
+
+				if (Material->HasUsage(EMaterialUsage::ParticleMesh))
+				{
+					const EPSOType ParticleMeshPSO = Material->GetBlendState() == EBlendState::Additive
+						? EPSOType::StaticMesh_Additive
+						: (Material->GetBlendState() == EBlendState::Opaque ? EPSOType::StaticMesh_Forward : EPSOType::StaticMesh_Translucent);
+					CompileVariant(ParticleMeshPSO, EVertexFactoryType::MeshParticle);
+				}
+
+				if (Material->HasUsage(EMaterialUsage::ParticleBeamTrail))
+				{
+					const EPSOType TrailPSO = Material->GetBlendState() == EBlendState::Additive
+						? EPSOType::Particle_Additive
+						: EPSOType::Particle_AlphaBlend;
+					CompileVariant(TrailPSO, EVertexFactoryType::Trail);
+				}
+
+				Status = !bCompiledAny ? "Enable at least one Usage Flag." : bCompileSucceeded ? "Material Graph compiled successfully."
+																							   : CompileError;
+			}
+		}
+	}
+
+	ImGui::SameLine();
+	ImGui::TextUnformatted(bDirty ? "* Modified" : Status.c_str());
+
+	ImGui::Separator();
+
+	if (UMaterial* Material = Cast<UMaterial>(Asset))
+	{
+		DrawMaterialGraph(*Material);
+	}
+	else if (UMaterialInstance* Instance = Cast<UMaterialInstance>(Asset))
+	{
+		UMaterial* ParentMaterial = Instance->GetBaseMaterial();
+
+		if (ParentMaterial)
+		{
+			ImGui::Text("Parent Material: %s", ParentMaterial->GetPath().c_str());
+
+			if (ImGui::Button("Open Parent Material Graph"))
+			{
+				const FString ParentPath = ParentMaterial->GetPath();
+				OpenAsset(ParentPath);
+				ImGui::End();
+				return;
+			}
+
+			ImGui::Separator();
+		}
+		const ImVec2 InstanceAvail = ImGui::GetContentRegionAvail();
+		const float SplitterSize = EditorStyle::Scale(6.0f);
+		const float MinPaneH = EditorStyle::Scale(90.0f);
+		const float UsableH = std::max(MinPaneH * 2.0f, InstanceAvail.y - SplitterSize);
+		const float DetailsHeight = std::clamp(UsableH * (1.0f - PreviewSplitRatio), MinPaneH, std::max(MinPaneH, UsableH - MinPaneH));
+
+		ImGui::BeginChild("MaterialInstanceDetails", { 0.0f, DetailsHeight }, ImGuiChildFlags_Borders);
+		ImGui::TextUnformatted("Material Instance");
+		ImGui::Text("Parent: %s", Instance->GetParent() ? Instance->GetParent()->GetPath().c_str() : "None");
+
+		FMaterialRenderProxy Proxy{};
+		Asset->GetRenderProxy(Proxy);
+
+		bool bOverrideColor = Instance->HasBaseColorOverride();
+
+		if (ImGui::Checkbox("Override Base Color", &bOverrideColor))
+		{
+			if (bOverrideColor)
+			{
+				Instance->SetBaseColorOverride(Proxy.BaseColor);
+			}
+			else
+			{
+				Instance->ClearParameterOverrideByName(FName("BaseColor"));
+			}
+
+			MarkMaterialChanged();
+		}
+
+		ImGui::BeginDisabled(!Instance->HasBaseColorOverride());
+
+		FVector4 Color = Proxy.BaseColor;
+
+		if (EditMaterialColor("Base Color", &Color.X, true))
+		{
+			Instance->SetBaseColorOverride(Color);
+			MarkMaterialChanged();
+		}
+
+		ImGui::EndDisabled();
+
+		if (ParentMaterial)
+		{
+			ImGui::Separator();
+			ImGui::TextUnformatted("Parameters");
+
+			std::function<FString(const FMaterialExpressionNode&)> GetGroupName = [](const FMaterialExpressionNode& Node)
+			{
+				return Node.ParameterGroup.empty() ? FString("Default") : Node.ParameterGroup;
+			};
+
+			std::function<EMaterialParameterType(EMaterialExpressionType)> GetParameterType = [](EMaterialExpressionType Type)
+			{
+				if (Type == EMaterialExpressionType::ScalarParameter)
+				{
+					return EMaterialParameterType::Scalar;
+				}
+
+				if (Type == EMaterialExpressionType::VectorParameter)
+				{
+					return EMaterialParameterType::Vector;
+				}
+
+				return EMaterialParameterType::Texture;
+			};
+
+			TArray<int32> ReachableParameterNodeIds;
+			ParentMaterial->GetReachableExpressionNodeIds(ReachableParameterNodeIds);
+
+			std::function<bool(int32)> IsParameterReachable = [&](int32 NodeId)
+			{
+				return std::find(ReachableParameterNodeIds.begin(), ReachableParameterNodeIds.end(), NodeId) != ReachableParameterNodeIds.end();
+			};
+
+			std::set<FString> DrawnGroups;
+			std::set<FString> DrawnParameters;
+
+			for (const FMaterialExpressionNode& ParameterNode : ParentMaterial->ExpressionNodes)
+			{
+				if (!IsParameterReachable(ParameterNode.Id))
+				{
+					continue;
+				}
+
+				if (ParameterNode.Type != EMaterialExpressionType::ScalarParameter &&
+					ParameterNode.Type != EMaterialExpressionType::VectorParameter &&
+					ParameterNode.Type != EMaterialExpressionType::TextureSampleParameter2D)
+				{
+					continue;
+				}
+
+				const FString GroupName = GetGroupName(ParameterNode);
+
+				if (!DrawnGroups.insert(GroupName).second)
+				{
+					continue;
+				}
+
+				if (!ImGui::TreeNodeEx(GroupName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					continue;
+				}
+
+				for (const FMaterialExpressionNode& Node : ParentMaterial->ExpressionNodes)
+				{
+					if (!IsParameterReachable(Node.Id))
+					{
+						continue;
+					}
+
+					if (GetGroupName(Node) != GroupName)
+					{
+						continue;
+					}
+
+					if (Node.Type != EMaterialExpressionType::ScalarParameter &&
+						Node.Type != EMaterialExpressionType::VectorParameter &&
+						Node.Type != EMaterialExpressionType::TextureSampleParameter2D)
+					{
+						continue;
+					}
+
+					const EMaterialParameterType OverrideType = GetParameterType(Node.Type);
+					const FName ParameterName(Node.ParameterName);
+					const FString ParameterKey = Node.ParameterName + "#" + std::to_string(static_cast<uint8>(OverrideType));
+
+					if (!DrawnParameters.insert(ParameterKey).second)
+					{
+						continue;
+					}
+
+					const FMaterialParameterOverride* Existing = Instance->GetParameterOverride(ParameterName, OverrideType);
+					bool bOverride = Existing != nullptr;
+
+					ImGui::PushID(Node.Id);
+
+					ImGui::TextUnformatted(Node.ParameterName.c_str());
+					ImGui::SameLine();
+
+					if (ImGui::Checkbox("Override", &bOverride))
+					{
+						if (bOverride)
+						{
+							if (OverrideType == EMaterialParameterType::Scalar)
+							{
+								Instance->SetScalarParameterValue(ParameterName, Node.ScalarValue);
+							}
+							else if (OverrideType == EMaterialParameterType::Vector)
+							{
+								Instance->SetVectorParameterValue(ParameterName, Node.VectorValue);
+							}
+							else
+							{
+								UTexture2D* DefaultTexture = Node.TexturePath.empty() ? nullptr : UAssetManager::Get().LoadTexture(Node.TexturePath);
+								Instance->SetTextureParameterValue(ParameterName, DefaultTexture);
+							}
+						}
+						else
+						{
+							Instance->ClearParameterOverride(ParameterName, OverrideType);
+						}
+
+						MarkMaterialChanged();
+					}
+
+					const FMaterialParameterOverride* CurrentOverride = Instance->GetParameterOverride(ParameterName, OverrideType);
+
+					ImGui::BeginDisabled(!bOverride);
+
+					if (OverrideType == EMaterialParameterType::Scalar)
+					{
+						float Value = CurrentOverride ? CurrentOverride->ScalarValue : Node.ScalarValue;
+
+						if (ImGui::DragFloat("Value", &Value, 0.01f))
+						{
+							Instance->SetScalarParameterValue(ParameterName, Value);
+							MarkMaterialChanged();
+						}
+					}
+					else if (OverrideType == EMaterialParameterType::Vector)
+					{
+						FVector4 Value = CurrentOverride ? CurrentOverride->VectorValue : Node.VectorValue;
+
+						if (EditMaterialColor("Value", &Value.X, true))
+						{
+							Instance->SetVectorParameterValue(ParameterName, Value);
+							MarkMaterialChanged();
+						}
+					}
+					else
+					{
+						UTexture2D* Texture = CurrentOverride
+							? CurrentOverride->TextureValue
+							: (Node.TexturePath.empty() ? nullptr : UAssetManager::Get().LoadTexture(Node.TexturePath));
+
+						if (DrawMaterialTexturePicker("Texture", Texture, "None"))
+						{
+							Instance->SetTextureParameterValue(ParameterName, Texture);
+							MarkMaterialChanged();
+						}
+					}
+
+					ImGui::EndDisabled();
+					ImGui::PopID();
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (DrawnParameters.empty())
+			{
+				ImGui::TextDisabled("This Material has no graph parameters.");
+			}
+		}
+
+		ImGui::EndChild();
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+
+		ImGui::InvisibleButton("##InstancePreviewSplitter", ImVec2(-1.0f, SplitterSize));
+		const bool bInstSplitterActive = ImGui::IsItemActive();
+		const bool bInstSplitterHovered = ImGui::IsItemHovered();
+		if (bInstSplitterHovered || bInstSplitterActive)
+		{
+			ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+		}
+		if (bInstSplitterActive)
+		{
+			PreviewSplitRatio = std::clamp(
+				1.0f - (DetailsHeight + ImGui::GetIO().MouseDelta.y) / std::max(1.0f, UsableH),
+				0.15f,
+				0.85f);
+		}
+		{
+			const ImVec2 MinPos = ImGui::GetItemRectMin();
+			const ImVec2 MaxPos = ImGui::GetItemRectMax();
+			const ImU32 SplitCol = (bInstSplitterActive || bInstSplitterHovered)
+				? IM_COL32(190, 120, 155, 255)
+				: IM_COL32(70, 70, 76, 180);
+			ImGui::GetWindowDrawList()->AddRectFilled(MinPos, MaxPos, SplitCol);
+		}
+		ImGui::PopStyleVar();
+
+		ImGui::BeginChild("MaterialInstancePreview", { 0.0f, 0.0f }, ImGuiChildFlags_Borders);
+		DrawPreview();
+		ImGui::EndChild();
+	}
+
+	if (bMaterialThumbnailDirty && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
+	{
+				bMaterialThumbnailDirty = false;
+	}
+
+	ImGui::End();
+}

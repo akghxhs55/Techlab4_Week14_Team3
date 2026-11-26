@@ -1,0 +1,80 @@
+{
+  "Sockets": [
+    {
+      "SocketName": "SwordHandSocket",
+      "BoneName": "hand_r",
+      "RelativeLocation": [
+        0.03500000014901161,
+        0.08500000089406967,
+        -0.009999999776482582
+      ],
+      "RelativeRotation": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "RelativeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "SocketName": "SwordTipSocket",
+      "BoneName": "hand_r",
+      "RelativeLocation": [
+        0.03500000014901161,
+        0.08500085771083832,
+        1.350000023841858
+      ],
+      "RelativeRotation": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "RelativeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "SocketName": "SwordBaseSocket",
+      "BoneName": "hand_r",
+      "RelativeLocation": [
+        0.03500000014901161,
+        0.08500014245510101,
+        0.20999999344348907
+      ],
+      "RelativeRotation": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "RelativeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "SocketName": "SwordWaveSpawn",
+      "BoneName": "hand_r",
+      "RelativeLocation": [
+        0.03500000014901161,
+        0.08500050008296967,
+        0.7800000309944153
+      ],
+      "RelativeRotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "RelativeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

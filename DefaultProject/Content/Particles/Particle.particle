@@ -1,0 +1,280 @@
+{
+  "Emitters": [
+    {
+      "LODLevels": [
+        {
+          "Modules": [
+            {
+              "Class": "UParticleModuleLifetime",
+              "Data": {
+                "Properties": {
+                  "Lifetime": {
+                    "Constant": 5.0,
+                    "CurveKeys": [],
+                    "MaxValue": 5.0,
+                    "MinValue": 1.0,
+                    "Mode": "Uniform"
+                  },
+                  "bEnabled": true
+                }
+              }
+            },
+            {
+              "Class": "UParticleModuleSize",
+              "Data": {
+                "Properties": {
+                  "StartSize": {
+                    "Constant": {
+                      "X": 1.0,
+                      "Y": 1.0,
+                      "Z": 1.0
+                    },
+                    "CurveKeysX": [],
+                    "CurveKeysY": [],
+                    "CurveKeysZ": [],
+                    "MaxValue": {
+                      "X": 1.0,
+                      "Y": 1.0,
+                      "Z": 1.0
+                    },
+                    "MinValue": {
+                      "X": 1.0,
+                      "Y": 1.0,
+                      "Z": 1.0
+                    },
+                    "Mode": "Uniform",
+                    "bLockAxes": true
+                  },
+                  "bEnabled": true
+                }
+              }
+            },
+            {
+              "Class": "UParticleModuleVelocity",
+              "Data": {
+                "Properties": {
+                  "StartVelocity": {
+                    "Constant": {
+                      "X": 1.0,
+                      "Y": 1.0,
+                      "Z": 1.5
+                    },
+                    "CurveKeysX": [],
+                    "CurveKeysY": [],
+                    "CurveKeysZ": [],
+                    "MaxValue": {
+                      "X": 1.0,
+                      "Y": 1.0,
+                      "Z": 1.5
+                    },
+                    "MinValue": {
+                      "X": -1.0,
+                      "Y": -0.20000000298023224,
+                      "Z": -1.0
+                    },
+                    "Mode": "Uniform",
+                    "bLockAxes": false
+                  },
+                  "StartVelocityRadial": {
+                    "Constant": 0.0,
+                    "CurveKeys": [],
+                    "MaxValue": 0.0,
+                    "MinValue": 0.0,
+                    "Mode": "Constant"
+                  },
+                  "bEnabled": true
+                }
+              }
+            },
+            {
+              "Class": "UParticleModuleColor",
+              "Data": {
+                "Properties": {
+                  "StartColor": {
+                    "Constant": {
+                      "X": 4294967295.0,
+                      "Y": 4294967295.0,
+                      "Z": 4294967295.0
+                    },
+                    "CurveKeysX": [],
+                    "CurveKeysY": [],
+                    "CurveKeysZ": [],
+                    "MaxValue": {
+                      "X": 4294967295.0,
+                      "Y": 4294967295.0,
+                      "Z": 4294967295.0
+                    },
+                    "MinValue": {
+                      "X": 4294967295.0,
+                      "Y": 4294967295.0,
+                      "Z": 4294967295.0
+                    },
+                    "Mode": "Uniform",
+                    "bLockAxes": false
+                  },
+                  "StartAlpha": {
+                    "Constant": 1.0,
+                    "CurveKeys": [],
+                    "MaxValue": 0.0,
+                    "MinValue": 0.0,
+                    "Mode": "Constant"
+                  },
+                  "bClampAlpha": true,
+                  "bEnabled": true
+                }
+              }
+            },
+            {
+              "Class": "UParticleModuleSubUV",
+              "Data": {
+                "Properties": {
+                  "SubImageIndex": {
+                    "Constant": 0.0,
+                    "CurveKeys": [],
+                    "MaxValue": 0.0,
+                    "MinValue": 0.0,
+                    "Mode": "Constant"
+                  },
+                  "bEnabled": true
+                }
+              }
+            }
+          ],
+          "Properties": {
+            "bEnabled": true
+          },
+          "RequiredModule": {
+            "Properties": {
+              "EmitterDelay": 0.0,
+              "EmitterDuration": 0.01,
+              "EmitterLoops": 0,
+              "InterpolationMethod": "Linear_Blend",
+              "Material": {
+                "Asset": "SubUVMaterial"
+              },
+              "MaxActiveParticles": 1024,
+              "RandomImageTime": 0.0,
+              "SortMode": "None",
+              "SubImages_Horizontal": 8,
+              "SubImages_Vertical": 8,
+              "bDelayFirstLoopOnly": false,
+              "bEnabled": true,
+              "bUseLocalSpace": false
+            }
+          },
+          "SpawnModule": {
+            "Properties": {
+              "BurstList": [],
+              "Rate": {
+                "Constant": 60.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "RateScale": {
+                "Constant": 1.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "bEnabled": true
+            }
+          }
+        },
+        {
+          "Modules": [],
+          "Properties": {
+            "bEnabled": true
+          },
+          "RequiredModule": {
+            "Properties": {
+              "EmitterDelay": 0.0,
+              "EmitterDuration": 1.0,
+              "EmitterLoops": 0,
+              "InterpolationMethod": "None",
+              "Material": null,
+              "MaxActiveParticles": 1000,
+              "RandomImageTime": 0.0,
+              "SortMode": "None",
+              "SubImages_Horizontal": 1,
+              "SubImages_Vertical": 1,
+              "bDelayFirstLoopOnly": false,
+              "bEnabled": true,
+              "bUseLocalSpace": false
+            }
+          },
+          "SpawnModule": {
+            "Properties": {
+              "BurstList": [],
+              "Rate": {
+                "Constant": 6.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "RateScale": {
+                "Constant": 1.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "bEnabled": true
+            }
+          }
+        },
+        {
+          "Modules": [],
+          "Properties": {
+            "bEnabled": true
+          },
+          "RequiredModule": {
+            "Properties": {
+              "EmitterDelay": 0.0,
+              "EmitterDuration": 1.0,
+              "EmitterLoops": 0,
+              "InterpolationMethod": "None",
+              "Material": null,
+              "MaxActiveParticles": 1000,
+              "RandomImageTime": 0.0,
+              "SortMode": "None",
+              "SubImages_Horizontal": 1,
+              "SubImages_Vertical": 1,
+              "bDelayFirstLoopOnly": false,
+              "bEnabled": true,
+              "bUseLocalSpace": false
+            }
+          },
+          "SpawnModule": {
+            "Properties": {
+              "BurstList": [],
+              "Rate": {
+                "Constant": 2.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "RateScale": {
+                "Constant": 1.0,
+                "CurveKeys": [],
+                "MaxValue": 0.0,
+                "MinValue": 0.0,
+                "Mode": "Constant"
+              },
+              "bEnabled": true
+            }
+          }
+        }
+      ],
+      "Properties": {
+        "EmitterName": "Particle Emitter"
+      }
+    }
+  ],
+  "Properties": {},
+  "Version": 1
+}

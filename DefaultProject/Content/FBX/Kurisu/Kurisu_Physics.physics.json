@@ -1,0 +1,11 @@
+{
+    "Class": "UPhysicsAsset",
+    "Object": {
+        "Bodies": [],
+        "PreviewMeshPath": "FBX/Kurisu/Kurisu.fbx.bin",
+        "Properties": {
+            "Constraints": []
+        }
+    },
+    "Version": 1
+}

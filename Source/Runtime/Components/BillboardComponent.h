@@ -1,0 +1,71 @@
+#pragma once
+
+#include "PrimitiveComponent.h"
+#include "LightComponentBase.h"
+#include "BillboardComponent.generated.h"
+
+struct FBillboardConstants
+{
+	// 빌보드를 그릴 때 Shader에 전달할 Atlas 프레임과 투명도 값을 담는다.
+	float CurrentFrame;
+	float AtlasRowSize;
+	float AtlasColSize;
+	//float Padding = 0.0f;
+	float Alpha;
+	FVector4 Tint = FVector4(1, 1, 1, 1);	// default 흰색
+	// 1이면 sRGB -> 선형 변환한다. 현재 반투명 패스는 LDR이므로 0을 전달한다.
+	float DecodeSRGB = 1.0f;
+	float Padding[3]{};
+};
+static_assert(sizeof(FBillboardConstants) == 48, "Size must match cbuffer MaterialParams in BillboardShader.hlsl");
+
+UCLASS()
+class UBillboardComponent : public UPrimitiveComponent
+{
+	GENERATED_BODY()
+
+
+public:
+	UBillboardComponent();
+	virtual ~UBillboardComponent() override;
+
+	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime) override;
+
+	virtual bool LineTraceComponent(const FRay& WorldRay, FHitResult& OutHit) override;
+	// 클릭한 View의 실제 렌더 행렬로 Quad Mesh 교차를 판정한다.
+	bool LineTraceComponentForView(const FRay& WorldRay, FHitResult& OutHit, const FMatrix& BillboardWorldMatrix);
+
+	virtual int32 GetNumMaterials() const override { return 1; }
+	virtual UMaterialInterface* GetMaterial(int32 SlotIndex) const override { return SlotIndex == 0 ? Material : nullptr; }
+	virtual void SetMaterial(int32 SlotIndex, UMaterialInterface* InMaterial) override { if (SlotIndex == 0) Material = InMaterial; }
+
+	void SetTintSource(const ULightComponentBase* InSource) { TintSource = InSource; }
+
+	virtual const FStaticMeshData* GetMeshData() const override { return QuadMesh ? &QuadMesh->GetMeshData() : nullptr; }
+	virtual FBox CalcLocalBounds() const override;
+
+	virtual FPrimitiveSceneProxy* CreateSceneProxy() override;
+	UStaticMesh* GetQuadMesh() const { return QuadMesh; }
+	const FBillboardConstants& GetCurrentIconParams() const;
+
+	void GetWorldTransformedMatrix(FMatrix* OutWorldMatrix) const;
+
+	using Super::Serialize;
+	virtual void Serialize(FStructuredArchive::FRecord Record) override;
+
+	bool IsEditorIcon() const { return bEditorIcon; }
+	void SetEditorIcon(bool IsEditorIcon) { bEditorIcon = IsEditorIcon; }
+	void SetIconSize(float S) { IconSize = S; }
+	float GetIconSize() const { return IconSize; }
+
+protected:
+	UMaterialInterface* Material = nullptr;
+	UStaticMesh* QuadMesh = nullptr;
+	mutable FBillboardConstants IconParams{ 0.0f, 1.0f, 1.0f, 1.0f };	// CurrentFrame, RowSize, ColSize, Alpha
+private:
+	const ULightComponentBase* TintSource = nullptr;
+	bool bEditorIcon = false;
+	float IconSize = 1.0f;
+
+};

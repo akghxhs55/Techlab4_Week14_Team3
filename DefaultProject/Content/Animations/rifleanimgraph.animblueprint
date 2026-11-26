@@ -1,0 +1,1647 @@
+{
+  "Format": "KurisuAnimBlueprint",
+  "Version": 1,
+  "PreviewMeshPath": "Models/UnrealModel/SK_SKM_Quinn_Simple_root.fbx.bin",
+  "RootMotionMode": 2,
+  "RootGraphId": 1,
+  "NextId": 117,
+  "Variables": [
+    {
+      "Name": "GroundSpeed",
+      "Type": 0,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "Direction",
+      "Type": 0,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "AimPitch",
+      "Type": 0,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "IsAiming",
+      "Type": 0,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "IsFalling",
+      "Type": 1,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "IsAttacking",
+      "Type": 1,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "IsHit",
+      "Type": 1,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    },
+    {
+      "Name": "IsDead",
+      "Type": 1,
+      "DefaultFloat": 0.0,
+      "bDefaultBool": false
+    }
+  ],
+  "Graphs": [
+    {
+      "Id": 1,
+      "Name": "AnimGraph",
+      "Type": 0,
+      "ParentGraphId": -1,
+      "OwnerNodeId": -1,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 3,
+          "Type": 4,
+          "Name": "Locomotion",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 4,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 2,
+          "Position": {
+            "X": 40.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 5,
+          "Type": 10,
+          "Name": "UpperBody Slot",
+          "InputPosePinId": 6,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 7,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 540.0,
+            "Y": 230.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 8,
+          "Type": 11,
+          "Name": "UpperBody Result",
+          "InputPosePinId": 9,
+          "SecondInputPosePinId": 10,
+          "OutputPosePinId": 11,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 1040.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 1.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 12,
+          "Type": 12,
+          "Name": "Aim Offset 1D",
+          "InputPosePinId": 13,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 14,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "Animations/RifleAimOffset.aimoffset",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 790.0,
+            "Y": 230.0
+          },
+          "FloatInput": {
+            "bUseVariable": true,
+            "Variable": "IsAiming",
+            "Constant": 1.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": true,
+            "Variable": "AimPitch",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 15,
+          "Type": 0,
+          "Name": "Output Pose",
+          "InputPosePinId": 16,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 1540.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 17,
+          "Type": 10,
+          "Name": "FullBody Slot",
+          "InputPosePinId": 18,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 19,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "FullBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 1290.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 20,
+          "Type": 1,
+          "Name": "ADS Idle",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 21,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MF_Rifle_Idle_ADS.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 40.0,
+            "Y": 340.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 22,
+          "Type": 11,
+          "Name": "ADS UpperBody",
+          "InputPosePinId": 23,
+          "SecondInputPosePinId": 24,
+          "OutputPosePinId": 25,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 290.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": true,
+            "Variable": "IsAiming",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 26,
+          "FromNodeId": 22,
+          "FromPinId": 25,
+          "ToNodeId": 5,
+          "ToPinId": 6
+        },
+        {
+          "Id": 27,
+          "FromNodeId": 22,
+          "FromPinId": 25,
+          "ToNodeId": 8,
+          "ToPinId": 9
+        },
+        {
+          "Id": 28,
+          "FromNodeId": 12,
+          "FromPinId": 14,
+          "ToNodeId": 8,
+          "ToPinId": 10
+        },
+        {
+          "Id": 29,
+          "FromNodeId": 5,
+          "FromPinId": 7,
+          "ToNodeId": 12,
+          "ToPinId": 13
+        },
+        {
+          "Id": 30,
+          "FromNodeId": 8,
+          "FromPinId": 11,
+          "ToNodeId": 17,
+          "ToPinId": 18
+        },
+        {
+          "Id": 31,
+          "FromNodeId": 17,
+          "FromPinId": 19,
+          "ToNodeId": 15,
+          "ToPinId": 16
+        },
+        {
+          "Id": 32,
+          "FromNodeId": 3,
+          "FromPinId": 4,
+          "ToNodeId": 22,
+          "ToPinId": 23
+        },
+        {
+          "Id": 33,
+          "FromNodeId": 20,
+          "FromPinId": 21,
+          "ToNodeId": 22,
+          "ToPinId": 24
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 2,
+      "Name": "Locomotion",
+      "Type": 1,
+      "ParentGraphId": 1,
+      "OwnerNodeId": 3,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 34,
+          "Type": 5,
+          "Name": "Entry",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": 35,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": -160.0,
+            "Y": 200.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 36,
+          "Type": 8,
+          "Name": "Any State",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": 37,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 30.0,
+            "Y": 440.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 38,
+          "Type": 6,
+          "Name": "Idle",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 39,
+          "TransitionOutputPinId": 40,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 41,
+          "Position": {
+            "X": 80.0,
+            "Y": 240.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": []
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        },
+        {
+          "Id": 47,
+          "Type": 6,
+          "Name": "Locomotion",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 48,
+          "TransitionOutputPinId": 49,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 50,
+          "Position": {
+            "X": 350.0,
+            "Y": 240.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": []
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        },
+        {
+          "Id": 56,
+          "Type": 6,
+          "Name": "Jump",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 57,
+          "TransitionOutputPinId": 58,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 59,
+          "Position": {
+            "X": 350.0,
+            "Y": 40.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": []
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        },
+        {
+          "Id": 65,
+          "Type": 6,
+          "Name": "Fall Loop",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 66,
+          "TransitionOutputPinId": 67,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 68,
+          "Position": {
+            "X": 650.0,
+            "Y": 40.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": []
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        },
+        {
+          "Id": 74,
+          "Type": 6,
+          "Name": "Land",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 75,
+          "TransitionOutputPinId": 76,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 77,
+          "Position": {
+            "X": 650.0,
+            "Y": 240.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": []
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        },
+        {
+          "Id": 83,
+          "Type": 6,
+          "Name": "Hit",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 84,
+          "TransitionOutputPinId": 85,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 86,
+          "Position": {
+            "X": 900.0,
+            "Y": 440.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": [
+              {
+                "Variable": "IsHit",
+                "bBoolValue": false,
+                "FloatValue": 0.0
+              }
+            ]
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        },
+        {
+          "Id": 92,
+          "Type": 6,
+          "Name": "Death",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": 93,
+          "TransitionOutputPinId": 94,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": 95,
+          "Position": {
+            "X": 900.0,
+            "Y": 580.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "OnEnter": {
+            "EventName": "",
+            "Assignments": []
+          },
+          "OnExit": {
+            "EventName": "",
+            "Assignments": []
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 101,
+          "FromNodeId": 34,
+          "FromPinId": 35,
+          "ToNodeId": 38,
+          "ToPinId": 39
+        }
+      ],
+      "Transitions": [
+        {
+          "Id": 102,
+          "FromStateId": 38,
+          "ToStateId": 56,
+          "FromPinId": 40,
+          "ToPinId": 57,
+          "Rule": 1,
+          "Variable": "IsFalling",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.5,
+          "CrossfadeDuration": 0.07999999821186066,
+          "Priority": 0
+        },
+        {
+          "Id": 103,
+          "FromStateId": 47,
+          "ToStateId": 56,
+          "FromPinId": 49,
+          "ToPinId": 57,
+          "Rule": 1,
+          "Variable": "IsFalling",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.5,
+          "CrossfadeDuration": 0.07999999821186066,
+          "Priority": 1
+        },
+        {
+          "Id": 104,
+          "FromStateId": 38,
+          "ToStateId": 65,
+          "FromPinId": 40,
+          "ToPinId": 66,
+          "Rule": 1,
+          "Variable": "IsFalling",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.5,
+          "CrossfadeDuration": 0.10000000149011612,
+          "Priority": 2
+        },
+        {
+          "Id": 105,
+          "FromStateId": 47,
+          "ToStateId": 65,
+          "FromPinId": 49,
+          "ToPinId": 66,
+          "Rule": 1,
+          "Variable": "IsFalling",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.5,
+          "CrossfadeDuration": 0.10000000149011612,
+          "Priority": 3
+        },
+        {
+          "Id": 106,
+          "FromStateId": 38,
+          "ToStateId": 47,
+          "FromPinId": 40,
+          "ToPinId": 48,
+          "Rule": 2,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 10.0,
+          "CrossfadeDuration": 0.11999999731779099,
+          "Priority": 4
+        },
+        {
+          "Id": 107,
+          "FromStateId": 47,
+          "ToStateId": 38,
+          "FromPinId": 49,
+          "ToPinId": 39,
+          "Rule": 2,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 1,
+          "Value": 10.0,
+          "CrossfadeDuration": 0.11999999731779099,
+          "Priority": 5
+        },
+        {
+          "Id": 108,
+          "FromStateId": 56,
+          "ToStateId": 74,
+          "FromPinId": 58,
+          "ToPinId": 75,
+          "Rule": 1,
+          "Variable": "IsFalling",
+          "bExpected": false,
+          "Compare": 2,
+          "Value": 0.5,
+          "CrossfadeDuration": 0.07999999821186066,
+          "Priority": 6
+        },
+        {
+          "Id": 109,
+          "FromStateId": 56,
+          "ToStateId": 65,
+          "FromPinId": 58,
+          "ToPinId": 66,
+          "Rule": 3,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 1,
+          "Value": 0.11999999731779099,
+          "CrossfadeDuration": 0.11999999731779099,
+          "Priority": 7
+        },
+        {
+          "Id": 110,
+          "FromStateId": 65,
+          "ToStateId": 74,
+          "FromPinId": 67,
+          "ToPinId": 75,
+          "Rule": 1,
+          "Variable": "IsFalling",
+          "bExpected": false,
+          "Compare": 2,
+          "Value": 0.5,
+          "CrossfadeDuration": 0.07999999821186066,
+          "Priority": 8
+        },
+        {
+          "Id": 111,
+          "FromStateId": 74,
+          "ToStateId": 47,
+          "FromPinId": 76,
+          "ToPinId": 48,
+          "Rule": 2,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 10.0,
+          "CrossfadeDuration": 0.05000000074505806,
+          "Priority": 9
+        },
+        {
+          "Id": 112,
+          "FromStateId": 74,
+          "ToStateId": 47,
+          "FromPinId": 76,
+          "ToPinId": 48,
+          "Rule": 3,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 1,
+          "Value": 0.11999999731779099,
+          "CrossfadeDuration": 0.11999999731779099,
+          "Priority": 10
+        },
+        {
+          "Id": 113,
+          "FromStateId": 36,
+          "ToStateId": 83,
+          "FromPinId": 37,
+          "ToPinId": 84,
+          "Rule": 1,
+          "Variable": "IsHit",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.0,
+          "CrossfadeDuration": 0.07999999821186066,
+          "Priority": 11
+        },
+        {
+          "Id": 114,
+          "FromStateId": 83,
+          "ToStateId": 47,
+          "FromPinId": 85,
+          "ToPinId": 48,
+          "Rule": 3,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.11999999731779099,
+          "CrossfadeDuration": 0.10000000149011612,
+          "Priority": 12
+        },
+        {
+          "Id": 115,
+          "FromStateId": 83,
+          "ToStateId": 65,
+          "FromPinId": 85,
+          "ToPinId": 66,
+          "Rule": 0,
+          "Variable": "GroundSpeed",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.11999999731779099,
+          "CrossfadeDuration": 0.10000000149011612,
+          "Priority": 13
+        },
+        {
+          "Id": 116,
+          "FromStateId": 36,
+          "ToStateId": 92,
+          "FromPinId": 37,
+          "ToPinId": 93,
+          "Rule": 1,
+          "Variable": "IsDead",
+          "bExpected": true,
+          "Compare": 2,
+          "Value": 0.0,
+          "CrossfadeDuration": 0.07999999821186066,
+          "Priority": 14
+        }
+      ]
+    },
+    {
+      "Id": 41,
+      "Name": "Idle",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 38,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 44,
+          "Type": 1,
+          "Name": "AS_MF_Rifle_Idle_ADS.anim",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 45,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MF_Rifle_Idle_ADS.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 42,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 43,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 46,
+          "FromNodeId": 44,
+          "FromPinId": 45,
+          "ToNodeId": 42,
+          "ToPinId": 43
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 50,
+      "Name": "Locomotion",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 47,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 53,
+          "Type": 9,
+          "Name": "RifleLocomotion",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 54,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "Animations/RifleLocomotion.blendspace",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": true,
+            "Variable": "Direction",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": true,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 51,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 52,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 55,
+          "FromNodeId": 53,
+          "FromPinId": 54,
+          "ToNodeId": 51,
+          "ToPinId": 52
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 59,
+      "Name": "Jump",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 56,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 62,
+          "Type": 1,
+          "Name": "AS_MM_Rifle_Jump_Apex.anim",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 63,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MM_Rifle_Jump_Apex.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": false,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 60,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 61,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 64,
+          "FromNodeId": 62,
+          "FromPinId": 63,
+          "ToNodeId": 60,
+          "ToPinId": 61
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 68,
+      "Name": "Fall Loop",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 65,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 71,
+          "Type": 1,
+          "Name": "AS_MM_Rifle_Jump_Fall_Loop.anim",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 72,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MM_Rifle_Jump_Fall_Loop.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 69,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 70,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 73,
+          "FromNodeId": 71,
+          "FromPinId": 72,
+          "ToNodeId": 69,
+          "ToPinId": 70
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 77,
+      "Name": "Land",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 74,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 80,
+          "Type": 1,
+          "Name": "AS_MM_Rifle_Jump_Fall_Land.anim",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 81,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MM_Rifle_Jump_Fall_Land.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": false,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 78,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 79,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 82,
+          "FromNodeId": 80,
+          "FromPinId": 81,
+          "ToNodeId": 78,
+          "ToPinId": 79
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 86,
+      "Name": "Hit",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 83,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 89,
+          "Type": 1,
+          "Name": "AS_MM_HitReact_Front_Med_01.anim",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 90,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MM_HitReact_Front_Med_01.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": false,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 87,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 88,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 91,
+          "FromNodeId": 89,
+          "FromPinId": 90,
+          "ToNodeId": 87,
+          "ToPinId": 88
+        }
+      ],
+      "Transitions": []
+    },
+    {
+      "Id": 95,
+      "Name": "Death",
+      "Type": 0,
+      "ParentGraphId": 2,
+      "OwnerNodeId": 92,
+      "EditorSettings": "",
+      "Nodes": [
+        {
+          "Id": 98,
+          "Type": 1,
+          "Name": "AS_MM_Death_Front_01.anim",
+          "InputPosePinId": -1,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": 99,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "Models/UnrealModel/AS_MM_Death_Front_01.anim.bin",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": false,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 100.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        },
+        {
+          "Id": 96,
+          "Type": 7,
+          "Name": "Output Animation Pose",
+          "InputPosePinId": 97,
+          "SecondInputPosePinId": -1,
+          "OutputPosePinId": -1,
+          "TransitionInputPinId": -1,
+          "TransitionOutputPinId": -1,
+          "SequencePath": "",
+          "BlendSpacePath": "",
+          "AimOffsetPath": "",
+          "SlotName": "UpperBody",
+          "StartBoneName": "spine_01",
+          "bLooping": true,
+          "bResetOnEntry": true,
+          "bMeshSpaceRotationBlend": true,
+          "bSyncByNormalizedTime": false,
+          "PlayRate": 1.0,
+          "ChildGraphId": -1,
+          "Position": {
+            "X": 420.0,
+            "Y": 120.0
+          },
+          "FloatInput": {
+            "bUseVariable": false,
+            "Variable": "GroundSpeed",
+            "Constant": 0.0
+          },
+          "SecondFloatInput": {
+            "bUseVariable": false,
+            "Variable": "Direction",
+            "Constant": 0.0
+          }
+        }
+      ],
+      "Links": [
+        {
+          "Id": 100,
+          "FromNodeId": 98,
+          "FromPinId": 99,
+          "ToNodeId": 96,
+          "ToPinId": 97
+        }
+      ],
+      "Transitions": []
+    }
+  ]
+}

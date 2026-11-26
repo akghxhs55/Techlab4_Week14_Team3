@@ -1,0 +1,23 @@
+# Blender 5.2.1 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl Gemera_Rim_Dark
+Ns 490.000000
+Ka 0.800000 0.800000 0.800000
+Kd 0.080000 0.080000 0.080000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+
+newmtl gemera:Koenigsegg_Gemera_2025_Wheel1A_3D_3DWheel1A_Material1
+Ns 1000.000000
+Ka 0.500000 0.500000 0.500000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 3
+map_Kd Wheel1A_DiffuseAOSO.png
+map_d Wheel1A_DiffuseAOSO.png
+map_bump Koenigsegg_Gemera_2025_Wheel1A_Normal.png

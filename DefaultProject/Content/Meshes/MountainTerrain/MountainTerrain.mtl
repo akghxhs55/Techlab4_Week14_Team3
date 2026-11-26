@@ -1,0 +1,7 @@
+newmtl MountainTerrain
+Ka 0.0 0.0 0.0
+Kd 1.0 1.0 1.0
+Ks 0.0 0.0 0.0
+Ns 4.0
+illum 1
+map_Kd Textures/MountainTerrain_D.png

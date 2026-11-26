@@ -1,0 +1,488 @@
+{
+    "Class": "UPhysicsAsset",
+    "Object": {
+        "Bodies": [
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.019999999552965164
+                                },
+                                "Length": 0.10000000149011612,
+                                "Radius": 0.11999999731779099,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 90.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "Hips"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.15000000596046448
+                                },
+                                "Length": 0.07999999821186066,
+                                "Radius": 0.12999999523162842,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 90.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "Spine"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.019999999552965164,
+                                    "Y": 0.0,
+                                    "Z": 0.10999999940395355
+                                },
+                                "Length": 0.14000000059604645,
+                                "Radius": 0.12999999523162842,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 90.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "Chest"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.029999999329447746,
+                                    "Y": 0.0,
+                                    "Z": 0.09000000357627869
+                                },
+                                "Length": 0.05999999865889549,
+                                "Radius": 0.10000000149011612,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "Head"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.1420000046491623
+                                },
+                                "Length": 0.164000004529953,
+                                "Radius": 0.05999999865889549,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "UpperArm.L"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.14000000059604645
+                                },
+                                "Length": 0.1899999976158142,
+                                "Radius": 0.04500000178813934,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "ForeArm.L"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.16300000250339508
+                                },
+                                "Length": 0.17000000178813934,
+                                "Radius": 0.07999999821186066,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "UpLeg.L"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.1599999964237213
+                                },
+                                "Length": 0.20000000298023224,
+                                "Radius": 0.05999999865889549,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "Leg.L"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.1420000046491623
+                                },
+                                "Length": 0.164000004529953,
+                                "Radius": 0.05999999865889549,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "UpperArm.R"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.14000000059604645
+                                },
+                                "Length": 0.1899999976158142,
+                                "Radius": 0.04500000178813934,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "ForeArm.R"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.16300000250339508
+                                },
+                                "Length": 0.17000000178813934,
+                                "Radius": 0.07999999821186066,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "UpLeg.R"
+                }
+            },
+            {
+                "Properties": {
+                    "AggGeom": {
+                        "BoxElems": [],
+                        "CapsuleElems": [
+                            {
+                                "Center": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.1599999964237213
+                                },
+                                "Length": 0.20000000298023224,
+                                "Radius": 0.05999999865889549,
+                                "Rotation": {
+                                    "Pitch": 0.0,
+                                    "Roll": 0.0,
+                                    "Yaw": 0.0
+                                }
+                            }
+                        ],
+                        "SphereElems": []
+                    },
+                    "BoneName": "Leg.R"
+                }
+            }
+        ],
+        "Properties": {
+            "Constraints": [
+                {
+                    "ChildBone": "Spine",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Hips",
+                    "Swing1LimitDeg": 30.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 30.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 20.0,
+                    "TwistMinDeg": -20.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "Chest",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Spine",
+                    "Swing1LimitDeg": 30.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 30.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 20.0,
+                    "TwistMinDeg": -20.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "Head",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Chest",
+                    "Swing1LimitDeg": 45.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 45.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 45.0,
+                    "TwistMinDeg": -45.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "UpperArm.L",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Chest",
+                    "Swing1LimitDeg": 75.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 75.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 45.0,
+                    "TwistMinDeg": -45.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "ForeArm.L",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "UpperArm.L",
+                    "Swing1LimitDeg": 60.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 60.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 15.0,
+                    "TwistMinDeg": -15.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "UpLeg.L",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Hips",
+                    "Swing1LimitDeg": 60.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 60.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 30.0,
+                    "TwistMinDeg": -30.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "Leg.L",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "UpLeg.L",
+                    "Swing1LimitDeg": 60.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 60.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 10.0,
+                    "TwistMinDeg": -10.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "UpperArm.R",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Chest",
+                    "Swing1LimitDeg": 75.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 75.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 45.0,
+                    "TwistMinDeg": -45.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "ForeArm.R",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "UpperArm.R",
+                    "Swing1LimitDeg": 60.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 60.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 15.0,
+                    "TwistMinDeg": -15.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "UpLeg.R",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "Hips",
+                    "Swing1LimitDeg": 60.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 60.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 30.0,
+                    "TwistMinDeg": -30.0,
+                    "TwistMotion": "Limited"
+                },
+                {
+                    "ChildBone": "Leg.R",
+                    "FrameOffset": {
+                        "Pitch": 0.0,
+                        "Roll": 0.0,
+                        "Yaw": 0.0
+                    },
+                    "ParentBone": "UpLeg.R",
+                    "Swing1LimitDeg": 60.0,
+                    "Swing1Motion": "Limited",
+                    "Swing2LimitDeg": 60.0,
+                    "Swing2Motion": "Limited",
+                    "TwistMaxDeg": 10.0,
+                    "TwistMinDeg": -10.0,
+                    "TwistMotion": "Limited"
+                }
+            ]
+        }
+    },
+    "Version": 1
+}

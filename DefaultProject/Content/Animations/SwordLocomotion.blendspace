@@ -1,0 +1,152 @@
+{
+  "Properties": {},
+  "Version": 1,
+  "Dimension": 2,
+  "PreviewMesh": "Models/SwordModel/SK_SK_Mannequin_root.fbx.bin",
+  "Samples": [
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_B.anim.bin",
+      "SampleValue": {
+        "X": -180.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_B.anim.bin",
+      "SampleValue": {
+        "X": -180.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_L135.anim.bin",
+      "SampleValue": {
+        "X": -135.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_L135.anim.bin",
+      "SampleValue": {
+        "X": -135.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_L.anim.bin",
+      "SampleValue": {
+        "X": -90.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_L.anim.bin",
+      "SampleValue": {
+        "X": -90.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_L45.anim.bin",
+      "SampleValue": {
+        "X": -45.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_L45.anim.bin",
+      "SampleValue": {
+        "X": -45.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_F.anim.bin",
+      "SampleValue": {
+        "X": 0.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_F.anim.bin",
+      "SampleValue": {
+        "X": 0.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_R45.anim.bin",
+      "SampleValue": {
+        "X": 45.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_R45.anim.bin",
+      "SampleValue": {
+        "X": 45.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_R.anim.bin",
+      "SampleValue": {
+        "X": 90.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_R.anim.bin",
+      "SampleValue": {
+        "X": 90.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_R135.anim.bin",
+      "SampleValue": {
+        "X": 135.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_R135.anim.bin",
+      "SampleValue": {
+        "X": 135.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_walk_B.anim.bin",
+      "SampleValue": {
+        "X": 180.0,
+        "Y": 300.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Animation": "Models/SwordModel/AS_strafe_run_B.anim.bin",
+      "SampleValue": {
+        "X": 180.0,
+        "Y": 600.0,
+        "Z": 0.0
+      }
+    }
+  ]
+}

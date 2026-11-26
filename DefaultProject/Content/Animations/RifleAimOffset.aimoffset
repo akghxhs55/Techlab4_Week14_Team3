@@ -1,0 +1,27 @@
+{
+  "Type": "AimOffset1D",
+  "Version": 1,
+  "Skeleton": "Models/UnrealModel/SK_SKM_Quinn_Simple_root.fbx.bin",
+  "BaseSequence": "Models/UnrealModel/AS_MF_Rifle_Idle_ADS.anim.bin",
+  "BaseFrameIndex": 0,
+  "MinPitch": -90.0,
+  "MaxPitch": 90.0,
+  "Samples": [
+    {
+      "Pitch": -90.0,
+      "Sequence": "Models/UnrealModel/AS_MF_Rifle_Aim_Down.anim.bin",
+      "FrameIndex": 0
+    },
+    {
+      "Pitch": 0.0,
+      "Sequence": "Models/UnrealModel/AS_MF_Rifle_Idle_ADS.anim.bin",
+      "FrameIndex": 0
+    },
+    {
+      "Pitch": 90.0,
+      "Sequence": "Models/UnrealModel/AS_MF_Rifle_Aim_Up.anim.bin",
+      "FrameIndex": 0
+    }
+  ],
+  "PreviewMesh": "Models/UnrealModel/SK_SKM_Quinn_Simple_root.fbx.bin"
+}
