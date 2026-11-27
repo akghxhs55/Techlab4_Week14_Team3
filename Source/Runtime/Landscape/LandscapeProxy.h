@@ -27,6 +27,8 @@ public:
 	UPROPERTY()
 	TArray<ULandscapeHeightfieldCollisionComponent*> CollisionComponents;
 
+	ULandscapeInfo* LandscapeInfo = nullptr;
+
 	virtual ALandscape* GetLandscapeActor() = 0;
 	ULandscapeInfo* GetLandscapeInfo() const { return LandscapeInfo; }
 	ULandscapeInfo* CreateLandscapeInfo();
@@ -34,8 +36,15 @@ public:
 	// 높이 데이터로 컴포넌트, 텍스처, 콜리전 데이터를 생성
 	void Import(int32 MinX, int32 MinY, int32 MaxX, int32 MaxY, const TArray<uint16>& HeightData);
 
+	using Super::Serialize;
+	virtual void Serialize(FStructuredArchive::FRecord Record) override;
+
 	void RegisterAllComponents() override;
 	void UnregisterAllComponents() override;
 
-	ULandscapeInfo* LandscapeInfo = nullptr;
+private:
+	void DestroyLandscapeInfo();
+	void RebuildComponentReferences();
+	void BuildDerivedData();
+	void ClearLandscapeComponents();
 };

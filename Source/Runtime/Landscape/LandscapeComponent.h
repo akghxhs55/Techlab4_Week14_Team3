@@ -14,6 +14,8 @@ class ULandscapeComponent : public UPrimitiveComponent
 	GENERATED_BODY()
 
 public:
+	~ULandscapeComponent() override;
+
 	UPROPERTY()
 	int32 SectionBaseX = 0;
 	UPROPERTY()
@@ -51,6 +53,6 @@ protected:
 private:
 	UPROPERTY()
 	ULandscapeHeightfieldCollisionComponent* CollisionComponentRef = nullptr;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Transient)
 	UTexture2D* HeightmapTexture = nullptr;
 };

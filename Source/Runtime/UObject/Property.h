@@ -134,6 +134,11 @@ class FUInt32Property : public TProperty_Numeric<uint32>
     DECLARE_FIELD(FUInt32Property, TProperty_Numeric<uint32>)
 };
 
+class FUInt16Property : public TProperty_Numeric<uint16>
+{
+	DECLARE_FIELD(FUInt16Property, TProperty_Numeric<uint16>)
+};
+
 // UE에서는 셋 다 FStructProperty(Struct = TBaseStructure<FVector>) 하나로 처리한다
 class FVectorProperty : public TProperty_Numeric<FVector>
 {
@@ -276,6 +281,7 @@ struct TPropertyTypeFor
 DEFINE_PROPERTY_TYPE(float, FFloatProperty)
 DEFINE_PROPERTY_TYPE(int32, FIntProperty)
 DEFINE_PROPERTY_TYPE(uint32, FUInt32Property)
+DEFINE_PROPERTY_TYPE(uint16, FUInt16Property)
 DEFINE_PROPERTY_TYPE(FVector, FVectorProperty)
 DEFINE_PROPERTY_TYPE(FVector4, FVector4Property)
 DEFINE_PROPERTY_TYPE(FRotator, FRotatorProperty)

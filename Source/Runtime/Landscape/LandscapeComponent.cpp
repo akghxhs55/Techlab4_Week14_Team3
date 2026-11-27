@@ -3,6 +3,13 @@
 
 #include "LandscapeInfo.h"
 #include "LandscapeProxy.h"
+#include "Render/Texture2D.h"
+
+ULandscapeComponent::~ULandscapeComponent()
+{
+	delete HeightmapTexture;
+	HeightmapTexture = nullptr;
+}
 
 ULandscapeInfo* ULandscapeComponent::GetLandscapeInfo() const
 {

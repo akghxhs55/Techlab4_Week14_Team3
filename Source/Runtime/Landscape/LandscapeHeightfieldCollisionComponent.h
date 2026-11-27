@@ -27,6 +27,7 @@ public:
 	int32 CollisionSizeQuads = 0;
 	FBox CachedLocalBox;
 
+	UPROPERTY()
 	TArray<uint16> CollisionHeightData;
 
 	ULandscapeComponent* GetRenderComponent() const { return RenderComponentRef; }
