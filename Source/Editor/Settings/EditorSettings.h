@@ -73,6 +73,8 @@ struct FEditorSettings
 	bool bShowSkeletalMesh = true;
 	bool bShowParticles = true;
 
+	bool bShowNavigation = false;
+
 	inline uint32 GetDirectionalShadowMapSize() const { return DirectionalShadowMapSizePerLevels[DirectionalShadowMapSizeLevel]; }
 	inline uint32 GetPointShadowMapSize() const { return PointShadowMapSizePerLevels[PointShadowMapSizeLevel]; }
 	inline uint32 GetSpotShadowMapSize() const { return SpotShadowMapSizePerLevels[SpotShadowMapSizeLevel]; }

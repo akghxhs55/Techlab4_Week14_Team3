@@ -29,6 +29,7 @@ void FViewportsPanel::DrawShowMenu()
         Settings.bShowPhysicsBodies = Defaults.bShowPhysicsBodies;
         Settings.bShowVignette = Defaults.bShowVignette;
         Settings.bShowCameraOverlay = Defaults.bShowCameraOverlay;
+		Settings.bShowNavigation = Defaults.bShowNavigation;
     }
 
     // 뷰포트 통계: 콘솔의 stat 명령과 같은 상태를 켜고 끈다.
@@ -74,6 +75,7 @@ void FViewportsPanel::DrawShowMenu()
     Flag("Particles", "Particles", Settings.bShowParticles);
     Flag("SkeletalMesh", "Skeletal Meshes", Settings.bShowSkeletalMesh);
     Flag("StaticMesh", "Static Meshes", Settings.bDrawPrimitives);
+    Flag("Navigation", "Navigation", Settings.bShowNavigation);
     SectionHeader("Developer");
     Flag("Cascade", "Cascade Bounds", Settings.bDrawCascadeBounds);
     Flag("Pivot", "Object UUID", Settings.bShowUUID);

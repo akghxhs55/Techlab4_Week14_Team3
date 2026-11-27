@@ -36,5 +36,7 @@ struct FSceneRenderOptions
 	bool bShowParticles = true;
 	bool bUsePreviewSkybox = false;
 
+	bool bShowNavigation = false;
+
 	ELightingModel LightingModel = ELightingModel::Phong;
 };

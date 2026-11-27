@@ -343,6 +343,8 @@ void UWorld::ClearWorld()
 	// 지연 삭제 대기 중인 액터는 이미 레벨에서 빠져 있으므로 따로 해제한다.
 	FlushPendingDestroyActors();
 
+	NavigationSystem.ResetNavigation();
+
 	EndPlay();
 
 	// BeginPlay 대기 중인 Actor 제거
@@ -1076,6 +1078,15 @@ UWorld* UWorld::CreateWorld(const EWorldType InWorldType, bool bInformEngineOfWo
 	return NewWorld;
 }
 
+void UWorld::SetCurrentLevel(ULevel* InLevel)
+{
+	if (CurrentLevel != InLevel)
+	{
+		NavigationSystem.ResetNavigation();
+		CurrentLevel = InLevel;
+	}
+}
+
 UWorld* UWorld::GetDuplicatedWorldForPIE(UWorld * InWorld)
 {
 	if (!InWorld)
@@ -1091,6 +1102,13 @@ UWorld* UWorld::GetDuplicatedWorldForPIE(UWorld * InWorld)
 	Params.PortFlags = EPropertyPortFlags::PPF_DuplicateForPIE;
 
 	StaticDuplicateObjectEx(Params);
+
+	if (InWorld->GetCurrentLevel() == InWorld->GetPersistentLevel())
+	{
+		PIEWorld->GetNavigationSystem().CopyBuiltNavigationFrom(
+			InWorld->GetNavigationSystem());
+	}
+
 	return PIEWorld;
 }
 
@@ -1297,3 +1315,5 @@ void UWorld::StartHitStop(float Duration, float Dilation)
 	}
 	HitStopTimeRemaining = std::max(HitStopTimeRemaining, Duration);
 }
+
+

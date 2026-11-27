@@ -83,6 +83,10 @@ void FLevelEditorTab::DrawMenuBar()
 	{
 		const bool bCanPackage = !IsPackaging || !IsPackaging();
 		if (ImGui::MenuItem("Package Game (Release)", nullptr, false, bCanPackage)) { OnPackageGame.Broadcast(); }
+
+		if (ImGui::MenuItem("Build Navigation"))
+			OnBuildNavigation.Broadcast();
+
 		ImGui::EndMenu();
 	}
 }

@@ -39,6 +39,10 @@ public:
 			(bWriteDepth ? EDepthStencilState::Default : EDepthStencilState::ReadOnly);
 	}
 
+	void DrawNavigation(const TArray<FVector>& Faces,
+		const TArray<FVector>& Boudaries,
+		const FMatrix& ViewProjection);
+
 private:
 	FRenderer* Renderer;
 

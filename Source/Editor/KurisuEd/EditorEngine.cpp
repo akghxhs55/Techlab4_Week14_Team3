@@ -287,6 +287,11 @@ void UEditorEngine::InitLevelEditorTab()
 	LevelEditorTab->OnImportFbx.Add([this](EFbxImportMode Mode) { FEditorFileUtils::ImportFbx(Mode); });
 	LevelEditorTab->OnPackageGame.Add([this]() { Packager.Start("Release"); });
 	LevelEditorTab->SetIsPackagingQuery([this]() { return Packager.IsRunning(); });
+	LevelEditorTab->OnBuildNavigation.Add([this]()
+		{
+			if (EditorWorld)
+				EditorWorld->GetNavigationSystem().BuildNavigation(*EditorWorld);
+		});
 
 	OutputLogPanel = LevelEditorTab->AddPanel<FOutputLogPanel>();
 	OutputLogPanel->SetOpen(false);
