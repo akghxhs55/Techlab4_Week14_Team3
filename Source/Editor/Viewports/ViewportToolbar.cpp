@@ -27,6 +27,7 @@
 #include "GameFramework/Actor/StockingActor.h"
 #include "GameFramework/Actor/ParticleEventManager.h"
 #include "GameFramework/Actor/ParticleHitEffectActor.h"
+#include "Landscape/Landscape.h"
 #include "Core/StatOverlay.h"
 #include "Core/Stats/LightweightStats.h"
 #include <algorithm>
@@ -480,6 +481,8 @@ void FViewportsPanel::DrawSpawnMenu(FEditorViewportClient& Client)
     Spawn("Particle System", AParticleSystemActor::StaticClass());
     Spawn("Particle Event Manager", AParticleEventManager::StaticClass());
     Spawn("Particle Hit Effect", AParticleHitEffectActor::StaticClass());
+    ImGui::SeparatorText("Other");
+    Spawn("Landscape", ALandscape::StaticClass());
     ImGui::EndDisabled();
     if (World) ImGui::TextDisabled("%d actors", World->GetActorNum());
 }

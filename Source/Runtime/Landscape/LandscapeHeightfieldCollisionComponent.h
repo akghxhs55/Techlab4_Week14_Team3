@@ -27,6 +27,7 @@ public:
 	int32 CollisionSizeQuads = 0;
 	FBox CachedLocalBox;
 
+	UPROPERTY()
 	TArray<uint16> CollisionHeightData;
 
 	ULandscapeComponent* GetRenderComponent() const { return RenderComponentRef; }
@@ -49,6 +50,7 @@ protected:
 	void OnDestroyPhysicsState() override;
 
 private:
+	UPROPERTY()
 	ULandscapeComponent* RenderComponentRef = nullptr;
 
 	// TUniquePtr에는 deleter를 지정할 수 없으므로 std::unique_ptr을 사용

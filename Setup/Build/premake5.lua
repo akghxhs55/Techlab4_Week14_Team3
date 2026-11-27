@@ -318,6 +318,7 @@ project "KurisuEngine"
 		ProjectRoot .. "/Source/Runtime/**.h",
 		ProjectRoot .. "/Source/Runtime/**.hpp",
 		ProjectRoot .. "/Source/Runtime/**.cpp",
+		GeneratedDir .. "/Runtime/Runtime.gen.cpp",
 		"%{IncludeDir.DDSLoader}/*.h",
 		"%{IncludeDir.DDSLoader}/*.cpp",
 	}
@@ -344,6 +345,7 @@ project "KurisuEngine"
 	vpaths
 	{
 		["Runtime/*"] = ProjectRoot .. "/Source/Runtime/**",
+		["Generated/*"] = GeneratedDir .. "/Runtime/*",
 		["ThirdParty/Lua/*"] = "%{IncludeDir.lua}/*",
 		["ThirdParty/DDSLoader/*"] = "%{IncludeDir.DDSLoader}/*",
 	}
@@ -356,7 +358,7 @@ project "KurisuEngine"
 	prebuildcommands { HeaderTool .. ' Runtime "' .. GeneratedDir .. '/Runtime" "' .. ProjectRoot .. '/Source/Runtime"' }
 
 	-- sol2 템플릿이 섹션 수 제한을 넘긴다
-	filter "files:**/Script/**.cpp"
+	filter { "files:**/Script/**.cpp or **.gen.cpp" }
 		buildoptions { "/bigobj" }
 	filter {}
 
@@ -415,6 +417,7 @@ project "KurisuEditor"
 	vpaths
 	{
 		["Editor/*"] = ProjectRoot .. "/Source/Editor/**",
+		["Generated/*"] = GeneratedDir .. "/Editor/*",
 		["Runtime/Launch/*"] = ProjectRoot .. "/Source/Runtime/Launch/*",
 		["ThirdParty/ImGui/*"] = "%{IncludeDir.ImGui}/**",
 		["ThirdParty/ImGuiNodeEditor/*"] = "%{IncludeDir.ImGuiNodeEditor}/**",
@@ -435,6 +438,7 @@ project "KurisuEditor"
 	{
 		ProjectRoot .. "/Source/Editor/**.h",
 		ProjectRoot .. "/Source/Editor/**.cpp",
+		GeneratedDir .. "/Editor/Editor.gen.cpp",
 		ProjectRoot .. "/Source/Editor/**.rc",   -- 창·exe 아이콘
 		-- 프로세스 ANSI 코드 페이지를 UTF-8로 둔다. 한글 프로젝트 경로가 char 경로 API에서 깨지지 않게 한다.
 		ProjectRoot .. "/Source/Runtime/Launch/KurisuApp.manifest",
@@ -445,7 +449,11 @@ project "KurisuEditor"
 	-- game must finish first. Solution dependencies cannot be per-configuration,
 	-- so Debug editor builds also build the (small) game launcher.
 	dependson { "KurisuHeaderTool", "KurisuGame" }
-	prebuildcommands { HeaderTool .. ' Editor "' .. GeneratedDir .. '/Editor" "' .. ProjectRoot .. '/Source/Editor"' }
+	-- --ref: Editor의 UPROPERTY가 가리키는 Runtime 클래스의 헤더를 찾기 위해 Runtime 헤더도 읽는다.
+	prebuildcommands { HeaderTool .. ' Editor "' .. GeneratedDir .. '/Editor" "' .. ProjectRoot .. '/Source/Editor" --ref "' .. ProjectRoot .. '/Source/Runtime"' }
+	filter "files:**.gen.cpp"
+		buildoptions { "/bigobj" }
+	filter {}
 
 	includedirs
 	{

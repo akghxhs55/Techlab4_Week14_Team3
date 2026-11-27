@@ -14,6 +14,9 @@ namespace EditorDragDrop
 	// 페이로드 내용: 에셋 경로 문자열
 	inline constexpr const char* ParticleSystem = "ASSET_PARTICLE_SYSTEM";
 
+	// 페이로드 내용: 높이맵 파일(.r16/.raw) 절대 경로 문자열 (UTF-8)
+	inline constexpr const char* Heightmap = "ASSET_HEIGHTMAP";
+
 	inline constexpr const char* Component = "COMPONENT";
 	inline constexpr const char* Actor = "SCENE_ACTOR";
 }

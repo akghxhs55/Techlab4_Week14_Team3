@@ -106,6 +106,11 @@ UTexture2D::~UTexture2D()
 
 UTexture2D* UTexture2D::CreateDynamicTexture(uint32 InWidth, uint32 InHeight, const void* InitialData)
 {
+	return CreateDynamicTexture(InWidth, InHeight, ETextureFormat::R8G8B8A8_UNorm, InitialData);
+}
+
+UTexture2D* UTexture2D::CreateDynamicTexture(uint32 InWidth, uint32 InHeight, ETextureFormat InFormat, const void* InitialData)
+{
 	if (InWidth == 0 || InHeight == 0)
 	{
 		return nullptr;
@@ -117,15 +122,16 @@ UTexture2D* UTexture2D::CreateDynamicTexture(uint32 InWidth, uint32 InHeight, co
 		return nullptr;
 	}
 
-	FTextureDesc Desc{};
-	Desc.Width = InWidth;
-	Desc.Height = InHeight;
-	Desc.MipLevels = 1;
-	Desc.ArraySize = 1;
-	Desc.Format = ETextureFormat::R8G8B8A8_UNorm;
-	Desc.BindFlags = ETextureBindFlags::ShaderResource;
-	Desc.Usage = ETextureUsage::Default;
-	Desc.bGenerateMips = false;
+	FTextureDesc Desc{
+		.Width = InWidth,
+		.Height = InHeight,
+		.MipLevels = 1,
+		.ArraySize = 1,
+		.Format = InFormat,
+		.BindFlags = ETextureBindFlags::ShaderResource,
+		.Usage = ETextureUsage::Default,
+		.bGenerateMips = false,
+	};
 
 	TUniquePtr<FTexture2D> Resource = RenderCommand::CreateTexture2D(Desc, InitialData);
 	if (!Resource || !Resource->GetSRV())

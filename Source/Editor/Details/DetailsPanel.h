@@ -11,6 +11,7 @@ struct FTransform;
 class FImGuiRenderer;
 class FEditorUndoHistory;
 class USkeletalMesh;
+class ALandscapeProxy;
 using FShadowPreviewQuery = std::function<bool(const ULightComponent*, FTexture2DArray*&, TArray<FLightShadowRenderData>&)>;
 
 using DetailsSelectionCallback = std::function<void(UActorComponent*)>;
@@ -72,6 +73,10 @@ public:
 			PendingRootComponent = nullptr;
 			PendingDeleteComponent = nullptr;
 			PendingDragComponent = PendingDroppedComponent = nullptr;
+			PendingHeightmapLandscape = nullptr;
+			PendingHeightmapPath.clear();
+			HeightmapImportMessage.clear();
+			bHeightmapImportError = false;
 		}
 
 		TargetActors = std::move(Filtered);
@@ -129,6 +134,13 @@ private:
 	void DrawSceneComponentNode(USceneComponent* Component, USceneComponent* Root, UActorComponent*& OutSelectedComponent);
 	void TryReparent(USceneComponent* DroppedComponent, USceneComponent* DragComponent);
 	void CommitPendingObjectEdit();
+
+	void DrawLandscapeImportSlot(ALandscapeProxy* Landscape);
+	void ProcessPendingHeightmapImport();
+	ALandscapeProxy* PendingHeightmapLandscape = nullptr;
+	FString PendingHeightmapPath;
+	FString HeightmapImportMessage;
+	bool bHeightmapImportError = false;
 
 	UWorld* World = nullptr;
 	FEditorUndoHistory* UndoHistory = nullptr;
