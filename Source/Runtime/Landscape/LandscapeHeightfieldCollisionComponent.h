@@ -49,6 +49,7 @@ protected:
 	void OnDestroyPhysicsState() override;
 
 private:
+	UPROPERTY()
 	ULandscapeComponent* RenderComponentRef = nullptr;
 
 	// TUniquePtr에는 deleter를 지정할 수 없으므로 std::unique_ptr을 사용

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "LandscapeComponent.h"
-#include "LandscapeHeightfieldCollisionComponent.h"
 #include "GameFramework/Actor.h"
 #include "LandscapeProxy.generated.h"
 
+class ULandscapeHeightfieldCollisionComponent;
+class ULandscapeComponent;
 class ALandscape;
 class ULandscapeInfo;
 class UMaterialInterface;

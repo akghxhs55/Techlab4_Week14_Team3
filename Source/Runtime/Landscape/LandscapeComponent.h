@@ -1,9 +1,9 @@
 #pragma once
 
-#include "LandscapeHeightfieldCollisionComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "LandscapeComponent.generated.h"
 
+class ULandscapeHeightfieldCollisionComponent;
 class ULandscapeInfo;
 class ALandscapeProxy;
 class UTexture2D;
