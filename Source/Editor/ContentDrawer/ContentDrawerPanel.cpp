@@ -27,6 +27,7 @@
 #include "Particles/ParticleLODLevel.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemFile.h"
+#include "Landscape/LandscapeHeightmapImport.h"
 #include "Particles/Module/ParticleModuleColor.h"
 #include "Particles/Module/ParticleModuleLifetime.h"
 #include "Particles/Module/ParticleModuleRequired.h"
@@ -1845,6 +1846,15 @@ void FContentDrawerPanel::RenderContents()
 					if (!bIsDirectory && ParticleSystemFile::IsParticleSystemPath(PathString) && ImGui::BeginDragDropSource())
 					{
 						ImGui::SetDragDropPayload(EditorDragDrop::ParticleSystem, PathString.c_str(), PathString.size() + 1);
+
+						ImGui::TextUnformatted(FilenameString.c_str());
+
+						ImGui::EndDragDropSource();
+					}
+					// 높이맵 원시 파일도 경로를 페이로드로 전달한다
+					if (!bIsDirectory && LandscapeHeightmapImport::IsHeightmapPath(PathString) && ImGui::BeginDragDropSource())
+					{
+						ImGui::SetDragDropPayload(EditorDragDrop::Heightmap, PathString.c_str(), PathString.size() + 1);
 
 						ImGui::TextUnformatted(FilenameString.c_str());
 

@@ -28,6 +28,8 @@
 #include "Components/ParticleSystemComponent.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemFile.h"
+#include "Landscape/LandscapeProxy.h"
+#include "Landscape/LandscapeHeightmapImport.h"
 
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/AnimSequence.h"
@@ -4285,6 +4287,10 @@ void FDetailsPanel::OnRender()
 		// 액터 -> 컴포넌트 순으로, 클래스별 프로퍼티 표시
 		ImGui::PushID(TargetActor);
 		DrawProperties(TargetActor, CustomFont);
+		if (ALandscapeProxy* Landscape = Cast<ALandscapeProxy>(TargetActor); Landscape && TargetActors.Num() == 1)
+		{
+			DrawLandscapeImportSlot(Landscape);
+		}
 		ImGui::PopID();
 
 		if (TargetComponent)
@@ -4452,6 +4458,8 @@ void FDetailsPanel::OnRender()
 
 			PendingDeleteComponent = nullptr;
 		}
+
+		ProcessPendingHeightmapImport();
 	}
 	else if (bPendingEditCommit)
 	{
@@ -4460,6 +4468,91 @@ void FDetailsPanel::OnRender()
 	ImGui::End();
 }
 
+
+void FDetailsPanel::DrawLandscapeImportSlot(ALandscapeProxy* Landscape)
+{
+	if (!BeginPropertyGridTable("LandscapeImport"))
+	{
+		return;
+	}
+
+	ImGui::TableNextRow();
+	ImGui::TableSetColumnIndex(0);
+	DrawPropertyGridLabel("Heightmap");
+	ImGui::TableSetColumnIndex(1);
+
+	ImGui::Button("Drop .r16 / .raw here", ImVec2(-1.0f, 0.0f));
+	if (ImGui::IsItemHovered() && !ImGui::GetDragDropPayload())
+	{
+		ImGui::SetTooltip("16-bit little-endian, square (2 * N^2 bytes)");
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* Payload = ImGui::AcceptDragDropPayload(EditorDragDrop::Heightmap))
+		{
+			PendingHeightmapLandscape = Landscape;
+			PendingHeightmapPath = static_cast<const char*>(Payload->Data);
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	if (!HeightmapImportMessage.empty())
+	{
+		if (bHeightmapImportError)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.95f, 0.45f, 0.35f, 1.0f));
+			ImGui::TextWrapped("%s", HeightmapImportMessage.c_str());
+			ImGui::PopStyleColor();
+		}
+		else
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_TextDisabled));
+			ImGui::TextWrapped("%s", HeightmapImportMessage.c_str());
+			ImGui::PopStyleColor();
+		}
+	}
+
+	EndPropertyGridTable();
+}
+
+void FDetailsPanel::ProcessPendingHeightmapImport()
+{
+	if (!PendingHeightmapLandscape)
+	{
+		return;
+	}
+
+	ALandscapeProxy* Landscape = PendingHeightmapLandscape;
+	const FString Path = std::move(PendingHeightmapPath);
+	PendingHeightmapLandscape = nullptr;
+	PendingHeightmapPath.clear();
+
+	if (Landscape != TargetActor)
+	{
+		return;
+	}
+
+	CommitPendingObjectEdit();
+
+	FString Error;
+	if (!LandscapeHeightmapImport::ImportFromFile(*Landscape, FPaths::FromUtf8(Path), Error))
+	{
+		HeightmapImportMessage = Error;
+		bHeightmapImportError = true;
+		KRS_LOG(Warning, "{}", Error);
+		return;
+	}
+
+	const FString FileName = FPaths::ToUtf8(FPaths::FromUtf8(Path).filename());
+	HeightmapImportMessage = std::format("Imported {} ({} components)", FileName, Landscape->LandscapeComponents.Num());
+	bHeightmapImportError = false;
+	KRS_LOG(Info, "Landscape heightmap imported: {}", Path);
+
+	// 선택돼 있던 Landscape 컴포넌트는 파괴됐으므로 루트로 되돌린다.
+	EditingNameComponent = nullptr;
+	bFocusNameEdit = false;
+	SelectComponent(Landscape->GetRootComponent());
+}
 
 void FDetailsPanel::SelectComponent(UActorComponent* Component)
 {
