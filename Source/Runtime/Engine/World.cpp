@@ -140,7 +140,7 @@ AActor* UWorld::SpawnActor(UClass* Class, FName InName, const FTransform* Transf
 	{
 		NewActor->GetRootComponent()->SetTransform(SpawnTransform);
 	}
-	
+
 	// 4. Level->Actors에 등록한 뒤 컴포넌트를 월드에 연결한다.
 	PersistentLevel->AddActor(NewActor);
 	NewActor->RegisterAllComponents();
@@ -186,7 +186,7 @@ void UWorld::Tick(float RealDeltaTime)
 	{
 		EditorWorldTick(DeltaTime);
 	}
-	
+
 	if (WorldType == EWorldType::EditorPreview)
 	{
 		PreviewWorldTick(DeltaTime);
@@ -449,6 +449,8 @@ void UWorld::ReleaseWorldReferences(AActor* Actor)
 {
 	if (!Actor)
 		return;
+
+	NavigationSystem.UnregisterNavData(Actor);
 
 	// 컨트롤러가 사라질 폰을 계속 빙의하고 있지 않게 먼저 푼다. 폰이 아직 살아 있을 때 UnPossessed가 불린다.
 	if (PlayerController && PlayerController->GetPawn() == Actor)
@@ -1080,14 +1082,15 @@ UWorld* UWorld::CreateWorld(const EWorldType InWorldType, bool bInformEngineOfWo
 
 void UWorld::SetCurrentLevel(ULevel* InLevel)
 {
-	if (CurrentLevel != InLevel)
-	{
-		NavigationSystem.ResetNavigation();
-		CurrentLevel = InLevel;
-	}
+	if (CurrentLevel == InLevel)
+		return;
+
+	NavigationSystem.ResetNavigation();
+	CurrentLevel = InLevel;
+	NavigationSystem.RestoreNavigation(*this);
 }
 
-UWorld* UWorld::GetDuplicatedWorldForPIE(UWorld * InWorld)
+UWorld* UWorld::GetDuplicatedWorldForPIE(UWorld* InWorld)
 {
 	if (!InWorld)
 	{
@@ -1102,12 +1105,7 @@ UWorld* UWorld::GetDuplicatedWorldForPIE(UWorld * InWorld)
 	Params.PortFlags = EPropertyPortFlags::PPF_DuplicateForPIE;
 
 	StaticDuplicateObjectEx(Params);
-
-	if (InWorld->GetCurrentLevel() == InWorld->GetPersistentLevel())
-	{
-		PIEWorld->GetNavigationSystem().CopyBuiltNavigationFrom(
-			InWorld->GetNavigationSystem());
-	}
+	PIEWorld->GetNavigationSystem().RestoreNavigation(*PIEWorld);
 
 	return PIEWorld;
 }

@@ -1,13 +1,14 @@
 #include "EnginePCh.h"
 #include "Navigation/NavigationSystem.h"
 #include "Navigation/NavGeometry.h"
+#include "Navigation/RecastNavMesh.h"
 
 #include "Components/CapsuleComponent.h"
 #include "Components/CharacterMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/Level.h"
 #include "Engine/World.h"
-#include "GameFramework/Actor/MyCharacter.h"#
+#include "GameFramework/Actor/MyCharacter.h"
 #include "GameFramework/Pawn.h"
 #include "Math/EngineMath.h"
 #include "Render/Mesh.h"
@@ -25,16 +26,6 @@
 #include <limits>
 #include <memory>
 #include <vector>
-
-struct FNavMeshData
-{
-	TArray<unsigned char> BakedTile;
-	FNavMeshDebugGeometry Debug;
-	std::unique_ptr<dtNavMesh, decltype(&dtFreeNavMesh)>
-		Mesh{ nullptr, &dtFreeNavMesh };
-	std::unique_ptr<dtNavMeshQuery, decltype(&dtFreeNavMeshQuery)>
-		Query{ nullptr, &dtFreeNavMeshQuery };
-};
 
 namespace
 {
@@ -395,96 +386,109 @@ namespace
 			}
 		}
 	}
-}
 
-FNavigationSystem::FNavigationSystem() = default;
-FNavigationSystem::~FNavigationSystem() = default;
-
-bool FNavigationSystem::InstallTile(TArray<uint8> BakedTile)
-{
-	auto Next = MakeUnique<FNavMeshData>();
-	Next->Mesh.reset(dtAllocNavMesh());
-	Next->Query.reset(dtAllocNavMeshQuery());
-	if (!Next->Mesh || !Next->Query)
-		return ReportNavBuildFailure("Detour allocation");
-
-	std::unique_ptr<uint8, decltype(&dtFree)> TileMemory(
-		static_cast<uint8*>(dtAlloc(BakedTile.Num(), DT_ALLOC_PERM)), &dtFree);
-
-	if (!TileMemory)
-		return ReportNavBuildFailure("Detour tile allocation");
-
-	std::memcpy(TileMemory.get(), BakedTile.GetData(), BakedTile.Num());
-
-	if (dtStatusFailed(Next->Mesh->init(TileMemory.get(), BakedTile.Num(), DT_TILE_FREE_DATA)))
-		return ReportNavBuildFailure("Detour mesh initialization");
-
-	TileMemory.release();
-
-	if (dtStatusFailed(Next->Query->init(Next->Mesh.get(), 2048)))
-		return ReportNavBuildFailure("Detour query initialization");
-
-	const dtMeshTile* Tile = Next->Mesh->getTileAt(0, 0, 0);
-	if (!Tile || !Tile->header)
-		return ReportNavBuildFailure("active Detour tile");
-
-	BuildDebugGeometry(*Tile, Next->Debug);
-	if (Next->Debug.FaceVertices.IsEmpty())
-		return ReportNavBuildFailure("debug triangles");
-
-	Next->BakedTile = std::move(BakedTile);
-	ActiveData = std::move(Next);
-	++NavMeshVersion;
-	return true;
-}
-
-bool FNavigationSystem::BuildNavigation(const UWorld& World)
-{
-	Navigation::FRecastGeometry Geometry;
-	TArray<unsigned char> BakedTile;
-
-	if (!CollectGeometry(World, Geometry) ||
-		!BuildTile(Geometry, ReadBuildAgent(*World.GetCurrentLevel()), {}, BakedTile) ||
-		!InstallTile(std::move(BakedTile)))
+	ARecastNavMesh* FindPersistentNavData(const UWorld& World)
 	{
+		const ULevel* Level = World.GetPersistentLevel();
+		if (!Level || World.GetCurrentLevel() != Level)
+		{
+			return nullptr;
+		}
+
+		ARecastNavMesh* Result = nullptr;
+		for (AActor* Actor : Level->GetActors())
+		{
+			auto* NavMesh = Cast<ARecastNavMesh>(Actor);
+			if (!NavMesh || World.IsPendingDestroy(NavMesh))
+				continue;
+
+			if (Result)
+			{
+				KRS_LOG(Warning, "Navigation: multiplr RecastNavMesh actors; using {}",
+					Result->GetName());
+				break;
+			}
+
+			Result = NavMesh;
+		}
+
+		return Result;
+	}
+}
+
+
+bool FNavigationSystem::BuildNavigation(UWorld& World)
+{
+	const ULevel* Level = World.GetCurrentLevel();
+	if (!Level || Level != World.GetPersistentLevel())
+		return ReportNavBuildFailure("persistent level");
+
+	ARecastNavMesh* ExistingNavMesh = FindPersistentNavData(World);
+	Navigation::FRecastGeometry Geometry;
+	TArray<uint8> TileBytes;
+
+	ARecastNavMesh* InstalledNavMesh = nullptr;
+	if (CollectGeometry(World, Geometry) &&
+		BuildTile(Geometry, ReadBuildAgent(*Level), {}, TileBytes))
+	{
+		InstalledNavMesh = ARecastNavMesh::InstallBakedTile(
+			World, ExistingNavMesh, std::move(TileBytes));
+	}
+
+	if (!InstalledNavMesh)
+	{
+		// 실패 후 씬을 저장해도 이전 베이크가 기록되지 않게 한다.
+		if (ExistingNavMesh)
+			ExistingNavMesh->ClearNavMeshData();
+
 		ResetNavigation();
 		return false;
 	}
+
+	MainNavData = InstalledNavMesh;
+	++NavMeshVersion;
 
 	KRS_LOG(Info, "Build Navigation: {} input triangles, {} detail triangles, version {}",
 		Geometry.Triangles.Num() / 3,
-		ActiveData->Debug.FaceVertices.Num() / 3, NavMeshVersion);
+		MainNavData->GetDebugGeometry()->FaceVertices.Num() / 3, 
+		NavMeshVersion);
+
 	return true;
 }
 
-bool FNavigationSystem::CopyBuiltNavigationFrom(const FNavigationSystem& Source)
+void FNavigationSystem::RestoreNavigation(const UWorld& World)
 {
-	if (!Source.ActiveData)
+	ARecastNavMesh* NavMesh = FindPersistentNavData(World);
+	if (!NavMesh || !NavMesh->InitializeFromStoredTile())
 	{
 		ResetNavigation();
-		return true;
+		return;
 	}
 
-	if (!InstallTile(Source.ActiveData->BakedTile))
+	if (MainNavData != NavMesh)
 	{
-		ResetNavigation();
-		return false;
+		MainNavData = NavMesh;
+		++NavMeshVersion;
+		KRS_LOG(Info, "Navigation: restored baked tile on {}", NavMesh->GetName());
 	}
+}
 
-	KRS_LOG(Info, "PIE Navigation: installed baked tile");
-	return true;
+void FNavigationSystem::UnregisterNavData(const AActor* Actor)
+{
+	if (Actor && MainNavData == Actor)
+		ResetNavigation();
 }
 
 void FNavigationSystem::ResetNavigation()
 {
-	if (ActiveData)
+	if (MainNavData)
 	{
-		ActiveData.reset();
+		MainNavData = nullptr;
 		++NavMeshVersion;
 	}
 }
 
 const FNavMeshDebugGeometry* FNavigationSystem::GetDebugGeometry() const
 {
-	return ActiveData ? &ActiveData->Debug : nullptr;
+	return MainNavData ? MainNavData->GetDebugGeometry() : nullptr;
 }

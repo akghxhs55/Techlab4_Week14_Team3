@@ -185,8 +185,12 @@ bool FJsonArchive::LoadWorldFromBytes(UWorld* World, const TArray<uint8>& Bytes)
 	World->Serialize(Root.EnterRecord("World"));
 	Ar.Close();
 
+	if (Reader.IsError())
+		return false;
+
 	World->GetScene().BuildBVH();
-	return !Reader.IsError();
+	World->GetNavigationSystem().RestoreNavigation(*World);
+	return true;
 }
 
 bool FJsonArchive::SaveWorld(UWorld* World, const FString& Path)
