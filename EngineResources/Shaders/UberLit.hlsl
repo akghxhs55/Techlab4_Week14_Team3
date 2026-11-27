@@ -387,7 +387,7 @@ VS_OUT Uber_VS(FVertexFactoryInput Input, uint InstanceId)
         const uint Bone = (uint)(Prim.Flags.z - 0.5f);   // 본 번호 + 1로 실은 값을 되돌린다
         Output.BoneWeight = GpuSkinWeightForBone(Input.BlendIndices, Input.BlendWeights, Bone);
 #else
-        Output.BoneWeight = Input.Color.r;
+        Output.BoneWeight = VF.Color.r;
 #endif
     }
     Output.UV = VF.UV;

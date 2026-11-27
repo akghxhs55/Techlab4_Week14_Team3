@@ -1,5 +1,6 @@
 #include "EnginePCH.h"
 #include "LandscapeComponent.h"
+#include "LandscapeRender.h"
 
 #include "LandscapeInfo.h"
 #include "LandscapeProxy.h"
@@ -24,8 +25,11 @@ ALandscapeProxy* ULandscapeComponent::GetLandscapeProxy() const
 
 FPrimitiveSceneProxy* ULandscapeComponent::CreateSceneProxy()
 {
-	// TODO: 렌더링
-	return UPrimitiveComponent::CreateSceneProxy();
+	if (!HeightmapTexture || ComponentSizeQuads <= 0)
+	{
+		return UPrimitiveComponent::CreateSceneProxy();
+	}
+	return new FLandscapeSceneProxy(this);
 }
 
 void ULandscapeComponent::OnRegister()

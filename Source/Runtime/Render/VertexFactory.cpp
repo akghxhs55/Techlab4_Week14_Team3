@@ -43,6 +43,11 @@ namespace
 		{ "INSTANCE_COLOR",     0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, offsetof(FParticleMeshInstance, Color),      PerInstance, 1 },
 	};
 
+	const D3D11_INPUT_ELEMENT_DESC GLandscapeElements[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R8G8B8A8_UINT, 0, 0, PerVertex, 0 },
+	};
+
 	const FVertexFactoryTypeInfo GTypeInfos[] =
 	{
 		{ "Local",             "VF_LOCAL",                GLocalElements },
@@ -52,6 +57,7 @@ namespace
 		{ "Trail",             "VF_TRAIL",                {} },
 		{ "GpuSpriteParticle", "VF_GPU_SPRITE_PARTICLE",  {} },
 		{ "GpuMeshParticle",   "VF_GPU_MESH_PARTICLE",    GLocalElements },
+		{ "Landscape",		   "VF_LANDSCAPE",			  GLandscapeElements}
 	};
 	static_assert(std::size(GTypeInfos) == static_cast<size_t>(EVertexFactoryType::Count));
 }
@@ -96,4 +102,11 @@ void FGpuMeshParticleVertexFactory::Bind() const
 	{
 		RenderCommand::BindShaderResource(1, ParticleBuffer, EShaderBindFlagBits::Vertex);
 	}
+}
+
+void FLandscapeVertexFactory::Bind() const
+{
+	FVertexFactory::Bind();
+	RenderCommand::BindShaderResource(LandscapeHeightmapSlot, Heightmap, EShaderBindFlagBits::Vertex);
+	RenderCommand::BindConstantBuffer(LandscapeParamsSlot, Params, EShaderBindFlagBits::Vertex);
 }

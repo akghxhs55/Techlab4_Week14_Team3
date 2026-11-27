@@ -282,7 +282,11 @@ void FSceneRenderer::AddInteractingPrimitives(FScene& Scene, FProjectedShadowInf
 		{
 			if (!Proxy->bCastsShadow || !Proxy->IsShown(View.bGameView)) return;
 			if (Proxy->IsSkinned() && !CachedViewContext.bShowSkeletalMesh) return;
-			if ((!Proxy->HasStaticRelevance() && !Proxy->HasDynamicRelevance()) || !Proxy->GetRenderState()) return;
+			// 그릴 배치가 없는 프록시는 제외한다.
+			if (!Proxy->HasStaticRelevance() && !Proxy->HasDynamicRelevance()) return;
+			// RenderState(메시 섹션·LOD 캐시)는 정적 경로만 필요하다.
+			// 동적 프록시(랜드스케이프 등)는 GetDynamicMeshElements로 배치를 직접 내므로 RenderState 없이도 그릴 수 있다.
+			if (!Proxy->HasDynamicRelevance() && !Proxy->GetRenderState()) return;
 
 			// 카메라에서 너무 작게 보이는 Caster는 그림자도 눈에 띄지 않는다 (r.Shadow.RadiusThreshold).
 			const FAABB& Bounds = Proxy->GetBounds();

@@ -7,9 +7,14 @@
 class FVertexBuffer;
 class FIndexBuffer;
 class FStructuredBuffer;
+class FConstantBuffer; 
+class UTexture2D;
 
 inline constexpr uint32 BoneMatrixBufferSlot = 14; // GpuSkinCommon.hlsli의 t14
 inline constexpr uint32 SkinDeformBufferSlot = 15; // 정점 변형 델타 버퍼 슬롯
+
+inline constexpr uint32 LandscapeHeightmapSlot = 19;	// VF_Landscape.hlsli의 t19
+inline constexpr uint32 LandscapeParamsSlot = 6;		// VF_Landscape.hlsli의 b6
 
 enum class EVertexFactoryType : uint8
 {
@@ -20,6 +25,7 @@ enum class EVertexFactoryType : uint8
 	Trail,
 	GpuSpriteParticle,
 	GpuMeshParticle,
+	Landscape,
 	Count
 };
 
@@ -139,4 +145,23 @@ public:
 
 private:
 	const FStructuredBuffer* ParticleBuffer = nullptr;
+};
+
+class FLandscapeVertexFactory : public FVertexFactory
+{
+public:
+	void Init(FVertexBuffer* VB, FIndexBuffer* IB, UTexture2D* InHeightmap, FConstantBuffer* InParams)
+	{
+		VertexBuffer = VB;
+		IndexBuffer = IB;
+		Heightmap = InHeightmap;
+		Params = InParams;
+	}
+	void SetIndexBuffer(FIndexBuffer* IB) { IndexBuffer = IB; }
+	EVertexFactoryType GetType() const override { return EVertexFactoryType::Landscape; }
+	void Bind() const override;
+
+private:
+	UTexture2D* Heightmap = nullptr;
+	FConstantBuffer* Params = nullptr;
 };
