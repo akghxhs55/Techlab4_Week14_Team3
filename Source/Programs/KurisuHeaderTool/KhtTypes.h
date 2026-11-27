@@ -53,6 +53,9 @@ struct FPropertyInfo
 	std::vector<std::string> Flags;   // CPF_EditAnywhere 등
 	std::string TypeOverride;         // Type=Color → "Color"
 	std::vector<FMetaValue> Meta;     // FPropertyMeta 필드 순서대로 정렬돼 있다
+
+	// 선언에서 멤버 이름을 뺀 식별자들. .gen.cpp가 include할 헤더를 찾는 데만 쓴다.
+	std::vector<std::string> TypeIdentifiers;
 };
 
 struct FFunctionInfo
@@ -94,6 +97,8 @@ struct FHeaderInfo
 	std::string RelativePath;    // Runtime/Components/BoxComponent.h
 	std::string FileId;         // FID_Runtime_Components_BoxComponent_h
 	std::string GeneratedName;   // BoxComponent.generated.h
+	std::string SourceName;      // BoxComponent.gen.cpp
+	std::string IncludePath;     // 출력 폴더 기준 상대 경로
 	std::vector<FClassInfo> Classes;
 	std::vector<FEnumInfo> Enums;
 

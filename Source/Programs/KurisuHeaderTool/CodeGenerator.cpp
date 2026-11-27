@@ -1,5 +1,6 @@
 #include "CodeGenerator.h"
 
+#include <algorithm>
 #include <cctype>
 #include <fstream>
 #include <sstream>
@@ -32,20 +33,27 @@ namespace
         return Result;
     }
 
-	// static void RegisterProperties(<OwnerType>* <OwnerName>) { <OwnerName>->AddProperty<...>(...); ... }
+	// 정의는 .gen.cpp에 둔다. AddProperty가 UPROPERTY 포인터 대상의 완전한 정의를 요구하기 때문이다.
 	// UCLASS는 UClass*, USTRUCT는 UScriptStruct*를 받는다. AddProperty는 둘의 부모인 UStruct에 있다.
-	void AddRegisterProperties(std::vector<std::string>& Lines, const FClassInfo& Class, const std::string& OwnerType, const std::string& OwnerName)
+	void AddRegisterPropertiesDeclaration(std::vector<std::string>& Lines, const std::string& OwnerType, const std::string& OwnerName)
 	{
 		Lines.push_back("public:");
-		Lines.push_back("\tstatic void RegisterProperties(" + OwnerType + "* " + OwnerName + ")");
-		Lines.push_back("\t{");
+		Lines.push_back("\tstatic void RegisterProperties(" + OwnerType + "* " + OwnerName + ");");
+	}
+
+	void AppendRegisterPropertiesDefinition(std::string& Out, const FClassInfo& Class, const std::string& OwnerType, const std::string& OwnerName)
+	{
+		// 프로퍼티가 없는 USTRUCT도 정의가 있어야 한다. 인자 이름을 빼서 미사용 경고를 막는다.
+		const std::string Parameter = Class.Properties.empty() ? OwnerType + "*" : OwnerType + "* " + OwnerName;
+		Out += "void " + Class.Name + "::RegisterProperties(" + Parameter + ")\n";
+		Out += "{\n";
 		for (const FPropertyInfo& Property : Class.Properties)
 		{
 			const std::string Type = "decltype(ThisClass::" + Property.Name + ")";
 			if (!Property.Meta.empty())
 			{
-				Lines.push_back("\t\tstatic_assert(TSupportsNumericMeta<" + Type + ">, \"" + Property.Name
-					+ ": meta is only allowed on float, int32, uint32, FVector, FVector4, FRotator and USTRUCT properties.\");");
+				Out += "\tstatic_assert(TSupportsNumericMeta<" + Type + ">, \"" + Property.Name
+					+ ": meta is only allowed on float, int32, uint32, FVector, FVector4, FRotator and USTRUCT properties.\");\n";
 			}
 
 			// Type=LinearColor면 프로퍼티 클래스를 직접 넘긴다. 없으면 AddProperty가 멤버 타입으로 고른다.
@@ -55,7 +63,7 @@ namespace
 				TemplateArgs += ", F" + Property.TypeOverride + "Property";
 			}
 
-			std::string Call = "\t\t" + OwnerName + "->AddProperty<" + TemplateArgs + ">(\"" + Property.Name + "\", offsetof(ThisClass, " + Property.Name + "), "
+			std::string Call = "\t" + OwnerName + "->AddProperty<" + TemplateArgs + ">(\"" + Property.Name + "\", offsetof(ThisClass, " + Property.Name + "), "
 				+ JoinFlags(Property.Flags) + ")";
 			if (!Property.Meta.empty())
 			{
@@ -66,9 +74,15 @@ namespace
 				}
 				Call += "->Meta = FPropertyMeta{ " + Meta + " }";
 			}
-			Lines.push_back(Call + ";");
+			Out += Call + ";\n";
 		}
-		Lines.push_back("\t}");
+		Out += "}\n";
+	}
+
+	// 프로퍼티 없는 UCLASS는 UObject의 빈 RegisterProperties를 물려받는다.
+	bool NeedsRegisterPropertiesDefinition(const FClassInfo& Class)
+	{
+		return Class.bIsStruct || !Class.Properties.empty();
 	}
 
     // Foo.generated.h → KHT_Runtime_Foo_generated_h
@@ -136,14 +150,14 @@ std::string GenerateHeader(const FHeaderInfo& Header, const std::string& ModuleN
             // USTRUCT: StaticStruct()가 RegisterProperties를 항상 부르므로 프로퍼티가 없어도 만든다.
             // 구조체 멤버의 기본 접근은 public이라 DECLARE_STRUCT가 public:으로 끝난다 (UCLASS는 private:).
             Lines.push_back("\tDECLARE_STRUCT(" + Class.Name + ", " + (Class.SuperName.empty() ? std::string("void") : Class.SuperName) + ")");
-            AddRegisterProperties(Lines, Class, "UScriptStruct", "InStruct");
+            AddRegisterPropertiesDeclaration(Lines, "UScriptStruct", "InStruct");
         }
         else
         {
             Lines.push_back("\tDECLARE_CLASS(" + Class.Name + ", " + Class.SuperName + ")");
-            if (!Class.Properties.empty())
+            if (NeedsRegisterPropertiesDefinition(Class))
             {
-                AddRegisterProperties(Lines, Class, "UClass", "InClass");
+                AddRegisterPropertiesDeclaration(Lines, "UClass", "InClass");
                 Lines.push_back("private:");
             }
         }
@@ -176,6 +190,71 @@ std::string GenerateHeader(const FHeaderInfo& Header, const std::string& ModuleN
     {
         Out += "#undef CURRENT_FILE_ID\n";
         Out += "#define CURRENT_FILE_ID " + Header.FileId + "\n";
+    }
+    return Out;
+}
+
+bool HasGeneratedSource(const FHeaderInfo& Header)
+{
+    return std::any_of(Header.Classes.begin(), Header.Classes.end(), NeedsRegisterPropertiesDefinition);
+}
+
+std::string GenerateSource(const FHeaderInfo& Header, const std::map<std::string, const FHeaderInfo*>& TypeToHeader)
+{
+    std::set<std::string> Includes;
+    for (const FClassInfo& Class : Header.Classes)
+    {
+        for (const FPropertyInfo& Property : Class.Properties)
+        {
+            for (const std::string& Identifier : Property.TypeIdentifiers)
+            {
+                const auto It = TypeToHeader.find(Identifier);
+                if (It != TypeToHeader.end() && It->second->IncludePath != Header.IncludePath)
+                {
+                    Includes.insert(It->second->IncludePath);
+                }
+            }
+        }
+    }
+
+    std::string Out;
+    Out += "// Generated by KurisuHeaderTool. Do not edit; edit " + Header.RelativePath + " instead.\n";
+    Out += "\n";
+    Out += "#include \"EnginePCH.h\"\n";
+    Out += "#include \"" + Header.IncludePath + "\"\n";
+    for (const std::string& Include : Includes)
+    {
+        Out += "#include \"" + Include + "\"\n";
+    }
+
+    for (const FClassInfo& Class : Header.Classes)
+    {
+        if (!NeedsRegisterPropertiesDefinition(Class))
+        {
+            continue;
+        }
+        Out += "\n";
+        if (Class.bIsStruct)
+        {
+            AppendRegisterPropertiesDefinition(Out, Class, "UScriptStruct", "InStruct");
+        }
+        else
+        {
+            AppendRegisterPropertiesDefinition(Out, Class, "UClass", "InClass");
+        }
+    }
+    return Out;
+}
+
+std::string GenerateModuleSource(const std::string& ModuleName, const std::set<std::string>& SourceNames)
+{
+    std::string Out;
+    Out += "// Generated by KurisuHeaderTool. Do not edit.\n";
+    Out += "\n";
+    Out += "#include \"EnginePCH.h\"\n";
+    for (const std::string& Name : SourceNames)
+    {
+        Out += "#include \"" + Name + "\"\n";
     }
     return Out;
 }

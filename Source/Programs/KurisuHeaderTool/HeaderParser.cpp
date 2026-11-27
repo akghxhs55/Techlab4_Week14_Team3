@@ -377,6 +377,11 @@ void FHeaderParser::ParseProperty()
             }
         }
 
+        if (T.Type == ETokenType::Identifier)
+        {
+            Property.TypeIdentifiers.push_back(T.Text);
+        }
+
         if (T.Is("<")) ++AngleDepth;
         else if (T.Is(">")) --AngleDepth;
         else if (T.Is("(")) ++ParenDepth;
@@ -388,6 +393,10 @@ void FHeaderParser::ParseProperty()
     {
         Error(Line, "Could not find a member variable name after UPROPERTY.");
         return;
+    }
+    if (!Property.TypeIdentifiers.empty() && Property.TypeIdentifiers.back() == Property.Name)
+    {
+        Property.TypeIdentifiers.pop_back();
     }
 
     FClassInfo& Class = (*Classes)[ClassIndex];
