@@ -289,7 +289,7 @@ void FViewportsPanel::DrawViewportToolbar(int32 ViewIndex)
         if (EditorStyle::BeginButtonPopup("Projection", PopupAnchors[Projection], EditorStyle::Scale(360.0f))) { DrawProjectionMenu(*Client); ImGui::EndPopup(); }
         if (EditorStyle::BeginButtonPopup("CameraSpeed", PopupAnchors[Speed], EditorStyle::Scale(300.0f))) { DrawCameraSpeedMenu(); ImGui::EndPopup(); }
         if (EditorStyle::BeginButtonPopup("ViewMode", PopupAnchors[ViewMode], EditorStyle::Scale(220.0f))) { DrawViewModeMenu(*Client); ImGui::EndPopup(); }
-        if (EditorStyle::BeginButtonPopup("Show", PopupAnchors[Show], EditorStyle::Scale(240.0f))) { DrawShowMenu(); ImGui::EndPopup(); }
+        if (EditorStyle::BeginButtonPopup("Show", PopupAnchors[Show], EditorStyle::Scale(240.0f))) { ImGui::PushItemFlag(ImGuiItemFlags_AutoClosePopups, false); DrawShowMenu(); ImGui::PopItemFlag(); ImGui::EndPopup(); }
         if (EditorStyle::BeginButtonPopup("Render", PopupAnchors[Render])) { DrawRenderMenu(); ImGui::EndPopup(); }
         if (EditorStyle::BeginButtonPopup("Layout", PopupAnchors[Layout], EditorStyle::Scale(250.0f))) { DrawLayoutMenu(ViewIndex); ImGui::EndPopup(); }
     }
