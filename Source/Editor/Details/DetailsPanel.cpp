@@ -4481,7 +4481,7 @@ void FDetailsPanel::DrawLandscapeImportSlot(ALandscapeProxy* Landscape)
 	DrawPropertyGridLabel("Heightmap");
 	ImGui::TableSetColumnIndex(1);
 
-	ImGui::Button("Drop .r16 / .raw here", ImVec2(-1.0f, 0.0f));
+	ImGui::Button("Drop .r16 / .raw", ImVec2(-1.0f, 0.0f));
 	if (ImGui::IsItemHovered() && !ImGui::GetDragDropPayload())
 	{
 		ImGui::SetTooltip("16-bit little-endian, square (2 * N^2 bytes)");

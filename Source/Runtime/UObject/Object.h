@@ -39,6 +39,8 @@ public:                                                                 \
             c.Super = Super::StaticClass();								\
             c.Size = sizeof(ClassName);							\
 			c.Constructor = std::is_abstract_v<ClassName> ? nullptr : &InternalConstructInstance<ClassName>;\
+			/* 프로퍼티 등록 중 서로를 가리키는 클래스가 재진입해도 &c만 돌려주도록 먼저 세팅 */ \
+			bIsInit = true;												\
 			if (&ClassName::RegisterProperties != &Super::RegisterProperties) \
 			{															\
 				ClassName::RegisterProperties(&c);						\
@@ -48,8 +50,7 @@ public:                                                                 \
                 ClassName::RegisterFunctions(&c);                       \
             }															\
             RegisterClass(&c);                                          \
-            bIsInit = true;                                             \
-        }                                                               \
+        }                                                             \
         return &c;                                                      \
     }                                                                   \
     struct FAutoRegister {FAutoRegister() { ThisClass::StaticClass();}};\
