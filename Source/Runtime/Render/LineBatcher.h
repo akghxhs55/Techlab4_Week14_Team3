@@ -6,6 +6,7 @@
 
 class FRenderer;
 class UWorld;
+struct FNavMeshBuildDebugOverlay;
 
 class FLineBatcher
 {
@@ -41,6 +42,9 @@ public:
 
 	void DrawNavigation(const TArray<FVector>& Faces,
 		const TArray<FVector>& Boudaries,
+		const FMatrix& ViewProjection);
+
+	void DrawNavigationBuildDebug(const FNavMeshBuildDebugOverlay& Overlay,
 		const FMatrix& ViewProjection);
 
 private:

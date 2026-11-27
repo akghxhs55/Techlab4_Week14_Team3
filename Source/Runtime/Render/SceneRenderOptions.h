@@ -37,6 +37,7 @@ struct FSceneRenderOptions
 	bool bUsePreviewSkybox = false;
 
 	bool bShowNavigation = false;
+	ENavMeshDrawMode NavigationDrawMode = ENavMeshDrawMode::FinalNavMesh;
 
 	ELightingModel LightingModel = ELightingModel::Phong;
 };

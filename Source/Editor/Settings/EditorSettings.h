@@ -74,6 +74,7 @@ struct FEditorSettings
 	bool bShowParticles = true;
 
 	bool bShowNavigation = false;
+	ENavMeshDrawMode NavigationDrawMode = ENavMeshDrawMode::FinalNavMesh;
 
 	inline uint32 GetDirectionalShadowMapSize() const { return DirectionalShadowMapSizePerLevels[DirectionalShadowMapSizeLevel]; }
 	inline uint32 GetPointShadowMapSize() const { return PointShadowMapSizePerLevels[PointShadowMapSizeLevel]; }

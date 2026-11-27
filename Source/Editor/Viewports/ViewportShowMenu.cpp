@@ -5,6 +5,7 @@
 #include "Editor/Viewports/ViewportToolbarWidgets.h"
 #include "Components/SkinnedMeshComponent.h"
 #include "Core/StatOverlay.h"
+#include "Engine/World.h"
 
 // UE의 표시(Show) 메뉴: 기본값 복원, 뷰포트 통계, 표시 플래그 체크 목록.
 // 보이기/숨기기만 둔다. 품질·성능 옵션은 Render 메뉴가 맡는다. 모든 에디터 뷰에 함께 적용된다.
@@ -30,6 +31,7 @@ void FViewportsPanel::DrawShowMenu()
         Settings.bShowVignette = Defaults.bShowVignette;
         Settings.bShowCameraOverlay = Defaults.bShowCameraOverlay;
 		Settings.bShowNavigation = Defaults.bShowNavigation;
+		Settings.NavigationDrawMode = Defaults.NavigationDrawMode;
     }
 
     // 뷰포트 통계: 콘솔의 stat 명령과 같은 상태를 켜고 끈다.
@@ -75,7 +77,58 @@ void FViewportsPanel::DrawShowMenu()
     Flag("Particles", "Particles", Settings.bShowParticles);
     Flag("SkeletalMesh", "Skeletal Meshes", Settings.bShowSkeletalMesh);
     Flag("StaticMesh", "Static Meshes", Settings.bDrawPrimitives);
-    Flag("Navigation", "Navigation", Settings.bShowNavigation);
+    if (ImGui::BeginMenu("Navigation"))
+    {
+        Flag("Navigation", "Show Navigation", Settings.bShowNavigation);
+        ImGui::Separator();
+
+        const UWorld* DisplayWorld = World;
+        const auto* Capture = DisplayWorld &&
+            DisplayWorld->GetWorldType() == EWorldType::Editor
+            ? DisplayWorld->GetNavigationSystem().GetBuildDebugData()
+            : nullptr;
+
+        const auto HasMode = [Capture](ENavMeshDrawMode Mode)
+            {
+                return Mode == ENavMeshDrawMode::FinalNavMesh ||
+                    (Capture && Capture->HasStage(Mode));
+            };
+
+        const ENavMeshDrawMode ActiveMode = HasMode(Settings.NavigationDrawMode)
+            ? Settings.NavigationDrawMode
+            : ENavMeshDrawMode::FinalNavMesh;
+
+        struct FModeItem
+        {
+            const char* Label;
+            ENavMeshDrawMode Mode;
+        };
+
+        constexpr FModeItem Items[] = {
+            { "Final NavMesh", ENavMeshDrawMode::FinalNavMesh },
+            { "Rasterized Voxels", ENavMeshDrawMode::RasterizedVoxels },
+            { "Walkability Filter", ENavMeshDrawMode::WalkabilityFilter },
+            { "Agent Radius Erosion", ENavMeshDrawMode::AgentRadiusErosion },
+            { "Regions", ENavMeshDrawMode::Regions },
+            { "Contours", ENavMeshDrawMode::Contours },
+            { "Polygon Mesh", ENavMeshDrawMode::PolygonMesh },
+        };
+
+        for (const FModeItem& Item : Items)
+        {
+            ImGui::BeginDisabled(!HasMode(Item.Mode));
+            if (IconMenuItem(nullptr, Item.Label, ActiveMode == Item.Mode, EIndicator::Radio))
+                Settings.NavigationDrawMode = Item.Mode;
+            ImGui::EndDisabled();
+        }
+
+        if (!Capture || !Capture->HasStage(ENavMeshDrawMode::RasterizedVoxels))
+            ImGui::TextDisabled("Enable Build > Capture Build Debug, then build.");
+        else if (Capture->IsVoxelPreviewLimited())
+            ImGui::TextDisabled("Voxel preview shows a subset of the spans.");
+
+        ImGui::EndMenu();
+    }
     SectionHeader("Developer");
     Flag("Cascade", "Cascade Bounds", Settings.bDrawCascadeBounds);
     Flag("Pivot", "Object UUID", Settings.bShowUUID);

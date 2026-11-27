@@ -6,6 +6,7 @@
 #include "RenderResourceManager.h"
 
 #include "UObject/UObjectIterator.h"
+#include "Navigation/NavmeshBuildDebug.h"
 
 FLineBatcher::~FLineBatcher()
 {
@@ -239,4 +240,35 @@ void FLineBatcher::DrawNavigation(const TArray<FVector>& Faces,
 
 	PipelineState = SavedState;
 	BeginFrame();
+}
+
+void FLineBatcher::DrawNavigationBuildDebug(
+	const FNavMeshBuildDebugOverlay& Overlay, const FMatrix& ViewProjection)
+{
+	if (!LineShader || !CB || (!Overlay.Faces && !Overlay.Lines))
+		return;
+
+	FMatrix VP = ViewProjection;
+	RenderCommand::UpdateBufferData(CB.get(), &VP, sizeof(FMatrix));
+
+	FPipelineState State = PipelineState;
+	State.Shader = LineShader;
+	State.DepthStencilState = EDepthStencilState::ReadOnly;
+	State.RasterizerState = ERasterizerState::SolidNone;
+	State.BlendState = EBlendState::AlphaBlend;
+
+	const auto Draw = [&](FVertexBuffer* Buffer, uint32 Count, EPrimitiveTopology Topology)
+		{
+			if (!Buffer || !Buffer->GetBuffer() || Count == 0)
+				return;
+
+			State.Topology = Topology;
+			RenderCommand::BindPipelineState(State);
+			RenderCommand::BindVertexBuffer(Buffer);
+			RenderCommand::BindConstantBuffer(0, CB.get(), EShaderBindFlagBits::Vertex);
+			RenderCommand::Draw(Count, 0);
+		};
+
+	Draw(Overlay.Faces.get(), Overlay.FaceVertexCount, EPrimitiveTopology::TriangleList);
+	Draw(Overlay.Lines.get(), Overlay.LineVertexCount, EPrimitiveTopology::LineList);
 }

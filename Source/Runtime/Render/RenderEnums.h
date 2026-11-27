@@ -31,3 +31,14 @@ enum class EPcfMode : uint32_t
     Sample32 = 3,
     PCSS = 4
 };
+
+enum class ENavMeshDrawMode : uint8_t
+{
+    FinalNavMesh,
+    RasterizedVoxels,
+    WalkabilityFilter,
+    AgentRadiusErosion,
+    Regions,
+    Contours,
+    PolygonMesh,
+};

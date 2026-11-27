@@ -3,6 +3,7 @@
 #include "Containers/Array.h"
 #include "Core/Types.h"
 #include "Math/Vector.h"
+#include "Navigation/NavMeshBuildDebug.h"
 
 class UWorld;
 struct FNavMeshData;
@@ -37,7 +38,7 @@ public:
 
 	// 월드의 현재 레벨에서 지오메트리와 에이전트 설정을 읽어 NavMesh를 빌드하고 활성화한다.
 	// 빌드에 실패하면 기존 데이터도 비우고 false를 반환한다.
-	bool BuildNavigation(UWorld& World);
+	bool BuildNavigation(UWorld& World, bool bCaptureBuildDebug = false);
 
 	void RestoreNavigation(const UWorld& World);
 	void UnregisterNavData(const AActor* Actor);
@@ -50,9 +51,14 @@ public:
 	const FNavMeshDebugGeometry* GetDebugGeometry() const;
 	uint64 GetNavMeshVersion() const { return NavMeshVersion; }
 
+	FNavMeshBuildDebugData* GetBuildDebugData() { return BuildDebugData.get(); }
+	const FNavMeshBuildDebugData* GetBuildDebugData() const { return BuildDebugData.get(); }
+
 private:
 
 private:
 	ARecastNavMesh* MainNavData = nullptr;
 	uint64 NavMeshVersion = 0;
+
+	TUniquePtr<FNavMeshBuildDebugData> BuildDebugData;
 };

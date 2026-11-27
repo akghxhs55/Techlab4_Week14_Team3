@@ -138,7 +138,8 @@ namespace
 	bool BuildTile(const Navigation::FRecastGeometry& Geometry,
 		const FNavAgentProperties& Agent,
 		const FNavBuildSettings& Settings,
-		TArray<uint8>& OutBytes)
+		TArray<uint8>& OutBytes,
+		FNavMeshBuildDebugData* Debug = nullptr)
 	{
 		/* 1. 입력 데이터 처리 */
 		// Recast 빌드 설정을 구성하고, 
@@ -225,6 +226,7 @@ namespace
 		{
 			return ReportNavBuildFailure("rasterization");
 		}
+		if (Debug) Debug->CaptureRasterized(*Solid);
 
 		/* 3. 보행 불가능 영역 제거 */
 		// 단차가 크거나 천장이 낮은 구간을 걸러낸다.
@@ -232,6 +234,7 @@ namespace
 		rcFilterLedgeSpans(&Context,
 			Config.walkableHeight, Config.walkableClimb, *Solid);
 		rcFilterWalkableLowHeightSpans(&Context, Config.walkableHeight, *Solid);
+		if (Debug) Debug->CaptureFiltered(*Solid);
 
 
 		/* 4. 보행 공간 및 연결 관계 생성 */
@@ -243,11 +246,13 @@ namespace
 		{
 			return ReportNavBuildFailure("compact heightfield");
 		}
+		if (Debug) Debug->CaptureBeforeErosion(*Compact);
 		Solid.reset();
 
 		/* 5. 에이전트 반지름에 따른 보행 영역 침식 */
 		if (!rcErodeWalkableArea(&Context, Config.walkableRadius, *Compact))
 			return ReportNavBuildFailure("agent radius erosion");
+		if (Debug) Debug->CaptureEroded(*Compact);
 
 		// 거리장을 계산해 남은 보행 영역을 여러 구역으로 나누고,
 		// 작은 구역을 정리한다.
@@ -257,6 +262,7 @@ namespace
 		{
 			return ReportNavBuildFailure("walkable regions");
 		}
+		if (Debug) Debug->CaptureRegions(*Compact);
 
 		/* 6. Region 외곽선 추출 */
 		std::unique_ptr<rcContourSet, decltype(&rcFreeContourSet)>
@@ -266,6 +272,7 @@ namespace
 		{
 			return ReportNavBuildFailure("contours");
 		}
+		if (Debug) Debug->CaptureContours(*Contours);
 
 		/* 7. Navigation Polygon 생성 */
 		// Contour 내부를 삼각형으로 분할하고,
@@ -277,6 +284,7 @@ namespace
 		{
 			return ReportNavBuildFailure("polygon mesh");
 		}
+		if (Debug) Debug->CapturePolygonMesh(*Polys);
 
 		/* 8. 표면 높이 정밀화 */
 		std::unique_ptr<rcPolyMeshDetail, decltype(&rcFreePolyMeshDetail)>
@@ -417,11 +425,17 @@ namespace
 }
 
 
-bool FNavigationSystem::BuildNavigation(UWorld& World)
+bool FNavigationSystem::BuildNavigation(UWorld& World, bool bCaptureBuildDebug)
 {
+	BuildDebugData.reset();
+
 	const ULevel* Level = World.GetCurrentLevel();
 	if (!Level || Level != World.GetPersistentLevel())
 		return ReportNavBuildFailure("persistent level");
+
+	TUniquePtr<FNavMeshBuildDebugData> Capture;
+	if (bCaptureBuildDebug && World.GetWorldType() == EWorldType::Editor)
+		Capture = MakeUnique<FNavMeshBuildDebugData>();
 
 	ARecastNavMesh* ExistingNavMesh = FindPersistentNavData(World);
 	Navigation::FRecastGeometry Geometry;
@@ -429,7 +443,7 @@ bool FNavigationSystem::BuildNavigation(UWorld& World)
 
 	ARecastNavMesh* InstalledNavMesh = nullptr;
 	if (CollectGeometry(World, Geometry) &&
-		BuildTile(Geometry, ReadBuildAgent(*Level), {}, TileBytes))
+		BuildTile(Geometry, ReadBuildAgent(*Level), {}, TileBytes, Capture.get()))
 	{
 		InstalledNavMesh = ARecastNavMesh::InstallBakedTile(
 			World, ExistingNavMesh, std::move(TileBytes));
@@ -442,11 +456,13 @@ bool FNavigationSystem::BuildNavigation(UWorld& World)
 			ExistingNavMesh->ClearNavMeshData();
 
 		ResetNavigation();
+		BuildDebugData = std::move(Capture);
 		return false;
 	}
 
 	MainNavData = InstalledNavMesh;
 	++NavMeshVersion;
+	BuildDebugData = std::move(Capture);
 
 	KRS_LOG(Info, "Build Navigation: {} input triangles, {} detail triangles, version {}",
 		Geometry.Triangles.Num() / 3,
@@ -481,6 +497,8 @@ void FNavigationSystem::UnregisterNavData(const AActor* Actor)
 
 void FNavigationSystem::ResetNavigation()
 {
+	BuildDebugData.reset();
+
 	if (MainNavData)
 	{
 		MainNavData = nullptr;

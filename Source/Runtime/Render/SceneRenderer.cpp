@@ -1126,14 +1126,33 @@ bool FSceneRenderer::AddViewportPasses(FRenderGraphBuilder& Graph, FRenderer* Re
 	}
 	if (Options.bShowNavigation && World->LineBatcher)
 	{
-		const auto* Debug = World->GetNavigationSystem().GetDebugGeometry();
-		if (Debug && !AddOverlayPass(Graph, "Navigation", FinalColor, Depth, [this, Debug]
-			{
-				World->LineBatcher->DrawNavigation(
-					Debug->FaceVertices, Debug->BoundaryVertices, View.ViewProjectionMatrix);
-			}))
+		FNavigationSystem& Navigation = World->GetNavigationSystem();
+		const ENavMeshDrawMode Mode = Options.NavigationDrawMode;
+		FNavMeshBuildDebugData* Capture = Navigation.GetBuildDebugData();
+
+		if (Mode != ENavMeshDrawMode::FinalNavMesh && Capture && Capture->HasStage(Mode))
 		{
-			return false;
+			if (!AddOverlayPass(Graph, "NavigationBuildDebug", FinalColor, Depth,
+				[this, Capture, Mode]
+				{
+					const auto& Debug = Capture->GetOverlay(Mode);
+					World->LineBatcher->DrawNavigationBuildDebug(
+						Debug, View.ViewProjectionMatrix);
+				}))
+			{
+				return false;
+			}
+		}
+		else if (const auto* Debug = World->GetNavigationSystem().GetDebugGeometry())
+		{
+			if (Debug && !AddOverlayPass(Graph, "Navigation", FinalColor, Depth, [this, Debug]
+				{
+					World->LineBatcher->DrawNavigation(
+						Debug->FaceVertices, Debug->BoundaryVertices, View.ViewProjectionMatrix);
+				}))
+			{
+				return false;
+			}
 		}
 	}
 	if (!AddOverlayPass(Graph, "EditorLines", FinalColor, Depth, Overlay.EditorLines) ||
