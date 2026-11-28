@@ -34,8 +34,29 @@ void FViewportsPanel::DrawShowMenu()
 		Settings.NavigationDrawMode = Defaults.NavigationDrawMode;
     }
 
+    const auto BeginShowIconMenu = [](const char* IconName, const char* Label)
+    {
+        // 서브메뉴가 열려도 아이콘은 부모 팝업의 메뉴 행에 그린다.
+        ImDrawList* ParentDrawList = ImGui::GetWindowDrawList();
+        const FString PaddedLabel = FString("      ") + Label;
+        const bool bOpen = ImGui::BeginMenu(PaddedLabel.c_str());
+
+        if (const ImTextureID Icon = GetIcon(IconName); Icon != ImTextureID_Invalid)
+        {
+            const ImVec2 Min = ImGui::GetItemRectMin();
+            const ImVec2 Max = ImGui::GetItemRectMax();
+            const float Size = IconSize();
+            const float X = Min.x + EditorStyle::Scale(2.0f);
+            const float Y = (Min.y + Max.y - Size) * 0.5f;
+            ParentDrawList->AddImage(Icon, { X, Y }, { X + Size, Y + Size },
+                { 0, 0 }, { 1, 1 }, EditorColor::TextSecondary);
+        }
+
+        return bOpen;
+    };
+
     // 뷰포트 통계: 콘솔의 stat 명령과 같은 상태를 켜고 끈다.
-    if (ImGui::BeginMenu("      Viewport Stats"))
+    if (BeginShowIconMenu("Stats", "Viewport Stats"))
     {
         struct FStatItem { const char* Label; const char* Command; EStatFlags Flag; };
         const FStatItem Stats[] = {
@@ -57,14 +78,6 @@ void FViewportsPanel::DrawShowMenu()
                 FStatOverlay::ExecCommand(Stat.Command, Message);
         ImGui::EndMenu();
     }
-    // BeginMenu 줄 앞에 통계 아이콘을 덧그린다.
-    {
-        const ImVec2 Min = ImGui::GetItemRectMin(), Max = ImGui::GetItemRectMax();
-        const float CenterY = (Min.y + Max.y) * 0.5f, X = Min.x + EditorStyle::Scale(22.0f);
-        if (const ImTextureID Icon = GetIcon("Stats"); Icon != ImTextureID_Invalid)
-            ImGui::GetWindowDrawList()->AddImage(Icon, { X - EditorStyle::Scale(20.0f), CenterY - IconSize() * 0.5f },
-                { X - EditorStyle::Scale(4.0f), CenterY + IconSize() * 0.5f }, { 0, 0 }, { 1, 1 }, EditorColor::TextSecondary);
-    }
 
     auto Flag = [](const char* Icon, const char* Label, bool& bValue)
     {
@@ -77,9 +90,9 @@ void FViewportsPanel::DrawShowMenu()
     Flag("Particles", "Particles", Settings.bShowParticles);
     Flag("SkeletalMesh", "Skeletal Meshes", Settings.bShowSkeletalMesh);
     Flag("StaticMesh", "Static Meshes", Settings.bDrawPrimitives);
-    if (ImGui::BeginMenu("Navigation"))
+    if (BeginShowIconMenu("Navigation", "Navigation"))
     {
-        Flag("Navigation", "Show Navigation", Settings.bShowNavigation);
+        Flag(nullptr, "Show Navigation", Settings.bShowNavigation);
         ImGui::Separator();
 
         const UWorld* DisplayWorld = World;
