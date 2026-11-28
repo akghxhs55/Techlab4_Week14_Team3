@@ -28,6 +28,8 @@ public:
 	float LOD0DistributionSetting = 1.25f; // LOD0 → LOD1 경계 = LOD0ScreenSize / 이 값
 	UPROPERTY(EditAnywhere)
 	float LODDistributionSetting = 3.0f;   // LOD1 이후 화면 크기가 이 배수만큼 줄 때마다 LOD 
+	UPROPERTY(EditAnywhere)
+	bool bDebugLODColor = false;
 
 	UPROPERTY()
 	TArray<ULandscapeComponent*> LandscapeComponents;
@@ -49,6 +51,7 @@ public:
 	void RegisterAllComponents() override;
 	void UnregisterAllComponents() override;
 
+	void PostEditChangeProperty(const FProperty& Property) override;
 private:
 	void DestroyLandscapeInfo();
 	void RebuildComponentReferences();

@@ -517,8 +517,8 @@ FUberOutput Uber_PS(VS_OUT Input)
             clip(TextureColor.a - 0.5f);
         }
         SurfaceColor = float4(pow(max(TextureColor.rgb, 0.0f), 2.2f), TextureColor.a);
-#if VF_MESH_PARTICLE
-        // 텍스처가 있으면 정점 색을 쓰지 않으므로 파티클 색(Color/ColorOverLife 모듈)을 여기서 곱한다
+#if VF_MESH_PARTICLE || VF_LANDSCAPE
+        // 텍스처가 있으면 정점 색을 쓰지 않으므로 파티클 색(Color/ColorOverLife 모듈)·랜드스케이프 LOD 디버그 색을 여기서 곱한다
         SurfaceColor *= Input.Color;
 #endif
     }

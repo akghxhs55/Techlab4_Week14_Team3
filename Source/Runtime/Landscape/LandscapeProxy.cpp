@@ -98,6 +98,22 @@ void ALandscapeProxy::UnregisterAllComponents()
 	DestroyLandscapeInfo();
 }
 
+void ALandscapeProxy::PostEditChangeProperty(const FProperty& Property)
+{
+	Super::PostEditChangeProperty(Property);
+
+	if (Property.Name == "bDebugLODColor")
+	{
+		for (ULandscapeComponent* Component : LandscapeComponents)
+		{
+			if (Component)
+			{
+				Component->MarkRenderStateDirty();
+			}
+		}
+	}
+}
+
 void ALandscapeProxy::DestroyLandscapeInfo()
 {
 	delete LandscapeInfo;

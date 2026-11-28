@@ -13,6 +13,7 @@ class FConstantBuffer;
 class UTexture2D;
 class UMaterialInterface;
 class ULandscapeComponent;
+class FLandscapeSceneProxy;
 
 namespace LandscapeRender
 {
@@ -38,11 +39,12 @@ struct FLandscapeShaderParams
 {
 	float SectionSizeQuads = 63.0f;
 	float SubsectionSizeVerts = 64.0f;
-	float LODIndex = 0.0f;
-	float Pad0 = 0.0f;
+	float SectionLOD = 0.0f;
+	float DebugLODColor = 0.0f;
 	int32 HeightmapOffsetX = 0;
 	int32 HeightmapOffsetY = 0;
 	int32 Pad1[2]{};
+	float NeighborLODs[4]{};
 };
 static_assert(sizeof(FLandscapeShaderParams) % 16 == 0);
 
@@ -71,6 +73,24 @@ private:
 	std::vector<int32> LODVertexOffsets;
 };
 
+class FLandscapeRenderSystem
+{
+public:
+	static TSharedPtr<FLandscapeRenderSystem> GetOrCreate(const void* LandscapeKey);
+
+	void RegisterSection(FIntPoint SectionKey, const FLandscapeSceneProxy* Proxy);
+	void UnregisterSection(FIntPoint SectionKey, const FLandscapeSceneProxy* Proxy);
+
+	void UpdateLODs(const FViewContext& View);
+	float GetSectionLOD(FIntPoint SectionKey, float Fallback) const;
+private:
+	TMap<FIntPoint, const FLandscapeSceneProxy*> Sections;
+	TMap<FIntPoint, float> SectionLODs;
+	FVector LastCameraPosition = FVector::ZeroVector;
+	float LastProjectionScaleSquared = -1.0f;
+	bool bDirty = true;
+};
+
 class FLandscapeSceneProxy : public FPrimitiveSceneProxy
 {
 public:
@@ -88,7 +108,6 @@ private:
 	TUniquePtr<FConstantBuffer> ParamsBuffer;
 	FLandscapeVertexFactory VertexFactory;
 	UMaterialInterface* Material = nullptr;
-	int32 CurrentLOD = 0;
 
 	float LOD0ScreenSizeSq = 0.25f;
 	float LOD1ScreenSizeSq = 0.16f;
@@ -96,7 +115,7 @@ private:
 	float LogLODDistributionSq = 1.0f;
 	int32 LastLODIndex = 3;
 
-	int32 SectionBaseX = 0;
-	int32 SectionBaseY = 0;
-	mutable int32 DebugLastLOD = -1;
+	TSharedPtr<FLandscapeRenderSystem> RenderSystem;
+	FIntPoint SectionKey{ 0, 0 };
+	mutable FLandscapeShaderParams CachedParams{};
 };

@@ -25,6 +25,19 @@ namespace
     {
         return static_cast<uint8>(std::clamp(V * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
     }
+
+    TMap<const void*, TWeakPtr<FLandscapeRenderSystem>>& GetRenderSystemCache()
+    {
+        static TMap<const void*, TWeakPtr<FLandscapeRenderSystem>> Cache;
+        return Cache;
+    }
+
+    const FIntPoint GNeighborOffsets[4] = { { -1, 0 },{ 1, 0 },{ 0, -1 },{ 0, 1 } };
+
+    FIntPoint OffsetKey(FIntPoint Key, const FIntPoint& Offset)
+    {
+        return { Key.X + Offset.X, Key.Y + Offset.Y };
+    }
 }
 
 TSharedPtr<FLandscapeSharedBuffers> FLandscapeSharedBuffers::GetOrCreate(int32 SubsectionSizeVerts)
@@ -167,10 +180,16 @@ FLandscapeSceneProxy::FLandscapeSceneProxy(ULandscapeComponent* InComponent)
 {
     const int32 SubsectionSizeVerts = InComponent->ComponentSizeQuads + 1;
     SharedBuffers = FLandscapeSharedBuffers::GetOrCreate(SubsectionSizeVerts);
-    SectionBaseX = InComponent->SectionBaseX;
-    SectionBaseY = InComponent->SectionBaseY;
 
     ALandscapeProxy* Landscape = InComponent->GetLandscapeProxy();
+
+    SectionKey = { InComponent->SectionBaseX / InComponent->ComponentSizeQuads,
+                   InComponent->SectionBaseY / InComponent->ComponentSizeQuads };
+    if (Landscape)
+    {
+        RenderSystem = FLandscapeRenderSystem::GetOrCreate(Landscape);
+        RenderSystem->RegisterSection(SectionKey, this);
+    }
 
     LastLODIndex = std::min(SharedBuffers->GetNumLODs() - 1, 3);
 
@@ -188,51 +207,71 @@ FLandscapeSceneProxy::FLandscapeSceneProxy(ULandscapeComponent* InComponent)
     FLandscapeShaderParams Params{};
     Params.SectionSizeQuads = static_cast<float>(InComponent->ComponentSizeQuads);
     Params.SubsectionSizeVerts = static_cast<float>(SubsectionSizeVerts);
-    Params.LODIndex = static_cast<float>(CurrentLOD);
+    Params.SectionLOD = 0.0f;
+    Params.DebugLODColor = (Landscape && Landscape->bDebugLODColor) ? 1.0f : 0.0f;
     ParamsBuffer = RenderCommand::CreateConstantBuffer(sizeof(FLandscapeShaderParams));
     RenderCommand::UpdateBufferData(ParamsBuffer.get(), &Params, sizeof(Params));
+    CachedParams = Params;
 
     VertexFactory.Init(SharedBuffers->GetVertexBuffer(), SharedBuffers->GetIndexBuffer(), InComponent->GetHeightmap(), ParamsBuffer.get());
     
     Material = (Landscape && Landscape->LandscapeMaterial) ? Landscape->LandscapeMaterial : UAssetManager::GetAssetByPath<UMaterial>("DefaultMaterial");
 }
 
-FLandscapeSceneProxy::~FLandscapeSceneProxy() = default;
+FLandscapeSceneProxy::~FLandscapeSceneProxy()
+{
+    if (RenderSystem)
+    {
+        RenderSystem->UnregisterSection(SectionKey, this);
+    }
+}
 
 void FLandscapeSceneProxy::UpdateRenderState()
 {
     RenderState.reset();
     UpdateCommonFlags();
+
+    const ULandscapeComponent* LandscapeComponent = static_cast<ULandscapeComponent*>(GetComponent());
+    const ALandscapeProxy* Landscape = LandscapeComponent ? LandscapeComponent->GetLandscapeProxy() : nullptr;
+    const float DebugLODColor = (Landscape && Landscape->bDebugLODColor) ? 1.0f : 0.0f;
+    if (ParamsBuffer && CachedParams.DebugLODColor != DebugLODColor)
+    {
+        CachedParams.DebugLODColor = DebugLODColor;
+        RenderCommand::UpdateBufferData(ParamsBuffer.get(), &CachedParams, sizeof(CachedParams));
+    }
 }
 
 void FLandscapeSceneProxy::GetDynamicMeshElements(const FViewContext& View, FMeshElementCollector& Collector, uint32 LODIndex) const
 {
-    static int32 GDbgCount = 0;
-    if (GDbgCount < 3)
-    {
-        ++GDbgCount;
-        KRS_LOG(Info, "[LandscapeDbg] GetDynamicMeshElements: sb={} vfValid={} mat={} idx={} baseVtx={}",
-            SharedBuffers ? 1 : 0, VertexFactory.IsValid() ? 1 : 0, Material ? 1 : 0,
-            SharedBuffers ? SharedBuffers->GetIndexBuffer()->GetIndexCount() : 0,
-            SharedBuffers ? SharedBuffers->GetLODVertexOffset(CurrentLOD) : 0);
-    }
-
     if (!SharedBuffers || !VertexFactory.IsValid() || !Material)
     {
         return;
     }
 
-    const float FractionalLOD = ComputeFractionalLOD(View);
-    const int32 DesiredLOD = static_cast<int32>(FractionalLOD);
-
-    if (View.ViewIndex == 0 && DesiredLOD != DebugLastLOD)
+    float SectionLOD = ComputeFractionalLOD(View);
+    FLandscapeShaderParams Params = CachedParams;
+    if (RenderSystem)
     {
-        KRS_LOG(Info, "[LandscapeLOD] Section ({}, {}) LOD {} -> {} (fractional {:.2f})",
-            SectionBaseX, SectionBaseY, DebugLastLOD, DesiredLOD, FractionalLOD);
-        DebugLastLOD = DesiredLOD;
+        RenderSystem->UpdateLODs(View);
+        SectionLOD = RenderSystem->GetSectionLOD(SectionKey, SectionLOD);
+        for (int32 i = 0; i < 4; ++i)
+        {
+            Params.NeighborLODs[i] = RenderSystem->GetSectionLOD(OffsetKey(SectionKey, GNeighborOffsets[i]), SectionLOD);
+        }
+    }
+    else
+    {
+        for (float& NeighborLOD : Params.NeighborLODs) NeighborLOD = SectionLOD;
+    }
+    Params.SectionLOD = SectionLOD;
+
+    if (std::memcmp(&Params, &CachedParams, sizeof(Params)) != 0)
+    {
+        CachedParams = Params;
+        RenderCommand::UpdateBufferData(ParamsBuffer.get(), &Params, sizeof(Params));
     }
 
-    const int32 LOD = DesiredLOD;
+    const int32 LOD = std::min(static_cast<int32>(SectionLOD), LastLODIndex);
 
     FMeshBatch& Batch = Collector.AddMeshDefaulted();
     Batch.VertexFactory = &VertexFactory;
@@ -276,4 +315,79 @@ float FLandscapeSceneProxy::ComputeFractionalLOD(const FViewContext& View) const
 
     // LOD1 이후
     return 1.0f + std::log(LOD1ScreenSizeSq / ScreenSizeSq) / LogLODDistributionSq;
+}
+
+TSharedPtr<FLandscapeRenderSystem> FLandscapeRenderSystem::GetOrCreate(const void* LandscapeKey)
+{
+    TWeakPtr<FLandscapeRenderSystem>& Slot = GetRenderSystemCache().FindOrAdd(LandscapeKey);
+    if (TSharedPtr<FLandscapeRenderSystem> Existing = Slot.lock())
+    {
+        return Existing;
+    }
+    TSharedPtr<FLandscapeRenderSystem> Created = std::make_shared<FLandscapeRenderSystem>();
+    Slot = Created;
+    return Created;
+}
+
+void FLandscapeRenderSystem::RegisterSection(FIntPoint SectionKey, const FLandscapeSceneProxy* Proxy)
+{
+    Sections.FindOrAdd(SectionKey) = Proxy;
+    bDirty = true;
+}
+
+void FLandscapeRenderSystem::UnregisterSection(FIntPoint SectionKey, const FLandscapeSceneProxy* Proxy)
+{
+    const FLandscapeSceneProxy* const* Found = Sections.Find(SectionKey);
+    if (Found && *Found == Proxy)
+    {
+        Sections.Remove(SectionKey);
+        SectionLODs.Remove(SectionKey);
+        bDirty = true;
+    }
+}
+
+void FLandscapeRenderSystem::UpdateLODs(const FViewContext& View)
+{
+    const bool bSameView =
+        View.CameraPosition.X == LastCameraPosition.X &&
+        View.CameraPosition.Y == LastCameraPosition.Y &&
+        View.CameraPosition.Z == LastCameraPosition.Z &&
+        View.ProjectionScaleSquared == LastProjectionScaleSquared;
+    if (bSameView && !bDirty)
+    {
+        return;
+    }
+    LastCameraPosition = View.CameraPosition;
+    LastProjectionScaleSquared = View.ProjectionScaleSquared;
+    bDirty = false;
+
+    SectionLODs.Empty();
+    for (const auto& [Key, Proxy] : Sections)
+    {
+        SectionLODs.FindOrAdd(Key) = Proxy->ComputeFractionalLOD(View);
+    }
+
+    bool bChanged = true;
+    while (bChanged)
+    {
+        bChanged = false;
+        for (auto& [Key, LOD] : SectionLODs)
+        {
+            for (const FIntPoint& Offset : GNeighborOffsets)
+            {
+                const float* NeighborLOD = SectionLODs.Find(OffsetKey(Key, Offset));
+                if (NeighborLOD && LOD > *NeighborLOD + 1.0f)
+                {
+                    LOD = *NeighborLOD + 1.0f;
+                    bChanged = true;
+                }
+            }
+        }
+    }
+}
+
+float FLandscapeRenderSystem::GetSectionLOD(FIntPoint SectionKey, float Fallback) const
+{
+    const float* Found = SectionLODs.Find(SectionKey);
+    return Found ? *Found : Fallback;
 }
