@@ -46,6 +46,7 @@ FLandscapeSharedBuffers::FLandscapeSharedBuffers(int32 InSubsectionSizeVerts)
     assert((InSubsectionSizeVerts & (InSubsectionSizeVerts - 1)) == 0);
 
     std::vector<FLandscapeVertex> Vertices;
+    std::vector<uint32> Indices;
     for (int32 LOD = 0, Verts = SubsectionSizeVerts; Verts >= 2; ++LOD, Verts >>= 1)
     {
         LODVertexOffsets.push_back(static_cast<int32>(Vertices.size()));
@@ -57,8 +58,7 @@ FLandscapeSharedBuffers::FLandscapeSharedBuffers(int32 InSubsectionSizeVerts)
             }
         }
 
-        std::vector<uint32> Indices;
-        Indices.reserve(static_cast<size_t>((Verts - 1) * (Verts - 1) * 6));
+        LODFirstIndices.push_back(static_cast<uint32>(Indices.size()));
         for (int32 Y = 0; Y < Verts - 1; ++Y)
         {
             for (int32 X = 0; X < Verts - 1; ++X)
@@ -71,56 +71,73 @@ FLandscapeSharedBuffers::FLandscapeSharedBuffers(int32 InSubsectionSizeVerts)
                 Indices.insert(Indices.end(), { I00, I11, I01 });
             }
         }
-        IndexBuffers.push_back(RenderCommand::CreateStaticIndexBuffer(Indices.data(), static_cast<uint32>(Indices.size())));
+        LODIndexCounts.push_back(static_cast<uint32>(Indices.size()) - LODFirstIndices.back());
     }
 
     VertexBuffer = RenderCommand::CreateStaticVertexBuffer(Vertices.data(), static_cast<uint32>(Vertices.size() * sizeof(FLandscapeVertex)), sizeof(FLandscapeVertex));
+    IndexBuffer = RenderCommand::CreateStaticIndexBuffer(Indices.data(), static_cast<uint32>(Indices.size()));
 
-    KRS_LOG(Info, "[Landscape] SharedBuffers: {} verts/side, {} LODs, {} total verts", SubsectionSizeVerts, GetNumLODs(), Vertices.size());
+    KRS_LOG(Info, "[Landscape] SharedBuffers: {} verts/side, {} LODs, {} total verts, {} total indices", SubsectionSizeVerts, GetNumLODs(), Vertices.size(), Indices.size());
 }
 
 FLandscapeSharedBuffers::~FLandscapeSharedBuffers() = default;
 
 UTexture2D* LandscapeRender::CreateHeightmapTexture(const TArray<uint16>& Heights, int32 SizeX, int32 SizeY, int32 BaseX, int32 BaseY, int32 SubsectionSizeVerts)
 {
-    auto RawAt = [&](int32 X, int32 Y) -> uint16
+    auto RawAt = [&](int32 X, int32 Y) -> float
         {
             X = std::clamp(X, 0, SizeX - 1);
             Y = std::clamp(Y, 0, SizeY - 1);
-            return Heights[Y * SizeX + X];
+            return static_cast<float>(Heights[Y * SizeX + X]);
         };
-    auto HeightAt = [&](int32 X, int32 Y) -> float
+    auto SampleRaw = [&](float GX, float GY) -> float
         {
-            return LandscapeDataAccess::GetLocalHeight(RawAt(X, Y));
+            GX = std::clamp(GX, 0.0f, static_cast<float>(SizeX - 1));
+            GY = std::clamp(GY, 0.0f, static_cast<float>(SizeY - 1));
+            const int32 X0 = static_cast<int32>(std::floor(GX));
+            const int32 Y0 = static_cast<int32>(std::floor(GY));
+            const float TX = GX - static_cast<float>(X0);
+            const float TY = GY - static_cast<float>(Y0);
+            const float Top = RawAt(X0, Y0) + (RawAt(X0 + 1, Y0) - RawAt(X0, Y0)) * TX;
+            const float Bottom = RawAt(X0, Y0 + 1) + (RawAt(X0 + 1, Y0 + 1) - RawAt(X0, Y0 + 1)) * TX;
+            return Top + (Bottom - Top) * TY;
         };
-    
+    auto LocalHeight = [&](float GX, float GY) -> float
+        {
+            return LandscapeDataAccess::GetLocalHeight(static_cast<uint16>(std::lround(SampleRaw(GX, GY))));
+        };
+
     const int32 Size = SubsectionSizeVerts;
-    std::vector<uint8> Pixels(static_cast<size_t>(Size * Size * 4));
+    std::vector<std::vector<uint8>> Mips;
 
-    for (int32 Y = 0; Y < Size; ++Y)
+    for (int32 Verts = Size; Verts >= 2; Verts >>= 1)
     {
-        for (int32 X = 0; X < Size; ++X)
+        const float Step = static_cast<float>(Size - 1) / static_cast<float>(Verts - 1);
+        std::vector<uint8>& Pixels = Mips.emplace_back(static_cast<size_t>(Verts * Verts * 4));
+
+        for (int32 Y = 0; Y < Verts; ++Y)
         {
-            const int32 GX = std::clamp(BaseX + X, 0, SizeX - 1);
-            const int32 GY = std::clamp(BaseY + Y, 0, SizeY - 1);
-            const uint16 Raw = RawAt(GX, GY);
+            for (int32 X = 0; X < Verts; ++X)
+            {
+                const float GX = static_cast<float>(BaseX) + static_cast<float>(X) * Step;
+                const float GY = static_cast<float>(BaseY) + static_cast<float>(Y) * Step;
+                const uint16 Raw = static_cast<uint16>(std::lround(SampleRaw(GX, GY)));
 
-            // 중앙차분 (경계는 한쪽 차분). 로컬 단위(1쿼드 = 1)라서 액터 스케일은 NormalMatrix가 반영한다.
-            const int32 X0 = std::max(GX - 1, 0), X1 = std::min(GX + 1, SizeX - 1);
-            const int32 Y0 = std::max(GY - 1, 0), Y1 = std::min(GY + 1, SizeY - 1);
-            const float DhDx = (HeightAt(X1, GY) - HeightAt(X0, GY)) / static_cast<float>(std::max(X1 - X0, 1));
-            const float DhDy = (HeightAt(GX, Y1) - HeightAt(GX, Y0)) / static_cast<float>(std::max(Y1 - Y0, 1));
-            const FVector N = FVector(-DhDx, -DhDy, 1.0f).Normalized();
+                const float X0 = std::max(GX - 1.0f, 0.0f), X1 = std::min(GX + 1.0f, static_cast<float>(SizeX - 1));
+                const float Y0 = std::max(GY - 1.0f, 0.0f), Y1 = std::min(GY + 1.0f, static_cast<float>(SizeY - 1));
+                const float DhDx = (LocalHeight(X1, GY) - LocalHeight(X0, GY)) / std::max(X1 - X0, 1.0f);
+                const float DhDy = (LocalHeight(GX, Y1) - LocalHeight(GX, Y0)) / std::max(Y1 - Y0, 1.0f);
+                const FVector N = FVector(-DhDx, -DhDy, 1.0f).Normalized();
 
-            uint8* P = &Pixels[static_cast<size_t>((Y * Size + X) * 4)];
-            P[0] = static_cast<uint8>(Raw >> 8);   // R: 높이 상위 바이트
-            P[1] = static_cast<uint8>(Raw & 0xFF); // G: 높이 하위 바이트
-            P[2] = PackUnit(N.X);                  // B: 노멀 X
-            P[3] = PackUnit(N.Y);                  // A: 노멀 Y
+                uint8* P = &Pixels[static_cast<size_t>((Y * Verts + X) * 4)];
+                P[0] = static_cast<uint8>(Raw >> 8);
+                P[1] = static_cast<uint8>(Raw & 0xFF);
+                P[2] = PackUnit(N.X);
+                P[3] = PackUnit(N.Y);
+            }
         }
     }
-
-    return UTexture2D::CreateDynamicTexture(static_cast<uint32>(Size), static_cast<uint32>(Size), Pixels.data());
+    return UTexture2D::CreateDynamicTextureMips(static_cast<uint32>(Size), static_cast<uint32>(Size), Mips);
 }
 
 FBox LandscapeRender::CalcSectionLocalBox(const TArray<uint16>& Heights, int32 SizeX, int32 SizeY, int32 BaseX, int32 BaseY, int32 SectionSizeQuads)
@@ -150,6 +167,23 @@ FLandscapeSceneProxy::FLandscapeSceneProxy(ULandscapeComponent* InComponent)
 {
     const int32 SubsectionSizeVerts = InComponent->ComponentSizeQuads + 1;
     SharedBuffers = FLandscapeSharedBuffers::GetOrCreate(SubsectionSizeVerts);
+    SectionBaseX = InComponent->SectionBaseX;
+    SectionBaseY = InComponent->SectionBaseY;
+
+    ALandscapeProxy* Landscape = InComponent->GetLandscapeProxy();
+
+    LastLODIndex = std::min(SharedBuffers->GetNumLODs() - 1, 3);
+
+    const float LOD0ScreenSize = Landscape ? Landscape->LOD0ScreenSize : 0.5f;
+    const float LOD0Distribution = std::max(Landscape ? Landscape->LOD0DistributionSetting : 1.25f, 1.01f);
+    const float LODDistribution = std::max(Landscape ? Landscape->LODDistributionSetting : 3.0f, 1.01f);
+
+    const float LOD1ScreenSize = LOD0ScreenSize / LOD0Distribution;
+    LOD0ScreenSizeSq = LOD0ScreenSize * LOD0ScreenSize;
+    LOD1ScreenSizeSq = LOD1ScreenSize * LOD1ScreenSize;
+    LogLODDistributionSq = std::log(LODDistribution * LODDistribution);
+
+    LastLODScreenSizeSq = LOD1ScreenSizeSq / std::pow(LODDistribution * LODDistribution, static_cast<float>(LastLODIndex - 1));
 
     FLandscapeShaderParams Params{};
     Params.SectionSizeQuads = static_cast<float>(InComponent->ComponentSizeQuads);
@@ -158,9 +192,8 @@ FLandscapeSceneProxy::FLandscapeSceneProxy(ULandscapeComponent* InComponent)
     ParamsBuffer = RenderCommand::CreateConstantBuffer(sizeof(FLandscapeShaderParams));
     RenderCommand::UpdateBufferData(ParamsBuffer.get(), &Params, sizeof(Params));
 
-    VertexFactory.Init(SharedBuffers->GetVertexBuffer(), SharedBuffers->GetIndexBuffer(CurrentLOD), InComponent->GetHeightmap(), ParamsBuffer.get());
+    VertexFactory.Init(SharedBuffers->GetVertexBuffer(), SharedBuffers->GetIndexBuffer(), InComponent->GetHeightmap(), ParamsBuffer.get());
     
-    ALandscapeProxy* Landscape = InComponent->GetLandscapeProxy();
     Material = (Landscape && Landscape->LandscapeMaterial) ? Landscape->LandscapeMaterial : UAssetManager::GetAssetByPath<UMaterial>("DefaultMaterial");
 }
 
@@ -180,7 +213,7 @@ void FLandscapeSceneProxy::GetDynamicMeshElements(const FViewContext& View, FMes
         ++GDbgCount;
         KRS_LOG(Info, "[LandscapeDbg] GetDynamicMeshElements: sb={} vfValid={} mat={} idx={} baseVtx={}",
             SharedBuffers ? 1 : 0, VertexFactory.IsValid() ? 1 : 0, Material ? 1 : 0,
-            SharedBuffers ? SharedBuffers->GetIndexBuffer(CurrentLOD)->GetIndexCount() : 0,
+            SharedBuffers ? SharedBuffers->GetIndexBuffer()->GetIndexCount() : 0,
             SharedBuffers ? SharedBuffers->GetLODVertexOffset(CurrentLOD) : 0);
     }
 
@@ -189,8 +222,17 @@ void FLandscapeSceneProxy::GetDynamicMeshElements(const FViewContext& View, FMes
         return;
     }
 
-    const int32 LOD = CurrentLOD;
-    FIndexBuffer* IB = SharedBuffers->GetIndexBuffer(LOD);
+    const float FractionalLOD = ComputeFractionalLOD(View);
+    const int32 DesiredLOD = static_cast<int32>(FractionalLOD);
+
+    if (View.ViewIndex == 0 && DesiredLOD != DebugLastLOD)
+    {
+        KRS_LOG(Info, "[LandscapeLOD] Section ({}, {}) LOD {} -> {} (fractional {:.2f})",
+            SectionBaseX, SectionBaseY, DebugLastLOD, DesiredLOD, FractionalLOD);
+        DebugLastLOD = DesiredLOD;
+    }
+
+    const int32 LOD = DesiredLOD;
 
     FMeshBatch& Batch = Collector.AddMeshDefaulted();
     Batch.VertexFactory = &VertexFactory;
@@ -201,10 +243,37 @@ void FLandscapeSceneProxy::GetDynamicMeshElements(const FViewContext& View, FMes
 
     FMeshBatchElement& Element = Batch.Elements.AddDefaulted_GetRef();
     Element.Proxy = this;
-    Element.IndexBuffer = IB;
-    Element.FirstIndex = 0;
-    Element.IndexCount = IB->GetIndexCount();
+    Element.IndexBuffer = SharedBuffers->GetIndexBuffer();
+    Element.FirstIndex = SharedBuffers->GetLODFirstIndex(LOD);
+    Element.IndexCount = SharedBuffers->GetLODIndexCount(LOD);
     Element.BaseVertexLocation = SharedBuffers->GetLODVertexOffset(LOD);
     Element.bReceiveShadow = bReceiveShadow;
     Element.bReceiveDecal = bReceivesDecals;
+}
+
+float FLandscapeSceneProxy::ComputeFractionalLOD(const FViewContext& View) const
+{
+    const FLODSphere& Sphere = GetLODSphere();
+
+    float DistanceSq = 1.0f;
+    if (!View.bOrthographic)
+    {
+        const FVector ToCenter = Sphere.Center - View.CameraPosition;
+        DistanceSq = std::max(ToCenter.Dot(ToCenter), 1.0f);
+    }
+
+    const float ScreenSizeSq = Sphere.RadiusSquared * View.ProjectionScaleSquared / DistanceSq;
+
+    if (ScreenSizeSq <= LastLODScreenSizeSq)
+    {
+        return static_cast<float>(LastLODIndex);
+    }
+    if (ScreenSizeSq > LOD1ScreenSizeSq)
+    {
+        // LOD0 ~ LOD1 선형
+        return (LOD0ScreenSizeSq - std::min(ScreenSizeSq, LOD0ScreenSizeSq)) / (LOD0ScreenSizeSq - LOD1ScreenSizeSq);
+    }
+
+    // LOD1 이후
+    return 1.0f + std::log(LOD1ScreenSizeSq / ScreenSizeSq) / LogLODDistributionSq;
 }

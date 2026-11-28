@@ -143,6 +143,46 @@ UTexture2D* UTexture2D::CreateDynamicTexture(uint32 InWidth, uint32 InHeight, ET
 	return NewTex;
 }
 
+UTexture2D* UTexture2D::CreateDynamicTextureMips(uint32 InWidth, uint32 InHeight, const std::vector<std::vector<uint8>>& MipPixels)
+{
+	if (InWidth == 0 || InHeight == 0 || MipPixels.empty())
+	{
+		return nullptr;
+	}
+
+	UTexture2D* NewTex = NewObject<UTexture2D>();
+	if (!NewTex)
+	{
+		return nullptr;
+	}
+
+	FTextureDesc Desc{
+		.Width = InWidth,
+		.Height = InHeight,
+		.MipLevels = static_cast<uint32>(MipPixels.size()),
+		.ArraySize = 1,
+		.Format = ETextureFormat::R8G8B8A8_UNorm,
+		.BindFlags = ETextureBindFlags::ShaderResource,
+		.Usage = ETextureUsage::Default,
+		.bGenerateMips = false,
+	};
+
+	TUniquePtr<FTexture2D> Resource = RenderCommand::CreateTexture2D(Desc, nullptr);
+	if (!Resource || !Resource->GetSRV())
+	{
+		return nullptr;
+	}
+
+	for (uint32 Mip = 0; Mip < static_cast<uint32>(MipPixels.size()); ++Mip)
+	{
+		const uint32 MipWidth = std::max(InWidth >> Mip, 1u);
+		RenderCommand::UpdateTextureMip(Resource.get(), Mip, MipPixels[Mip].data(), MipWidth * 4u);
+	}
+
+	NewTex->SetResource(std::move(Resource));
+	return NewTex;
+}
+
 void UTexture2D::UpdateDynamicPixels(const void* PixelData, uint32 RowPitch)
 {
 	if (!Texture || !PixelData || GetWidth() == 0 || GetHeight() == 0)

@@ -476,3 +476,13 @@ void RenderCommand::UpdateTextureSubregion(FTexture2D* Texture, uint32 X, uint32
 	Box.back = 1;
 	RenderDevice->GetContext()->UpdateSubresource(Texture->GetRawPtr(), 0, &Box, Data, RowPitch, 0);
 }
+
+void RenderCommand::UpdateTextureMip(FTexture2D* Texture, uint32 MipLevel, const void* Data, uint32 RowPitch)
+{
+	if (!RenderDevice || !Texture || !Texture->GetRawPtr() || !Data)
+	{
+		return;
+	}
+
+	RenderDevice->GetContext()->UpdateSubresource(Texture->GetRawPtr(), MipLevel, nullptr, Data, RowPitch, 0);
+}

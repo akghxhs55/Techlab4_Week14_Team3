@@ -54,16 +54,20 @@ public:
 	explicit FLandscapeSharedBuffers(int32 InSubsectionSizeVerts);
 	~FLandscapeSharedBuffers();
 
-	int32 GetNumLODs() const { return static_cast<int32>(IndexBuffers.size()); }
+	int32 GetNumLODs() const { return static_cast<int32>(LODIndexCounts.size()); }
 	int32 GetSubsectionSizeVerts() const { return SubsectionSizeVerts; }
 	FVertexBuffer* GetVertexBuffer() const { return VertexBuffer.get(); }
-	FIndexBuffer* GetIndexBuffer(int32 LOD) const { return IndexBuffers[LOD].get(); }
+	FIndexBuffer* GetIndexBuffer() const { return IndexBuffer.get(); }
+	uint32 GetLODFirstIndex(int32 LOD) const { return LODFirstIndices[LOD]; }
+	uint32 GetLODIndexCount(int32 LOD) const { return LODIndexCounts[LOD]; }
 	int32 GetLODVertexOffset(int32 LOD) const { return LODVertexOffsets[LOD]; }
 
 private:
 	int32 SubsectionSizeVerts = 0;
 	TUniquePtr<FVertexBuffer> VertexBuffer;
-	std::vector<TUniquePtr<FIndexBuffer>> IndexBuffers;
+	TUniquePtr<FIndexBuffer> IndexBuffer;
+	std::vector<uint32> LODFirstIndices;
+	std::vector<uint32> LODIndexCounts;
 	std::vector<int32> LODVertexOffsets;
 };
 
@@ -77,10 +81,22 @@ public:
 	bool HasStaticRelevance() const override { return false; }
 	bool HasDynamicRelevance() const override { return true; }
 	void GetDynamicMeshElements(const FViewContext& View, FMeshElementCollector& Collector, uint32 LODIndex = 0) const override;
+
+	float ComputeFractionalLOD(const FViewContext& View) const;
 private:
 	TSharedPtr<FLandscapeSharedBuffers> SharedBuffers;
 	TUniquePtr<FConstantBuffer> ParamsBuffer;
 	FLandscapeVertexFactory VertexFactory;
 	UMaterialInterface* Material = nullptr;
 	int32 CurrentLOD = 0;
+
+	float LOD0ScreenSizeSq = 0.25f;
+	float LOD1ScreenSizeSq = 0.16f;
+	float LastLODScreenSizeSq = 0.0f;
+	float LogLODDistributionSq = 1.0f;
+	int32 LastLODIndex = 3;
+
+	int32 SectionBaseX = 0;
+	int32 SectionBaseY = 0;
+	mutable int32 DebugLastLOD = -1;
 };

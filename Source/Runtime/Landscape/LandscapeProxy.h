@@ -21,6 +21,13 @@ public:
 	int32 CollisionMipLevel = 0;
 	UPROPERTY(EditAnywhere)
 	UMaterialInterface* LandscapeMaterial = nullptr;
+	
+	UPROPERTY(EditAnywhere)
+	float LOD0ScreenSize = 0.5f;          // 화면 크기가 이 값 이상이면 LOD0
+	UPROPERTY(EditAnywhere)
+	float LOD0DistributionSetting = 1.25f; // LOD0 → LOD1 경계 = LOD0ScreenSize / 이 값
+	UPROPERTY(EditAnywhere)
+	float LODDistributionSetting = 3.0f;   // LOD1 이후 화면 크기가 이 배수만큼 줄 때마다 LOD 
 
 	UPROPERTY()
 	TArray<ULandscapeComponent*> LandscapeComponents;

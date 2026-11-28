@@ -4657,6 +4657,15 @@ void FDetailsPanel::DrawCompoenetList(AActor* SelectedActor, UActorComponent*& O
 			Flags |= ImGuiTreeNodeFlags_Selected;
 		}
 
+		// 화면 밖 줄은 높이만 차지시킨다 (DrawSceneComponentNode와 같은 규칙)
+		if (ActorComp != OutSelectedComponent && ActorComp != EditingNameComponent &&
+			!ImGui::IsRectVisible(ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetFrameHeight())))
+		{
+			ImGui::TreeNodeEx("ActorComponentNode", Flags, "%s", "");
+			ImGui::PopID();
+			continue;
+		}
+
 		FString Label = ActorComp->GetName();
 		const ImVec2 RowStart = ImGui::GetCursorScreenPos();
 		const float RowWidth = ImGui::GetContentRegionAvail().x;
@@ -4719,6 +4728,26 @@ void FDetailsPanel::DrawSceneComponentNode(USceneComponent* Component, USceneCom
 	if (bIsLeaf)
 	{
 		Flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+	}
+
+	// 컴포넌트가 수천 개인 액터(Landscape)도 보이는 줄만 비용을 쓰게 한다.
+	// 화면 밖 줄은 같은 ID의 빈 TreeNode로 높이와 펼침 상태만 유지하고, 이름 자르기·드래그·메뉴·클래스 접미사는 건너뛴다.
+	// 선택된 줄과 이름 편집 중인 줄은 F2·입력창 처리가 있으므로 항상 전부 그린다.
+	if (Component != OutSelectedComponent && Component != EditingNameComponent &&
+		!ImGui::IsRectVisible(ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetFrameHeight())))
+	{
+		ImGui::PushID(Component);
+		const bool bClippedOpen = ImGui::TreeNodeEx("ComponentNode", Flags, "%s", "");
+		if (bClippedOpen && !bIsLeaf)
+		{
+			for (USceneComponent* Child : Children)
+			{
+				DrawSceneComponentNode(Child, Root, OutSelectedComponent);
+			}
+			ImGui::TreePop();
+		}
+		ImGui::PopID();
+		return;
 	}
 
 	FString Label = Component->GetName();
