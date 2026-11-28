@@ -18,6 +18,8 @@
 #include <functional>
 #include "Physics/PhysScene.h"
 #include "Physics/PhysicsSettings.h"
+#include "Navigation/NavigationSystem.h"
+
 #include "World.generated.h"
 
 class ULevel;
@@ -83,7 +85,7 @@ public:
 	void SetPersistentLevel(ULevel* InLevel) { PersistentLevel = InLevel; }
 
 	ULevel* GetCurrentLevel() const { return CurrentLevel; }
-	void SetCurrentLevel(ULevel* InLevel) { CurrentLevel = InLevel; }
+	void SetCurrentLevel(ULevel* InLevel);
 
 	int32 GetActorNum();
 
@@ -170,6 +172,10 @@ public:
 	void StartPhysicsSim();
 	void FinishPhysicsSim();
 
+	/* Navigation */
+	FNavigationSystem& GetNavigationSystem() { return NavigationSystem; }
+	const FNavigationSystem& GetNavigationSystem() const { return NavigationSystem; }
+
 private:
 
 	void GameWorldTick(float DeltaTime);
@@ -244,4 +250,6 @@ private:
 
 	void CreatePhysicsScene();
 	void SetupPhysicsTickFunctions(float DeltaSeconds);
+
+	FNavigationSystem NavigationSystem;
 };

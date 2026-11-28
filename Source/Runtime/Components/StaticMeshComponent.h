@@ -37,6 +37,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bUseComplexAsSimpleCollision = false;
 
+	UPROPERTY(EditAnywhere)
+	bool bCanEverAffectNavigation = true;
+
 protected:
 	virtual void OnCreatePhysicsState() override;
 
@@ -47,5 +50,5 @@ private:
 	// 조명 Icon Debug arrow용
 	bool bEditorIcon = false;
 
-	UStaticMesh* PhysicsBodyMesh = nullptr;
+	UStaticMesh* PhysicsBodyMesh = nullptr;\
 };

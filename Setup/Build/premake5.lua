@@ -126,6 +126,10 @@ IncludeDir["sol2"]  = ProjectRoot .. "/Source/ThirdParty/sol2/include"
 IncludeDir["miniaudio"]  = ProjectRoot .. "/Source/ThirdParty/miniaudio"
 IncludeDir["NvClothBridge"] = ProjectRoot .. "/Source/ThirdParty/NvClothBridge"
 
+local RecastNavigationRoot = ProjectRoot .. "/Source/ThirdParty/RecastNavigation"
+IncludeDir["Recast"] = RecastNavigationRoot .. "/Recast"
+IncludeDir["Detour"] = RecastNavigationRoot .. "/Detour"
+
 -- premake의 filter는 project()를 만나면 초기화된다.
 -- 두 프로젝트가 같은 런타임(/MDd vs /MD)으로 컴파일되지 않으면 링크가 실패하므로
 -- 공통 설정을 함수로 묶어 각 프로젝트에서 호출한다.
@@ -321,6 +325,10 @@ project "KurisuEngine"
 		GeneratedDir .. "/Runtime/Runtime.gen.cpp",
 		"%{IncludeDir.DDSLoader}/*.h",
 		"%{IncludeDir.DDSLoader}/*.cpp",
+		"%{IncludeDir.Recast}/Include/*.h",
+		"%{IncludeDir.Recast}/Source/*.cpp",
+		"%{IncludeDir.Detour}/Include/*.h",
+		"%{IncludeDir.Detour}/Source/*.cpp",
 	}
 
 	includedirs
@@ -334,6 +342,8 @@ project "KurisuEngine"
 		"%{IncludeDir.lua}",
 		"%{IncludeDir.sol2}",
 		"%{IncludeDir.NvClothBridge}",
+		"%{IncludeDir.Recast}/Include",
+		"%{IncludeDir.Detour}/Include",
 	}
 
 	-- Lua는 엔진에 포함한다. 인터프리터/컴파일러 실행 파일의 main은 제외한다.
@@ -348,11 +358,21 @@ project "KurisuEngine"
 		["Generated/*"] = GeneratedDir .. "/Runtime/*",
 		["ThirdParty/Lua/*"] = "%{IncludeDir.lua}/*",
 		["ThirdParty/DDSLoader/*"] = "%{IncludeDir.DDSLoader}/*",
+		["ThirdParty/Recast/*"] = "%{IncludeDir.Recast}/**",
+		["ThirdParty/Detour/*"] = "%{IncludeDir.Detour}/**",
 	}
 	filter "files:**/lua/src/**.c"
 		compileas "C"
 		enablepch "Off"
 	filter {}
+
+	filter "files:**/RecastNavigation/Recast/Source/*.cpp"
+		enablepch "Off"
+	filter {}
+
+	filter "files:**/RecastNavigation/Detour/Source/*.cpp"
+		enablepch "Off"
+	filter{}
 
 	dependson { "KurisuHeaderTool" }
 	prebuildcommands { HeaderTool .. ' Runtime "' .. GeneratedDir .. '/Runtime" "' .. ProjectRoot .. '/Source/Runtime"' }

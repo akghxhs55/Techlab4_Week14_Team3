@@ -6,6 +6,7 @@
 #include "RenderResourceManager.h"
 
 #include "UObject/UObjectIterator.h"
+#include "Navigation/NavmeshBuildDebug.h"
 
 FLineBatcher::~FLineBatcher()
 {
@@ -196,3 +197,78 @@ void FLineBatcher::OnRender(const FMatrix& ViewProjection)
 	Flush();
 }
 
+void FLineBatcher::DrawNavigation(const TArray<FVector>& Faces,
+	const TArray<FVector>& Boundaries,
+	const FMatrix& ViewProjection)
+{
+	if (!VertexBuffer || !CB || !LineShader)
+		return;
+
+	const FPipelineState SavedState = PipelineState;
+	PipelineState.DepthStencilState = EDepthStencilState::ReadOnly;
+	PipelineState.RasterizerState = ERasterizerState::SolidNone;
+	PipelineState.BlendState = EBlendState::AlphaBlend;
+
+	const FVector DrawOffset(0.0f, 0.0f, 0.02f);
+
+	const auto Draw = [&](const TArray<FVector>& Positions,
+		EPrimitiveTopology Topology, int32 VerticesPerPrimitive,
+		const FVector4& Color)
+		{
+			PipelineState.Topology = Topology;
+			const int32 Capacity =
+				static_cast<int32>(MaxVertices) / VerticesPerPrimitive * VerticesPerPrimitive;
+			if (Capacity == 0)
+				return;
+
+			for (int32 Base = 0; Base < Positions.Num();)
+			{
+				BeginFrame();
+
+				const int32 Count = (std::min)(Capacity, Positions.Num() - Base);
+				for (int32 I = 0; I < Count; ++I)
+					*VertexBufferPtr++ = { Positions[Base + I] + DrawOffset, FVector2(), Color };
+
+				VertexCount = static_cast<uint32>(Count);
+				OnRender(ViewProjection);
+				Base += Count;
+			}
+		};
+
+	Draw(Faces, EPrimitiveTopology::TriangleList, 3, FVector4(0.10f, 0.85f, 0.28f, 0.28f));
+	Draw(Boundaries, EPrimitiveTopology::LineList, 2, FVector4(0.16f, 1.00f, 0.35f, 1.00f));
+
+	PipelineState = SavedState;
+	BeginFrame();
+}
+
+void FLineBatcher::DrawNavigationBuildDebug(
+	const FNavMeshBuildDebugOverlay& Overlay, const FMatrix& ViewProjection)
+{
+	if (!LineShader || !CB || (!Overlay.Faces && !Overlay.Lines))
+		return;
+
+	FMatrix VP = ViewProjection;
+	RenderCommand::UpdateBufferData(CB.get(), &VP, sizeof(FMatrix));
+
+	FPipelineState State = PipelineState;
+	State.Shader = LineShader;
+	State.DepthStencilState = EDepthStencilState::ReadOnly;
+	State.RasterizerState = ERasterizerState::SolidNone;
+	State.BlendState = EBlendState::AlphaBlend;
+
+	const auto Draw = [&](FVertexBuffer* Buffer, uint32 Count, EPrimitiveTopology Topology)
+		{
+			if (!Buffer || !Buffer->GetBuffer() || Count == 0)
+				return;
+
+			State.Topology = Topology;
+			RenderCommand::BindPipelineState(State);
+			RenderCommand::BindVertexBuffer(Buffer);
+			RenderCommand::BindConstantBuffer(0, CB.get(), EShaderBindFlagBits::Vertex);
+			RenderCommand::Draw(Count, 0);
+		};
+
+	Draw(Overlay.Faces.get(), Overlay.FaceVertexCount, EPrimitiveTopology::TriangleList);
+	Draw(Overlay.Lines.get(), Overlay.LineVertexCount, EPrimitiveTopology::LineList);
+}

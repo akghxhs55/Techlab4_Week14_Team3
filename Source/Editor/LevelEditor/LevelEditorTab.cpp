@@ -83,6 +83,12 @@ void FLevelEditorTab::DrawMenuBar()
 	{
 		const bool bCanPackage = !IsPackaging || !IsPackaging();
 		if (ImGui::MenuItem("Package Game (Release)", nullptr, false, bCanPackage)) { OnPackageGame.Broadcast(); }
+
+		ImGui::MenuItem("Capture Build Debug", nullptr, &bCaptureNavigationBuildDebug);
+
+		if (ImGui::MenuItem("Build Navigation"))
+			OnBuildNavigation.Broadcast(bCaptureNavigationBuildDebug);
+
 		ImGui::EndMenu();
 	}
 }

@@ -20,6 +20,7 @@
 #include "Render/DecalData.h"
 #include "Render/SkyboxRenderer.h"
 #include "Render/ParticleCurveTexture.h"
+#include "Render/LineBatcher.h"
 #include "Text/TextRenderer.h"
 #include "UObject/UObjectIterator.h"
 #include "Render/GPUStats.h"
@@ -1122,6 +1123,37 @@ bool FSceneRenderer::AddViewportPasses(FRenderGraphBuilder& Graph, FRenderer* Re
 		FRenderGraphRasterPassDesc Pass = MakeViewportPass("CascadeFloorVisualization", FinalColor);
 		Pass.ReadTextures = { Depth };
 		if (!Graph.AddRasterPass(std::move(Pass), Callbacks.CascadeVisualization)) return false;
+	}
+	if (Options.bShowNavigation && World->LineBatcher)
+	{
+		FNavigationSystem& Navigation = World->GetNavigationSystem();
+		const ENavMeshDrawMode Mode = Options.NavigationDrawMode;
+		FNavMeshBuildDebugData* Capture = Navigation.GetBuildDebugData();
+
+		if (Mode != ENavMeshDrawMode::FinalNavMesh && Capture && Capture->HasStage(Mode))
+		{
+			if (!AddOverlayPass(Graph, "NavigationBuildDebug", FinalColor, Depth,
+				[this, Capture, Mode]
+				{
+					const auto& Debug = Capture->GetOverlay(Mode);
+					World->LineBatcher->DrawNavigationBuildDebug(
+						Debug, View.ViewProjectionMatrix);
+				}))
+			{
+				return false;
+			}
+		}
+		else if (const auto* Debug = World->GetNavigationSystem().GetDebugGeometry())
+		{
+			if (Debug && !AddOverlayPass(Graph, "Navigation", FinalColor, Depth, [this, Debug]
+				{
+					World->LineBatcher->DrawNavigation(
+						Debug->FaceVertices, Debug->BoundaryVertices, View.ViewProjectionMatrix);
+				}))
+			{
+				return false;
+			}
+		}
 	}
 	if (!AddOverlayPass(Graph, "EditorLines", FinalColor, Depth, Overlay.EditorLines) ||
 		!AddOverlayPass(Graph, "EditorGrid", FinalColor, Depth, Overlay.EditorGrid) ||

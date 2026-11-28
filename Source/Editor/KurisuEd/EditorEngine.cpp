@@ -287,6 +287,11 @@ void UEditorEngine::InitLevelEditorTab()
 	LevelEditorTab->OnImportFbx.Add([this](EFbxImportMode Mode) { FEditorFileUtils::ImportFbx(Mode); });
 	LevelEditorTab->OnPackageGame.Add([this]() { Packager.Start("Release"); });
 	LevelEditorTab->SetIsPackagingQuery([this]() { return Packager.IsRunning(); });
+	LevelEditorTab->OnBuildNavigation.Add([this](bool bCaptureBuildDebug)
+		{
+			if (EditorWorld)
+				EditorWorld->GetNavigationSystem().BuildNavigation(*EditorWorld, bCaptureBuildDebug);
+		});
 
 	OutputLogPanel = LevelEditorTab->AddPanel<FOutputLogPanel>();
 	OutputLogPanel->SetOpen(false);
@@ -1143,6 +1148,8 @@ void UEditorEngine::Tick(const float DeltaTime)
 					ShowFlags.bShowCameraOverlay = S.bShowCameraOverlay;
 					ShowFlags.bShowSkeletalMesh = S.bShowSkeletalMesh;
 					ShowFlags.bShowParticles = S.bShowParticles;
+					ShowFlags.bShowNavigation = S.bShowNavigation;
+					ShowFlags.NavigationDrawMode = S.NavigationDrawMode;
 				}
 			}
 		}

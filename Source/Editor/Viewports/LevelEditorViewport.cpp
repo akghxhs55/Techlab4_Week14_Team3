@@ -74,6 +74,12 @@ void FLevelEditorViewportClient::Draw(FRenderer* Renderer)
 		EngineShowFlags.bDecalNarrowCulling = S.bDecalNarrowCulling;
 		EngineShowFlags.bDecalBVHCulling = S.bDecalBVHCulling;
 		EngineShowFlags.bDecalOBBTree = S.bDecalOBBTree;
+		EngineShowFlags.bShowNavigation = S.bShowNavigation;
+		const UWorld* ViewWorld = GetWorld();
+		EngineShowFlags.NavigationDrawMode =
+			ViewWorld && ViewWorld->GetWorldType() == EWorldType::Editor
+			? S.NavigationDrawMode
+			: ENavMeshDrawMode::FinalNavMesh;
 
 		// 이 뷰포트의 뷰 모드에서 나오는 설정
 		EngineShowFlags.bEnableFog = ViewportMode == EViewportMode::Solid || ViewportMode == EViewportMode::Unlit;
@@ -160,7 +166,7 @@ void FLevelEditorViewportClient::Draw(const FSceneView* View, FScenePassCallback
 				{
 					LineBatcher->BuildVertexBuffer();
 				}
-				
+
 				if (bDrawSelectedLight)
 				{
 					if (ASpotLightActor* Light = Cast<ASpotLightActor>(Gizmo->GetTarget()->GetOwner()))

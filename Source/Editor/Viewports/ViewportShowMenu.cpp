@@ -5,6 +5,7 @@
 #include "Editor/Viewports/ViewportToolbarWidgets.h"
 #include "Components/SkinnedMeshComponent.h"
 #include "Core/StatOverlay.h"
+#include "Engine/World.h"
 
 // UE의 표시(Show) 메뉴: 기본값 복원, 뷰포트 통계, 표시 플래그 체크 목록.
 // 보이기/숨기기만 둔다. 품질·성능 옵션은 Render 메뉴가 맡는다. 모든 에디터 뷰에 함께 적용된다.
@@ -29,10 +30,33 @@ void FViewportsPanel::DrawShowMenu()
         Settings.bShowPhysicsBodies = Defaults.bShowPhysicsBodies;
         Settings.bShowVignette = Defaults.bShowVignette;
         Settings.bShowCameraOverlay = Defaults.bShowCameraOverlay;
+		Settings.bShowNavigation = Defaults.bShowNavigation;
+		Settings.NavigationDrawMode = Defaults.NavigationDrawMode;
     }
 
+    const auto BeginShowIconMenu = [](const char* IconName, const char* Label)
+    {
+        // 서브메뉴가 열려도 아이콘은 부모 팝업의 메뉴 행에 그린다.
+        ImDrawList* ParentDrawList = ImGui::GetWindowDrawList();
+        const FString PaddedLabel = FString("      ") + Label;
+        const bool bOpen = ImGui::BeginMenu(PaddedLabel.c_str());
+
+        if (const ImTextureID Icon = GetIcon(IconName); Icon != ImTextureID_Invalid)
+        {
+            const ImVec2 Min = ImGui::GetItemRectMin();
+            const ImVec2 Max = ImGui::GetItemRectMax();
+            const float Size = IconSize();
+            const float X = Min.x + EditorStyle::Scale(2.0f);
+            const float Y = (Min.y + Max.y - Size) * 0.5f;
+            ParentDrawList->AddImage(Icon, { X, Y }, { X + Size, Y + Size },
+                { 0, 0 }, { 1, 1 }, EditorColor::TextSecondary);
+        }
+
+        return bOpen;
+    };
+
     // 뷰포트 통계: 콘솔의 stat 명령과 같은 상태를 켜고 끈다.
-    if (ImGui::BeginMenu("      Viewport Stats"))
+    if (BeginShowIconMenu("Stats", "Viewport Stats"))
     {
         struct FStatItem { const char* Label; const char* Command; EStatFlags Flag; };
         const FStatItem Stats[] = {
@@ -54,14 +78,6 @@ void FViewportsPanel::DrawShowMenu()
                 FStatOverlay::ExecCommand(Stat.Command, Message);
         ImGui::EndMenu();
     }
-    // BeginMenu 줄 앞에 통계 아이콘을 덧그린다.
-    {
-        const ImVec2 Min = ImGui::GetItemRectMin(), Max = ImGui::GetItemRectMax();
-        const float CenterY = (Min.y + Max.y) * 0.5f, X = Min.x + EditorStyle::Scale(22.0f);
-        if (const ImTextureID Icon = GetIcon("Stats"); Icon != ImTextureID_Invalid)
-            ImGui::GetWindowDrawList()->AddImage(Icon, { X - EditorStyle::Scale(20.0f), CenterY - IconSize() * 0.5f },
-                { X - EditorStyle::Scale(4.0f), CenterY + IconSize() * 0.5f }, { 0, 0 }, { 1, 1 }, EditorColor::TextSecondary);
-    }
 
     auto Flag = [](const char* Icon, const char* Label, bool& bValue)
     {
@@ -74,6 +90,58 @@ void FViewportsPanel::DrawShowMenu()
     Flag("Particles", "Particles", Settings.bShowParticles);
     Flag("SkeletalMesh", "Skeletal Meshes", Settings.bShowSkeletalMesh);
     Flag("StaticMesh", "Static Meshes", Settings.bDrawPrimitives);
+    if (BeginShowIconMenu("Navigation", "Navigation"))
+    {
+        Flag(nullptr, "Show Navigation", Settings.bShowNavigation);
+        ImGui::Separator();
+
+        const UWorld* DisplayWorld = World;
+        const auto* Capture = DisplayWorld &&
+            DisplayWorld->GetWorldType() == EWorldType::Editor
+            ? DisplayWorld->GetNavigationSystem().GetBuildDebugData()
+            : nullptr;
+
+        const auto HasMode = [Capture](ENavMeshDrawMode Mode)
+            {
+                return Mode == ENavMeshDrawMode::FinalNavMesh ||
+                    (Capture && Capture->HasStage(Mode));
+            };
+
+        const ENavMeshDrawMode ActiveMode = HasMode(Settings.NavigationDrawMode)
+            ? Settings.NavigationDrawMode
+            : ENavMeshDrawMode::FinalNavMesh;
+
+        struct FModeItem
+        {
+            const char* Label;
+            ENavMeshDrawMode Mode;
+        };
+
+        constexpr FModeItem Items[] = {
+            { "Final NavMesh", ENavMeshDrawMode::FinalNavMesh },
+            { "Rasterized Voxels", ENavMeshDrawMode::RasterizedVoxels },
+            { "Walkability Filter", ENavMeshDrawMode::WalkabilityFilter },
+            { "Agent Radius Erosion", ENavMeshDrawMode::AgentRadiusErosion },
+            { "Regions", ENavMeshDrawMode::Regions },
+            { "Contours", ENavMeshDrawMode::Contours },
+            { "Polygon Mesh", ENavMeshDrawMode::PolygonMesh },
+        };
+
+        for (const FModeItem& Item : Items)
+        {
+            ImGui::BeginDisabled(!HasMode(Item.Mode));
+            if (IconMenuItem(nullptr, Item.Label, ActiveMode == Item.Mode, EIndicator::Radio))
+                Settings.NavigationDrawMode = Item.Mode;
+            ImGui::EndDisabled();
+        }
+
+        if (!Capture || !Capture->HasStage(ENavMeshDrawMode::RasterizedVoxels))
+            ImGui::TextDisabled("Enable Build > Capture Build Debug, then build.");
+        else if (Capture->IsVoxelPreviewLimited())
+            ImGui::TextDisabled("Voxel preview shows a subset of the spans.");
+
+        ImGui::EndMenu();
+    }
     SectionHeader("Developer");
     Flag("Cascade", "Cascade Bounds", Settings.bDrawCascadeBounds);
     Flag("Pivot", "Object UUID", Settings.bShowUUID);

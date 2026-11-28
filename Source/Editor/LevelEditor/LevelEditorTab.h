@@ -28,6 +28,7 @@ public:
 	TDelegate<EFbxImportMode> OnImportFbx;
 	TDelegate<> OnPackageGame;
 	TDelegate<const FString&> OnLevelLoaded;
+	TDelegate<bool> OnBuildNavigation;
 
 	void SetIsPackagingQuery(std::function<bool()> InQuery) { IsPackaging = std::move(InQuery); }
 	void SetUndoQueries(std::function<bool()> InCanUndo, std::function<bool()> InCanRedo,
@@ -75,6 +76,7 @@ private:
 	FBottomDrawerBar BottomBar;
 	bool bUseDockSpace = true;
 	bool bPassthruCentralNode = false;
+	bool bCaptureNavigationBuildDebug = false;
 
 	FString TabName;
 };

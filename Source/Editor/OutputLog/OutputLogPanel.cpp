@@ -15,6 +15,9 @@
 #include "UObject/UObjectIterator.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+
+#include "Navigation/NavGeometry.h"
+
 #include <format>
 #include <memory>
 #include <utility>
@@ -884,6 +887,16 @@ void FOutputLogPanel::RegisterCommands()
 			RaiseException(CauseCrashExceptionCode, EXCEPTION_NONCONTINUABLE, 0, nullptr);
 
 			return true;
+		});
+	Add("NavSmokeTest", "NavSmokeTest", [](const TArray<FString>& Args, const FString&)
+		{
+			if (Args.Num() != 1)
+			{
+				return false;
+			}
+
+			Navigation::RunNavigationSmokeTest();
+			return true; // 명령을 처리했음을 뜻하며, 테스트 결과는 로그에 출력한다.
 		});
 #endif
 
