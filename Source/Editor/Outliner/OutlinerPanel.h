@@ -42,6 +42,7 @@ public:
     void SelectActor(AActor* Actor, bool bAdditiveToggle = false, bool bRangeSelect = false);
     void SelectActors(const TArray<AActor*>& Actors);
     void OnActorDestroyed(AActor* Actor);
+    void OnComponentDestroyed(const UActorComponent* Component);
 
     AActor* GetSelectedActor() const;
     const TArray<AActor*>& GetSelectedActors() const { return SelectedActors; }

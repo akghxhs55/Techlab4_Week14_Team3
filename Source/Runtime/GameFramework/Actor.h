@@ -60,6 +60,9 @@ public:
 	UActorComponent* AddComponent(UClass* ComponentClass, FName Name);
 	void DestroyComponent(UActorComponent* Component);
 
+	using FOnComponentDestroyed = std::function<void(UActorComponent*)>;
+	static void SetOnComponentDestroyedCallback(FOnComponentDestroyed InCallback);
+
 	// bCanEverTick이 켜진 액터·컴포넌트의 Tick 함수만 World의 FTickTaskManager에 등록하거나 해제한다.
 	void RegisterAllActorTickFunctions(bool bRegister);
 

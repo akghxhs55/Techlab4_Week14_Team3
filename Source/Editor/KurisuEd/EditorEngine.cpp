@@ -605,6 +605,48 @@ void UEditorEngine::InitPanels()
 			}
 		});
 
+	AActor::SetOnComponentDestroyedCallback(
+		[this](UActorComponent* DestroyedComponent)
+		{
+			if (!DestroyedComponent)
+			{
+				return;
+			}
+
+			if (Gizmo && Gizmo->GetTarget() == DestroyedComponent)
+			{
+				Gizmo->SetTarget(nullptr, false);
+			}
+			if (Outline)
+			{
+				bool bHadTarget = false;
+				TArray<UPrimitiveComponent*> Remaining;
+				for (UPrimitiveComponent* Prim : Outline->GetTargets())
+				{
+					if (Prim == DestroyedComponent)
+					{
+						bHadTarget = true;
+					}
+					else if (Prim)
+					{
+						Remaining.Add(Prim);
+					}
+				}
+				if (bHadTarget)
+				{
+					Outline->SetTargets(Remaining);
+				}
+			}
+			if (DetailsPanel)
+			{
+				DetailsPanel->OnComponentDestroyed(DestroyedComponent);
+			}
+			if (OutlinerPanel)
+			{
+				OutlinerPanel->OnComponentDestroyed(DestroyedComponent);
+			}
+		});
+
 	ViewportsPanel->SetWorld(EditorWorld);
 	ViewportsPanel->SetIsPlayingQuery([this]() { return IsPlaying(); });
 	ViewportsPanel->SetGizmo(Gizmo.get());
@@ -1672,6 +1714,7 @@ void UEditorEngine::FinishGizmoDragUndo()
 void UEditorEngine::PreExit()
 {
 	UWorld::SetOnActorDestroyedCallback(nullptr);
+	AActor::SetOnComponentDestroyedCallback(nullptr);
 	EndViewportNavCapture();
 	bTrackingGizmoDrag = false;
 	UndoHistory.Clear();

@@ -4544,9 +4544,8 @@ void FDetailsPanel::ProcessPendingHeightmapImport()
 	bHeightmapImportError = false;
 	KRS_LOG(Info, "Landscape heightmap imported: {}", Path);
 
-	// 선택돼 있던 Landscape 컴포넌트는 파괴됐으므로 루트로 되돌린다.
-	EditingNameComponent = nullptr;
-	bFocusNameEdit = false;
+	// 파괴된 컴포넌트를 가리키던 포인터는 OnComponentDestroyed가 정리한다.
+	// 여기서는 선택을 루트로 맞춰 Gizmo도 다시 루트를 잡게 한다.
 	SelectComponent(Landscape->GetRootComponent());
 }
 
@@ -4900,6 +4899,41 @@ void FDetailsPanel::OnActorDestroyed(AActor* Actor)
 		TargetComponent = TargetActor ? TargetActor->GetRootComponent() : nullptr;
 	}
 	else if (TargetComponent && TargetComponent->GetOwner() == Actor)
+	{
+		TargetComponent = TargetActor ? TargetActor->GetRootComponent() : nullptr;
+	}
+}
+
+void FDetailsPanel::OnComponentDestroyed(const UActorComponent* Component)
+{
+	if (!Component)
+	{
+		return;
+	}
+
+	if (EditingNameComponent == Component)
+	{
+		EditingNameComponent = nullptr;
+		bIsEditingName = false;
+		bFocusNameEdit = false;
+	}
+	if (PendingRootComponent == Component)
+	{
+		PendingRootComponent = nullptr;
+	}
+	if (PendingDeleteComponent == Component)
+	{
+		PendingDeleteComponent = nullptr;
+	}
+	if (PendingDroppedComponent == Component)
+	{
+		PendingDroppedComponent = nullptr;
+	}
+	if (PendingDragComponent == Component)
+	{
+		PendingDragComponent = nullptr;
+	}
+	if (TargetComponent == Component)
 	{
 		TargetComponent = TargetActor ? TargetActor->GetRootComponent() : nullptr;
 	}

@@ -1,4 +1,4 @@
-﻿#include "EnginePCH.h"
+#include "EnginePCH.h"
 #include "Editor/Outliner/OutlinerPanel.h"
 
 #include "Engine/Level.h"
@@ -474,6 +474,22 @@ void FOutlinerPanel::SelectActor(AActor* Actor, bool bAdditiveToggle, bool bRang
 
     KRS_LOG(Info, "{} UUID {} is selected", Actor->GetName(), Actor->GetUUID());
     NotifySelectionChanged();
+}
+
+void FOutlinerPanel::OnComponentDestroyed(const UActorComponent* Component)
+{
+    if (!Component)
+        return;
+
+    if (PendingAttachChild == Component)
+    {
+        PendingAttachChild = nullptr;
+        bPendingDetach = false;
+    }
+    if (PendingAttachParent == Component)
+    {
+        PendingAttachParent = nullptr;
+    }
 }
 
 void FOutlinerPanel::OnActorDestroyed(AActor* Actor)

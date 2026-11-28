@@ -15,6 +15,15 @@
 #include "Camera/PlayerCameraManager.h"
 enum class EAttachmentRule;
 
+namespace
+{
+	AActor::FOnComponentDestroyed GComponentDestroyedCallback;
+}
+
+void AActor::SetOnComponentDestroyedCallback(FOnComponentDestroyed InCallback)
+{
+	GComponentDestroyedCallback = std::move(InCallback);
+}
 
 AActor::AActor()
 {
@@ -411,6 +420,12 @@ void AActor::DestroyComponent(UActorComponent* Component)
 	Component->EndPlayComponent();
 	Component->UnregisterComponent();
 	RemoveOwnedComponent(Component);
+
+	if (GComponentDestroyedCallback)
+	{
+		GComponentDestroyedCallback(Component);
+	}
+
 	delete Component;
 	return;
 }
