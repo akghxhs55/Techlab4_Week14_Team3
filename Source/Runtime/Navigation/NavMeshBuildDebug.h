@@ -25,11 +25,9 @@ struct FNavMeshBuildDebugOverlay
 class FNavMeshBuildDebugData
 {
 public:
-	void CaptureRasterized(const rcHeightfield& Field);
+	void CaptureBeforeFilter(const rcHeightfield& Field);
 	void CaptureFiltered(const rcHeightfield& Field);
-	void CaptureBeforeErosion(const rcCompactHeightfield& Field);
-	void CaptureEroded(const rcCompactHeightfield& Field);
-	void CaptureRegions(const rcCompactHeightfield& Field);
+	void CaptureCompact(const rcCompactHeightfield& Field, bool bHasRegions);
 	void CaptureContours(const rcContourSet& Contours);
 	void CapturePolygonMesh(const rcPolyMesh& Polys);
 
@@ -55,14 +53,19 @@ private:
 		bool bWalkableAfterFilter;
 	};
 
-	struct FCompactSpan
+	struct FRasterRun
 	{
-		uint32 SourceIndex;
-		uint16 X;
+		FRasterSpan Span;
+		uint16 LengthX;
+	};
+
+	struct FCompactRun
+	{
+		uint16 StartX;
 		uint16 Z;
+		uint16 LengthX;
 		uint16 Floor;
 		uint16 Region;
-		bool bWalkableBeforeErosion;
 		bool bWalkableAfterErosion;
 	};
 
@@ -83,8 +86,10 @@ private:
 
 	FGrid RasterGrid;
 	FGrid CompactGrid;
-	TArray<FRasterSpan> RasterSpans;
-	TArray<FCompactSpan> CompactSpans;
+	TArray<uint32> RasterWalkabilityBeforeFilter;
+	TArray<FRasterSpan> RasterSingletons;
+	TArray<FRasterRun> RasterRuns;
+	TArray<FCompactRun> CompactRuns;
 	TArray<FContour> Contours;
 	TArray<FVector> PolygonVertices;
 	TArray<uint16> PolygonIndices;

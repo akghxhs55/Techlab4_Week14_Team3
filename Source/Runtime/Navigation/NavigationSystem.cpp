@@ -226,7 +226,7 @@ namespace
 		{
 			return ReportNavBuildFailure("rasterization");
 		}
-		if (Debug) Debug->CaptureRasterized(*Solid);
+		if (Debug) Debug->CaptureBeforeFilter(*Solid);
 
 		/* 3. 보행 불가능 영역 제거 */
 		// 단차가 크거나 천장이 낮은 구간을 걸러낸다.
@@ -246,13 +246,11 @@ namespace
 		{
 			return ReportNavBuildFailure("compact heightfield");
 		}
-		if (Debug) Debug->CaptureBeforeErosion(*Compact);
 		Solid.reset();
 
 		/* 5. 에이전트 반지름에 따른 보행 영역 침식 */
 		if (!rcErodeWalkableArea(&Context, Config.walkableRadius, *Compact))
 			return ReportNavBuildFailure("agent radius erosion");
-		if (Debug) Debug->CaptureEroded(*Compact);
 
 		// 거리장을 계산해 남은 보행 영역을 여러 구역으로 나누고,
 		// 작은 구역을 정리한다.
@@ -260,9 +258,10 @@ namespace
 			!rcBuildRegions(&Context, *Compact, Config.borderSize,
 				Config.minRegionArea, Config.mergeRegionArea))
 		{
+			if (Debug) Debug->CaptureCompact(*Compact, false);
 			return ReportNavBuildFailure("walkable regions");
 		}
-		if (Debug) Debug->CaptureRegions(*Compact);
+		if (Debug) Debug->CaptureCompact(*Compact, true);
 
 		/* 6. Region 외곽선 추출 */
 		std::unique_ptr<rcContourSet, decltype(&rcFreeContourSet)>
