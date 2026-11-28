@@ -5,7 +5,9 @@
 #include "LandscapeDataAccess.h"
 #include "LandscapeHeightfieldCollisionComponent.h"
 #include "LandscapeInfo.h"
+#include "LandscapeRender.h"
 #include "Render/Texture2D.h"
+#include <algorithm>
 
 ULandscapeInfo* ALandscapeProxy::CreateLandscapeInfo()
 {
@@ -134,6 +136,51 @@ void ALandscapeProxy::RebuildComponentReferences()
 
 void ALandscapeProxy::BuildDerivedData()
 {
+	bool bNeedsHeightmap = false;
+	FIntPoint GridMin{ INT32_MAX, INT32_MAX };
+	FIntPoint GridMax{ INT32_MIN, INT32_MIN };
+	for (auto* Collision : CollisionComponents)
+	{
+		if (!Collision || Collision->CollisionHeightData.IsEmpty())
+		{
+			continue;
+		}
+		GridMin.X = FMath::Min(GridMin.X, Collision->SectionBaseX);
+		GridMin.Y = FMath::Min(GridMin.Y, Collision->SectionBaseY);
+		GridMax.X = FMath::Max(GridMax.X, Collision->SectionBaseX + Collision->CollisionSizeQuads);
+		GridMax.Y = FMath::Max(GridMax.Y, Collision->SectionBaseY + Collision->CollisionSizeQuads);
+
+		ULandscapeComponent* Render = Collision->GetRenderComponent();
+		bNeedsHeightmap |= (Render && !Render->GetHeightmap());
+	}
+
+	TArray<uint16> GridHeights;
+	const int32 GridSizeX = bNeedsHeightmap ? GridMax.X - GridMin.X + 1 : 0;
+	const int32 GridSizeY = bNeedsHeightmap ? GridMax.Y - GridMin.Y + 1 : 0;
+	if (bNeedsHeightmap)
+	{
+		GridHeights.SetNum(GridSizeX * GridSizeY);
+		std::ranges::fill(GridHeights, static_cast<uint16>(LandscapeDataAccess::MidValue));
+
+		for (auto* Collision : CollisionComponents)
+		{
+			if (!Collision || Collision->CollisionHeightData.IsEmpty())
+			{
+				continue;
+			}
+			const int32 Vertices = Collision->CollisionSizeQuads + 1;
+			const int32 OffsetX = Collision->SectionBaseX - GridMin.X;
+			const int32 OffsetY = Collision->SectionBaseY - GridMin.Y;
+			for (int32 Y = 0; Y < Vertices; ++Y)
+			{
+				for (int32 X = 0; X < Vertices; ++X)
+				{
+					GridHeights[(OffsetY + Y) * GridSizeX + (OffsetX + X)] = Collision->CollisionHeightData[Y * Vertices + X];
+				}
+			}
+		}
+	}
+
 	for (auto* Render : LandscapeComponents)
 	{
 		ULandscapeHeightfieldCollisionComponent* Collision = Render ? Render->GetCollisionComponent() : nullptr;
@@ -154,10 +201,12 @@ void ALandscapeProxy::BuildDerivedData()
 		Render->CachedLocalBox = LocalBox;
 		Collision->CachedLocalBox = LocalBox;
 
-		if (!Render->GetHeightmap())
+		if (!Render->GetHeightmap() && !GridHeights.IsEmpty())
 		{
-			const uint32 Size = static_cast<uint32>(Render->ComponentSizeQuads + 1);
-			Render->SetHeightmapTexture(UTexture2D::CreateDynamicTexture(Size, Size, ETextureFormat::R16_UNorm, Collision->CollisionHeightData.GetData()));
+			Render->SetHeightmapTexture(LandscapeRender::CreateHeightmapTexture(
+				GridHeights, GridSizeX, GridSizeY,
+				Render->SectionBaseX - GridMin.X, Render->SectionBaseY - GridMin.Y,
+				Render->ComponentSizeQuads + 1));
 		}
 	}
 }
